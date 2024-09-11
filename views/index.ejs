@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WatchGalleria</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <script src="https://kit.fontawesome.com/2c8d038c04.js" crossorigin="anonymous"></script>
+  <link rel="icon" href="/images/logo.png" type="website icon">
+  <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+  <!-- navbar  -->
+  <nav class="navbar navbar-expand-lg ">
+    <div class="container-fluid">
+      <a class="navbar-brand fs-3" href="#">
+        <div class="custom-logo d-flex align-items-center justify-content-center"><img src="/images/logo.png" alt=""
+            class="image-fluid">
+          <span class="custom-t ms-2">
+            Watch<span class="custom-text">Galleria</span>
+        </div>
+        </span>
+
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <!-- customer support -->
+      <div class="collapse navbar-collapse " id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-2 fs-5">
+          <li class="nav-item customer">
+            <a class="nav-link " aria-current="page" href="/cs"><i class="fa-solid fa-headset"></i><span
+                class="ms-1">Customer Support</span></a>
+          </li>
+          <!-- Cart menu -->
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="#">
+              <span class="custom-cart">
+                <i class="fa-solid fa-cart-shopping ms-lg-3 ms-md-2 ms-sm-0"></i>
+                <span class="badge">0</span>
+              </span>
+              <span class="ms-1">Cart</span>
+            </a>
+          </li>
+
+        </ul>
+        <!-- search box and button -->
+        <form class="d-flex mx-auto searchbox">
+          <input class="form-control me-2 btn-small s-box" type="search" placeholder="Search items" aria-label="Search">
+          <button class="btn btn-outline-success search btn-small s-btn" type="submit">Search</button>
+        </form>
+        <div class="buttons d-grid gap-2 d-md-flex justify-content-md-end custom-buttons">
+          <a href="/login" class="btn btn-primary login btn-small me-md-2">Log in</a>
+          <a href="/signup" class="btn btn-outline-primary signup btn-small">Sign Up</a>
+        </div>
+        </li>
+      </div>
+    </div>
+  </nav>
+  <!-- landing page -->
+  <main>
+    <div class="container-fluid landing mb-md-1">
+      <div class="container-fluid row rowss">
+        <div class="landing-text col-lg-6 col-md-6 col-sm-12 col-xs-6 fade-right" >
+          <div class="text fs-1 ">
+            Time, Style, Elegance <br>
+            <b>-All in one place</b>
+          </div>
+        </div>
+        <div class="landing-picture landing-image col-lg-6 col-md-6 col-sm-12 col-xs-6 fade-left" >
+          <img src="/images/smart/redmi watch 4.webp" alt="" srcset="" class="image-fluid landing-image mx-auto">
+        </div>
+      </div>
+    </div>
+    <!-- categories page-->
+    <div class="container-fluid categories mt-5">
+      <div class="categories-text text-center fs-1 c-border">
+        <span class="f">Featured</span> <span class="c">Categories</span>
+      </div>
+      <div class="images row text-center">
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+          <div class="watches" id="mens">
+            <img src="images/mens/f20560_4.webp" alt="mens" class="image-fluid">
+          </div>
+          <p class="watch-text fs-3"><i class="fa-solid fa-user-tie"></i> Mens</p>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+          <div class="watches" id="women">
+            <img src="images/women/f20412_2.webp" alt="womens" class="image-fluid">
+          </div>
+          <p class="watch-text fs-3"><i class="fa-solid fa-bag-shopping"></i> Womens</p>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+          <div class="watches" id="smart">
+            <img src="images/smart/huwaeiwatch-fit-special-edition.jpg" alt="smart" class="image-fluid">
+          </div>
+          <p class="watch-text fs-3"><i class="fa-solid fa-wifi"></i> Smart</p>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+          <div class="watches" id="luxury">
+            <img src="images/luxury/naviforce-transparent.webp" alt="luxury" class="image-fluid">
+          </div>
+          <p class="watch-text fs-3"><i class="fa-solid fa-crown"></i> Luxury</p>
+        </div>
+      </div>
+    </div> 
+    <!-- caroseul --> 
+     <div class="container-fluid newarrivals mt-5">
+      <div class="categories-text text-center fs-1 c-border">
+        <span class="f">New</span> <span class="c">Arrivals</span>
+      </div>
+      <!-- caroseul body -->
+      <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <!-- First carousel item -->
+          <div class="carousel-item active">
+            <div class="row align-items-start c-row">
+              <!-- Text on the left (col-lg-6) -->
+              <div class="carousel-text landing-text  col-lg-6 text-center d-flex align-items-center justify-content-center">
+                <div class="feature-container fs-2 text-center">
+                  Experience the perfect blend of technology, style with Boat Lunar
+                  <br>
+                  <ul class="feature-list">
+                      <li>-ChatGpt4</li>
+                      <li>-Fitness Tracking</li>
+                      <li>-Vibrant Display</li>
+                    </ul>
+                    <br>
+                    <div class="button text-center">
+                    <button type="button" class="btn text-center fs-5" disabled>Price 3,999/-</button>
+                  </div>
+                </div>
+              </div>
+              <!-- Image on the right (col-lg-6) -->
+              <div class="col-lg-6 c-image">
+                <img src="images/smart/boat lunar.webp" class="d-block w-100 caroseul-image" alt="...">
+                <div class="under-text text-center fs-2">Boat Lunar</div>
+              </div>
+            </div>
+          </div>
+      
+          <!-- Second carousel item -->
+          <div class="carousel-item">
+            <div class="row c-row">
+              <!-- Text on the left (col-lg-6) -->
+              <div class="carousel-text landing-text col-lg-6 text-success text-center d-flex align-items-center justify-content-center">
+                  <div class="feature-container fs-2 text-center">
+                      Elegant design with a focus on simplicity.
+                      <ul class="feature-list">
+                          <li>-Durable</li>
+                          <li>-Water Resistance</li>
+                          <li>-Lightweight</li>
+                        </ul>
+                        <div class="button text-center">
+                        <button type="button" class="btn text-center fs-5" disabled>Price 8,999/-</button>
+                      </div>
+                    </div>
+              </div>
+              <!-- Image on the right (col-lg-6) -->
+              <div class="col-lg-6 c-image">
+                <img src="images/mens/curren simple clasic.webp" class="d-block w-100 caroseul-image" alt="...">
+                <div class="under-text text-center fs-2">Curren Classic</div>
+              </div>
+            </div>
+          </div>
+          <!-- third caroseul -->
+          <div class="carousel-item">
+            <div class="row c-row">
+              <!-- Text on the left (col-lg-6) -->
+              <div class="carousel-text landing-text col-lg-6 text-success text-center d-flex align-items-center justify-content-center">
+                  <div class="feature-container fs-2 text-center">
+                     Modern and fashion forward watch for women with stainless steel strap.
+                      <ul class="feature-list">
+                          <li>-Scratch-Resistance Glass</li>
+                          <li>-Water Resistance</li>
+                          <li>-Suitable for casual and formal wear</li>
+                        </ul>
+                        <div class="button text-center">
+                        <button type="button" class="btn text-center fs-5" disabled>Price 5,999/-</button>
+                      </div>
+                    </div>
+              </div>
+              <!-- Image on the right (col-lg-6) -->
+              <div class="col-lg-6  c-image">
+                <img src="images/women/curren new fashion.webp" class="d-block w-100 caroseul-image" alt="...">
+                <div class="under-text text-center fs-2">Curren Gold</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+        <!-- Carousel controls (optional) -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+      <!-- last page top -->
+      <div class="container-fluid mt-5">
+        <div class="last-text text-center fs-1 mb-4">
+            <span class="f">Why choose us?</span>
+          </div>
+
+    <!-- card -->
+     <div class="cards row">
+  <div class="card col-lg-3 col-md-6 col-sm-6">
+    <img src="images/perfect.png" class="card-img-top" alt="">
+    <div class="card-body">
+      <div class="card-title text-center">Find your perfect watch</div>
+      <p class="card-text text-center">Explore a wide range of watches from WatchGalleria.</p>
+    </div>
+  </div>
+  <div class="card col-lg-3 col-md-6 col-sm-6">
+    <img src="images/shield.jpg" class="card-img-top" alt="">
+    <div class="card-body">
+      <div class="card-title text-center">Secure Transaction</div>
+      <p class="card-text text-center">Enjoy peace of mind with out secure gateways.</p>
+    </div>
+  </div>
+  <div class="card col-lg-3 col-md-6 col-sm-6">
+    <img src="images/Online_Shoping_29.jpg" class="card-img-top" alt="">
+    <div class="card-body">
+      <div class="card-title text-center">Fast Delivery</div>
+      <p class="card-text text-center">Get your watch delivered with our fast shipping service.</p>
+    </div>
+  </div>
+  <div class="card col-lg-3 col-md-6 col-sm-6">
+    <img src="images/guarentee.jpg" class="card-img-top" alt="">
+    <div class="card-body">
+      <div class="card-title text-center">Product Guarentee</div>
+      <p class="card-text text-center">Guranteed quality and satisfaction with every watch purchase.</p>
+    </div>
+  </div>
+</div>
+<!-- footer -->
+ <footer>
+    <div class="container-fluid row mt-5  text-center fs-5">
+        <div class="info1 col-lg-6 col-sm-6 col-md-6 col-xm-12 mt-2">
+            <ul class="text-center">
+                <li class="head text-center">WatchGalleria</li>
+                <li><i class="fa-solid fa-map-location-dot"></i> Lubhoo, Lalitpur</li>
+                <li><i class="fa-solid fa-phone"></i> 9843101592, 01-5580237</li>
+                <li><i class="fa-solid fa-envelope"></i> inboxunique1@gmail.com</li>
+                <li><i class="fa-solid fa-business-time"></i> Mon-Fri / 10:00 AM - 6:00 PM</li>
+            </ul>
+        </div>
+        <div class="info2 col-lg-6 col-sm-6 col-md-6 col-xm-12 mt-2">
+            <div class="head text-center">Social Links</div>
+            
+        <p><a href="#"><i class="fa-brands fa-facebook"></i> Facebook</p></a>
+        <p><a href="#"><i class="fa-brands fa-facebook-messenger"></i> Messenger</p></a>
+        <p><a href="#"><i class="fa-brands fa-instagram"></i> Instagram</p></a>
+        <p><a href="#"><i class="fa-brands fa-whatsapp"></i> Whatsapp</p></a>
+        </div>
+    </div>
+    <div class="sell text-center">
+      Grow Your Business With Us — <a href="/vendorsignup" class="bold">Become a Seller Today!</a> 
+    </div>
+    <div class="right text-center">
+        © 2024 WatchGalleria. All Rights Reserved.
+    </div>
+ </footer>
+  </main>
+  <script src="bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js">
+
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+   
+
+  <script src="index.js"></script>
+</body>
+
+</html>

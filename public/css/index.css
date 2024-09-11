@@ -1,0 +1,642 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+:root {
+    --primary-color: rgba(42, 180, 244, 255);
+    --secondary-color: #DCAB27;
+    --text-color: #333333;
+    --background-color: #F7F7F7;
+    --accent-color: #2A3E5F;
+    --highlight-color: #80D1F3;
+    --button-primary-color: #2A5FFF;
+    --button-secondary-color: #F72CD2;
+    --border-color: #DDDDDD;
+    --navbar-color: #E0F0FF; /* Choose one of the suggested colors */
+    --text-color: grey; /* For text within the navbar */
+    --navbar-link-color: #FFFFFF; /* Navbar link color */
+}
+.navbar {
+    background-color: #F5FAFF;
+    padding-left: 1rem;
+    padding-right: 1rem; 
+    
+}
+.navbar-toggler{
+    border: none;
+    background: transparent;
+}
+
+.navbar-brand, .navbar-nav .nav-link {
+    color: var(--navbar-link-color);
+}
+.navbar-toggler-icon {
+    background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 30 30"%3E%3Cpath stroke="%23000000" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"/%3E%3C/svg%3E');
+}
+.navbar-nav {
+    color: var(--text-color);
+}
+.nav-link{
+    color: #6F6C64 !important;
+    font-weight:600;
+}
+.navbar-nav .nav-link:hover {
+    color: var(--navbar-link-hover-color);
+}
+/* cart */
+.cart-icon {
+    position: relative;
+    display: inline-block;
+}
+.badge{
+    display: none;
+}
+
+.custom-text{
+     color: #DCAB27;
+     animation: change 3s 1;
+}
+.custom-t  {
+    color: var(--primary-color);
+}
+.custom-logo>img{
+    height: 70px;
+    width: 65px;
+    aspect-ratio: 3/2;
+
+}
+.custom-t{
+    margin-left: 1%;
+    font-weight: bold;
+    color: rgba(42,180,244,255);
+}
+.custom-lang{
+    margin-left: 1rem;
+}
+
+.lang li a{
+    /* font-weight: bold; */
+    margin-bottom: 5px;
+}
+.nav-link:hover {
+    color: #C7AE6A;
+}
+/* search section */
+.s-btn{
+    color:white;
+    background-color: #DCAB27;
+    border-radius: 5px;
+    border: none;
+
+}
+.s-btn:hover{
+    background-color:#2CA8E1;
+    transition: 0.3s;
+}
+.nav-item a:hover{
+    color:#2CA8E1 !important;
+    transition: 0.2s;
+}
+.s-box{
+    border-radius: 10px;
+}
+/* for the cart with the badge */
+.custom-cart {
+    position: relative;
+    display: inline-block;
+}
+.signup{
+    background-color:var(--button-primary-color) !important;
+}
+.badge {
+    position: absolute;
+    top: -10px;
+    right: -15px;
+    background-color: #DCAB27;
+    color: white;
+    border-radius: 50%;
+    padding: 5px 10px;
+    font-size: 0.6rem;
+    display: block;
+}
+
+/* for the cart with the badge */
+
+/* MQ for navbar */
+
+@media (min-width: 993px) and (max-width: 1200px) {
+    .custom-logo > img {
+      height: 3.4375rem; /* 55px / 16 */
+      width: 3.75rem; /* 60px / 16 */
+    }
+    .buttons button, .search {
+      height: 3rem; /* 48px / 16 */
+      width: 4.1875rem !important; /* 67px / 16 */
+      font-size: small;
+    }
+    input[type=search] {
+        width: 5.625rem; /* 90px / 16 */
+    }
+   ul{
+    margin-left: 3rem;
+   }
+   
+
+   
+}
+
+@media (max-width: 992px) {
+    .login, .signup {
+        margin-top: 10px;
+        margin-left: 1rem;
+    }
+    .custom-shop, .custom-cart {
+        margin-left: -0.5rem !important; /* Remove negative margins */
+    }
+    .customer>.nav-link{
+        margin-left: -0.5rem;
+    }
+    input[type="search"] {
+        margin-left: 1rem;
+    }
+    .navbar-brand {
+        margin-left: 1rem;
+    }
+    .buttons, .searchbox {
+        padding-right: 0.75rem;
+        margin-left: 0rem;
+    }
+    .custom-logo>img{
+        height: 53px;
+        width: 60px;
+    }
+}
+
+/* Add consistent spacing for all nav items */
+.nav-item {
+    margin-left: 1rem;
+}
+
+  
+@media (max-width: 992px) and (min-width:768px) { 
+    .custom-logo>img{
+        height: 50px;
+        width: 65px;
+    }
+    .buttons{
+        width: 100%;
+       
+    }
+    .signup{
+        margin-right: 0;
+        margin-left: 0px;
+    }
+    
+   .buttons button{
+      width: 50%;
+    }
+      /*
+    .buttons{
+        margin-left: 0px;
+    } */
+   
+ }
+ @media (min-width: 576px) and (max-width:767px) { 
+    .custom-logo>img{
+        height: 45px;
+        width: 55px;
+    }
+    .navbar{
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+    
+  }
+  /* mobile ko lagi  */
+  @media (min-width: 300px) and (max-width:575px) { 
+    *{
+        margin-left: 0 !important;
+        
+    }
+    .buttons, form{
+        padding-right: 0 !important;
+        
+    }
+    
+    .custom-logo>img{
+        height: 40px;
+        width: 45px;
+    }
+    .custom-cart{
+        margin-left: 0rem !important;
+    }
+    .navbar{
+        padding-left: 0rem;
+        padding-right: 0rem;
+    }
+    .navbar-toggler{
+        padding-right: 0;
+    }
+    .navbar-brand{
+        margin-left: 0;
+    }
+  }
+  @media (max-width:299px) { 
+    .custom-logo>img{
+        height: 31px;
+        width: 42px;
+    }
+  }
+  @media (min-width: 992px) and (max-width: 1065px) {
+    .navbar-collapse{
+        margin-left: -1.6rem;
+        
+    }
+    .buttons{
+        gap: 0px;
+    }
+    /* .signup{
+        margin-right:1.5rem;
+    } */
+    .nav-link{
+        font-size: 1.2rem;
+    }
+    .custom-logo>img{
+        height: 60px;
+        width: 55px;
+      }
+      
+        .custom-buttons {
+           margin-right:0rem;
+           margin-left: 0rem;
+        }
+        .buttons a{
+            font-size: small;
+        }
+        .searchbox button{
+            height: 35px;
+            
+            font-size: small;
+        }
+        
+        .customer{
+            margin-right: -1.5rem;
+            width: 12.7rem;
+        }
+        .searchbox{
+          margin-left: 0rem !important;
+        }
+       .custom-cart{
+              margin-left: 0rem;
+       }
+        .custom-shop{
+            width: 6rem;
+            margin-left: -0.3rem !important;
+        }
+        .custom-t{
+            margin-left: 1%;
+            font-weight: bold;
+            color: rgba(42,180,244,255);
+        }
+        .lang li a{
+            /* font-weight: bold; */
+            margin-bottom: 5px;
+        }
+        .login,.signup{
+           max-height: 35px;
+           
+            
+        }
+        .signup{
+            margin-right:0.5rem;
+        }
+        input[type=search] {
+            width: 8.5rem;
+         
+        }
+        .searchbox input[type="search"],
+        .searchbox button {
+            max-height: 35px;
+        }
+        .custom-margin a {
+            margin-left: -4rem; /* Remove the margin */
+        }
+        
+    }
+
+/* navbar  responsiveness over */
+
+
+
+/* landing page suru */
+.landing{
+    height: 85vh;
+    width: 100%;
+    background-color: var(--primary-color);
+}
+.row {
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+.landing-text{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.landing-image {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%; /* Ensure image scales down */
+    height: auto; /* Maintain aspect ratio */
+    display: block;
+}
+@media (min-width: 600px) and (max-width:768px) {
+    .landing-image{
+        height: 70%;
+        width: 95%;
+        margin-left: 1rem !important;
+    }
+
+}
+@media (max-width: 768px) {
+    
+    .landing .row{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .rowss {
+        flex-direction: column; /* Stack elements vertically */
+
+    }
+    
+    .landing-text {
+        order: 1; /* Ensure text appears on top */
+       
+    }
+    
+    .landing-picture {
+        order: 0; /* Ensure image appears behind text */
+    }
+    
+}
+
+
+/* categories */
+.f{
+    color: var(--primary-color);
+    font-weight: 600;
+}
+.c{
+    color: var(--secondary-color);
+   font-weight: 600;
+}
+.c-border{
+    border-bottom: 2px solid var(--primary-color);
+    width: 80%;
+    margin: auto;
+
+}
+.images{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+.watches {
+    width: 100%;
+    height: 20rem; /* Set a fixed height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Ensures that the image does not overflow */
+}
+
+.watches > img {
+    width: 100%;
+    height: 100%;
+    object-fit:contain;
+}
+
+.watch-text{
+    color: var(--text-color);
+}
+.watch-text>i{
+    color: var(--primary-color);
+}
+ #mens:hover, #women:hover, #smart:hover, #luxury:hover {
+    color: var(--secondary-color);
+    transition: color 0.3s ease, transform 0.3s ease, margin-top 0.3s ease; /* Apply transition to both color and transform */
+    transform: scale(1.1) !important; /* Apply scaling */
+    margin-top: 0.5rem;
+
+}
+.watch-text:hover{
+    color: var(--secondary-color);
+    transition: color 0.3s ease;
+    font-weight: bold;
+}
+
+
+/* responsiveness for categories */
+@media (max-width: 768px) {
+    .c-border{
+        width: 100%;
+    }
+}
+
+/* caroseul ko css */
+.carousel-control-prev-icon {
+    background-color: #C7AE6A !important;
+  }
+
+  .carousel-control-next-icon {
+    background-color: #C7AE6A !important;
+  }
+#carouselExample{
+    /* height: 60vh; */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.carousel-text{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+    padding:1rem;
+
+}
+.caroseul-image{
+    height: 25rem !important;
+    width: 100%;
+    object-fit:contain;
+    margin-top: 2rem;
+    border-radius: 10px;
+}
+.caroseul-item{
+    padding:1rem;
+}
+.under-text{
+    color: var(--text-color)
+}
+.feature-container {
+    margin-left: 8rem;
+    color: var(--primary-color);
+  }
+  
+  .feature-list {
+    list-style-type: none; /* Remove default bullet points */
+    padding: 0;
+    margin-top: 20px; /* Add some space between the title and the list */
+  }
+  
+  .feature-list li {
+    margin: 5px 0; /* Add some vertical spacing between each list item */
+    color: var(--primary-color); /* Change the text color to match the one in your image */
+  }
+  .button>.btn{
+    color: white;
+    background-color:var(--secondary-color) !important;
+    border-radius:10px;
+    /* width: 8rem; */
+    font-style: italic;
+    font-weight:500;
+  }
+  
+  .button > .btn:disabled {
+    color: white !important; /* Keep text color white */
+    background-color: var(--secondary-color) !important; /* Keep your secondary color */
+    opacity: 1 !important; /* Remove the faded appearance */
+    cursor: not-allowed; /* Indicate it's not clickable */
+  }
+  /* responsiveness for carousel */
+    @media (max-width: 992px) {
+        .feature-container {
+        margin-left: 0;
+        }
+        .carousel-inner{
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .c-row{
+            flex-direction: column; /* Stack elements vertically */
+    
+        }
+        
+        .c-image {
+            order: 0 !important; /* Ensure text appears on top */
+           
+        }
+        .carousel-text {
+            order: 1 !important; /* Ensure text appears below image */
+            text-align: center;
+        }
+        .feature-container {
+            text-align: center;
+             /* Ensure image appears behind text */
+        }
+    }
+    /* caroseul ends */
+    
+/* card ko css */
+.card-title{
+    font-weight: bold;
+}
+.card-text{
+    color: var(--text-color);
+}
+.card{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: none;
+} 
+.card-img-top{
+    height: 8rem;
+    object-fit: contain;
+     
+}
+/* cards ko css ends */
+
+/* footer starts */
+footer{
+    background-color: var(--primary-color);
+    color: white;
+
+}
+a{
+    text-decoration: none;
+    color: white !important;
+}
+.right{
+    color : var(--primary-color);
+    background-color: white;
+    font-weight: bolder;
+    margin-top: 1rem;
+}
+.head{
+    font-weight: bold;
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+}
+.info1>ul{
+    list-style-type: none;
+}
+.info1>ul>li{
+    padding-bottom: 1rem;
+}
+.bold{
+    font-weight: bold;
+
+}
+.bold:hover{
+    color: var(--secondary-color) !important;
+    transition: color 0.3s ease;
+    text-shadow:  white 2px 2px 2px;
+
+}
+/* animation */
+ /* Keyframe for fade-right */
+ @keyframes fadeRight {
+    0% {
+      opacity: 0;
+      transform: translateX(-50px); /* Move to the left initially */
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0); /* Move back to original position */
+    }
+  }
+
+  /* Keyframe for fade-left */
+  @keyframes fadeLeft {
+    0% {
+      opacity: 0;
+      transform: translateX(50px); /* Move to the right initially */
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0); /* Move back to original position */
+    }
+  }
+
+  /* Apply animation to the elements */
+  .fade-right {
+    opacity: 0; /* Initially hidden */
+    animation: fadeRight 0.6s ease-out forwards;
+    animation-delay: 0.5s; /* Optional delay */
+  }
+
+  .fade-left {
+    opacity: 0; /* Initially hidden */
+    animation: fadeLeft 0.6s ease-out forwards;
+    animation-delay: 0.5s; /* Optional delay */
+  }

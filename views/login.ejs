@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/2c8d038c04.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/index.css">
+    <style>
+        .w{
+            color: var(--primary-color);
+
+        }
+        .g{
+            color:var(--secondary-color);
+        }
+        .w,.g{
+            font-weight: bold;
+        }
+        .error {
+             color: red;
+            font-weight: bold;
+            }
+
+        @media (min-width: 768px){
+             input{
+            width: 75%;
+             }
+        } 
+        .a{
+            color: var(--primary-color) !important;
+            cursor:pointer !important;
+        }
+        /* @media (min-width: 1400px) and (max-width: 1440px){
+           .loginform{
+               margin-top: 15%;
+           }
+        } */
+      
+       
+    </style>
+</head>
+<body>
+        <!-- Navbar -->
+     
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand fs-3" href="#">
+                    <div class="custom-logo d-flex align-items-center">
+                        <img src="/images/logo.png" alt=" Logo" class="img-fluid">
+                        <span class="custom-t ms-2">Watch<span class="custom-text">Galleria</span></span>
+                    </div>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mb-2 mb-lg-0 fs-5 ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Return to Homepage</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- login form -->
+         <div class="loginform">
+         <div class="container  text-center mt-3">
+            <h2 class="custom-container">Welcome to <span class="w">Watch</span><span class="g">Galleria</span></h2>
+            <h4>Please Login</h4>
+            <form>
+                <div class="mb-3 text-center">
+                  <label for="exampleInputEmail1" class="form-label">Email address</label>
+                  <input type="email" class="form-control w-50 text-center mx-auto" id="exampleInputEmail1" aria-describedby="emailHelp">
+                  
+                  <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                </div>
+                <div class="mb-3 text-center">
+                  <label for="exampleInputPassword1" class="form-label">Password</label>
+                  <input type="password" class="form-control w-50 text-center mx-auto" id="exampleInputPassword1">
+                  <div id="passwordHelpBox" class="form-text"> Your password must be minimum 8 characters long, contain letters and numbers or special characters only.</div>
+                </div>
+                <div class="mb-3 text-center">
+                    Don't have an account? <a href="/signup" class="a"> Register here</a> <br>
+                    Forgot Password?<a href="/forgot" class="a">Click Here</a>
+                </div>
+                <button type="submit" class="btn btn-primary w-25 " id="submit">Submit</button>
+                <button type="reset" class="btn btn-primary w-25">Reset</button>
+              </form>
+         </div>
+        </div>
+         <script src="/scripts/validate2.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
