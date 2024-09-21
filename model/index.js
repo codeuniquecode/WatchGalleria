@@ -1,5 +1,7 @@
 const {Sequelize, DataTypes} = require('sequelize');
 const dbConfig = require('../config/dbConfig');
+const makeUserTable = require('./userModel');
+const makeVendorTable = require('./vendorModel');
 
 
 const {host} = dbConfig;
@@ -22,5 +24,13 @@ sequelize.authenticate().then(()=>{
 .catch((err)=>{
     console.log('error vayo',err);
 })
+const db ={}
+db.Sequelize = Sequelize
+db.sequelize = sequelize
 
-module.exports = sequelize;
+db.user = makeUserTable(sequelize,DataTypes);
+db.vendor = makeVendorTable(sequelize,DataTypes);
+db.sequelize.sync({force:false}).then(()=>{
+    console.log('sync done');
+})
+module.exports = db;
