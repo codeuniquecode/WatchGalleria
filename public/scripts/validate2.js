@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', (event) => {
-    let submit = document.getElementById("submit");
+    let btnsubmit = document.getElementById("btnsubmit");
 
-    submit.addEventListener("click", (e) => {
+    btnsubmit.addEventListener("click", (e) => {
         e.preventDefault(); // Prevent the default form submission
 
         let email = document.getElementById("exampleInputEmail1").value;
@@ -36,8 +36,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
         // If all fields are valid, proceed with form submission
         if (valid) {
+            
             console.log("Form is valid. Submitting...");
             // You can now submit the form or perform any other actions
+            document.getElementById("loginForm").submit();
         }
     });
 });

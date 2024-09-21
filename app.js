@@ -12,58 +12,20 @@ const upload = multer({storage: storage});
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(express.urlencoded({extended:true})); 
+// app.use(express.json());
+
 require("./model/index");
-//routing codes -- GET
-app.get('/',(req,res)=>{
-    res.render('index.ejs');
-})
-app.get('/cs',(req,res)=>{
-    res.render('cs');
-})
-app.get('/login',(req,res)=>{
-    res.render('login');
-})
-app.get('/signup',(req,res)=>{
-    res.render('signup');
-})
-app.get('/forgot',(req,res)=>{
-    res.render('forgot');
-})
-app.get('/vendorRegister',(req,res)=>{
-    res.render('vendorsignup');
-})
-// app.get('/vendorRegister',(req,res)=>{
-//     // res.render('vendorsignup');
-//     res.send('success');
-// })
 
-//POST
-app.post('/register' ,upload.single('image'), async (req, res)=>{
-    const {fullname, phonenumber, email, password, address} = req.body;
-    await user.create({
-        username : fullname,
-        phonenumber : phonenumber,
-        email:email,
-        password: bcrypt.hashSync(password,1),
-        address:address,
-        profilepic:req.file.filename
-    })
-    res.redirect('/login')
-})
-app.post('/vendorRegister',upload.single('photo'), async(req,res)=>{
-    const {shopname, phonenumber,email,password,address} = req.body;
-    await vendor.create({
-        shopname: shopname,
-        email :email,
-        password: bcrypt.hashSync(password,1),
-        phonenumber:phonenumber,
-        address:address,
-        photo: req.file.filename
-    })
-    res.redirect('/login')
-    // console.log(email,password);
+// routing
+const userRoutes = require('./routes/userRoutes');
+const vendorRoutes = require('./routes/vendorRoutes');
+const loginRoutes = require('./routes/loginRoutes')
+// Use userRoutes on the root path
+app.use('/', userRoutes);
 
-})
+// Use vendorRoutes on a different path
+app.use('/vendor', vendorRoutes);
+app.use('/', loginRoutes);
 
 
 app.listen(port,()=>{
