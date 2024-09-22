@@ -23,7 +23,7 @@ exports.loginValidation = async (req, res) => {
             const passwordCheck = await bcrypt.compare(password, validUser.password); 
             if (passwordCheck) {
                 if (validUser.role === 'admin') {
-                    return res.send('Admin panel here');
+                    return res.redirect('/admin');
                 } else {
                     return res.send('User redirect to destination');
                 }
@@ -40,7 +40,7 @@ exports.loginValidation = async (req, res) => {
         if (validVendor) {
             const passwordCheck = await bcrypt.compare(password, validVendor.password); 
             if (passwordCheck) {
-                return res.send('Vendor approval page');
+             return res.redirect('/vendor/vendordashboard');
             } else {
                 return res.send('Invalid password');
             }

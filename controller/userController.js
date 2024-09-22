@@ -37,3 +37,8 @@ exports.register = [
         res.redirect('/login');
     }
 ];
+
+//admin
+exports.adminDashboard = (req,res)=>{
+    res.send('admin dashboard here');
+}

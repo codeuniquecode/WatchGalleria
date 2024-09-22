@@ -39,3 +39,6 @@ exports.vendorRegister = [
         }
     }
 ];
+exports.vendorDashboard = (req,res)=>{
+    res.send('vendor dashboard here');
+}

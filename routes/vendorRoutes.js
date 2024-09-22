@@ -7,7 +7,7 @@ const vendorController = require('../controller/vendorController');
 // router.get('/login', vendorController.login);
 router.get('/forget', vendorController.forget);
 router.get('/vendorRegister', vendorController.showVendorRegister); // Use the renamed function
-
+router.get('/vendordashboard', vendorController.vendorDashboard);
 // POST
 router.post('/vendorRegister', vendorController.vendorRegister);
 
