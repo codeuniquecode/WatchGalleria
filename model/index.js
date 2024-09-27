@@ -2,7 +2,7 @@ const {Sequelize, DataTypes} = require('sequelize');
 const dbConfig = require('../config/dbConfig');
 const makeUserTable = require('./userModel');
 const makeVendorTable = require('./vendorModel');
-
+const makeCategoryTable = require('./categoryModel')
 
 const {host} = dbConfig;
 
@@ -30,7 +30,8 @@ db.sequelize = sequelize
 
 db.user = makeUserTable(sequelize,DataTypes);
 db.vendor = makeVendorTable(sequelize,DataTypes);
-db.sequelize.sync({force:false}).then(()=>{
+db.category = makeCategoryTable(sequelize,DataTypes);
+db.sequelize.sync({alter:true}).then(()=>{
     console.log('sync done');
 })
 module.exports = db;
