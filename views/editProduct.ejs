@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Edit Product</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/2c8d038c04.js" crossorigin="anonymous"></script>
@@ -41,20 +41,19 @@
     <main>
         <!-- product name, description, price,quantity, category,image, vendorid and submit button   -->
         <div class="container-fluid">
-            <h2 class="form-title text-center">Add New Product</h2>
-            <p class="form-description text-center">Please fill out the details below to add a new product to the
-                inventory.</p>
+            <h2 class="form-title text-center">Update Product</h2>
+            <p class="form-description text-center">Update the product details if required, leave if not</p>
             <hr>
             <form enctype="multipart/form-data" action="" method="post">
                 <div class="row">
                     <div class="mb-3 text-center col-sm-12 col-md-6">
-                        <label for="productname" class="form-label">Product Name</label>
+                        <label for="productname" class="form-label">Edit Product Name</label>
                         <input type="text" name="productname" class="form-control w-75 text-center mx-auto" id="name"
                             aria-describedby="nameHelp" required>
 
                     </div>
                     <div class="mb-3 text-center col-md-6 col-sm-12">
-                        <label for="description" class="form-label">Description</label>
+                        <label for="description" class="form-label">Edit Description</label>
                         <textarea name="description" rows="1" class="form-control w-75 text-center mx-auto"
                             id=""></textarea>
                     </div>
@@ -62,12 +61,12 @@
                 <!-- row1sakyo -->
                 <div class="row">
                     <div class="mb-3 text-center col-sm-12 col-md-6">
-                        <label for="price" class="form-label">Price</label>
+                        <label for="price" class="form-label">Edit Price</label>
                         <input type="number" name="price" class="form-control w-75 text-center mx-auto"
                             id="exampleInputEmail1" aria-describedby="emailHelp" required>
                     </div>
                     <div class="mb-3 text-center col-md-6 col-sm-12">
-                        <label for="quantity" class="form-label">Quantity</label>
+                        <label for="quantity" class="form-label">Edit Quantity</label>
                         <input type="number" name="quantity" class="form-control w-75 text-center mx-auto"
                             id="exampleInputPassword1" required>
                         <div id="passwordHelpBox" class="form-text"> </div>
@@ -87,7 +86,7 @@
                         </select>
                     </div>
                     <div class="mb-3 text-center col-md-6 col-sm-12 mx-auto">
-                        <label for="product_photo" class="form-label">Upload product picture</label> <br>
+                        <label for="product_photo" class="form-label">Upload new product picture</label> <br>
                         <div class="pic text-center">
                             <input type="file" name="product_photo" class="d-block mx-auto" accept=".jpg, .jpeg, .png"
                                 required>
@@ -97,8 +96,8 @@
                 </div>
         </div>
         <div class="last text-center mx-auto">
-            <button type="submit" class="btn btn-upload btn-primary w-25" id="submit">Add Product</button>
-            <button type="reset" class="btn btn-reset btn-primary w-25">Reset</button>
+            <button type="submit" class="btn btn-upload btn-primary w-25" id="submit">Update Detail</button>
+            <button type="submit" class="btn btn-upload btn-danger w-25" id="">Delete Product</button>
         </div>
         </form>
         </div>
