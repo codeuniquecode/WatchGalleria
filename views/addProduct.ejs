@@ -11,6 +11,10 @@
     <link rel="icon" href="/images/logo.png" type="website icon">
     <!-- <link rel="stylesheet" href="index.css"> -->
     <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
         .container-fluid {
             margin-top: 5%;
         }
@@ -31,6 +35,22 @@
 
         body {
             font-weight: bold;
+        }
+        @media screen and (max-width:460px) {
+            .btn-upload, .btn-reset{
+                width: 60% !important;
+                margin: 0.5rem !important;
+            }
+        
+            /* .pic{
+                margin-left:2rem !important;
+            }
+             */
+        }
+        @media screen and (max-width:768px) {
+            .pic{
+                margin: auto !important;
+            }
         }
     </style>
 
@@ -89,7 +109,7 @@
                     <div class="mb-3 text-center col-md-6 col-sm-12 mx-auto">
                         <label for="product_photo" class="form-label">Upload product picture</label> <br>
                         <div class="pic text-center">
-                            <input type="file" name="product_photo" class="d-block mx-auto" accept=".jpg, .jpeg, .png"
+                            <input type="file" name="product_photo" class="d-block pic text-center" accept=".jpg, .jpeg, .png"
                                 required>
                         </div>
                     </div>

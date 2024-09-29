@@ -19,10 +19,10 @@
             margin-top: 2%;
         }
 
-        .btn-upload {
+        /* .btn-upload {
             background-color: #007bff;
             color: white;
-        }
+        } */
 
         .btn-upload:hover,
         .btn-reset:hover {
@@ -31,6 +31,18 @@
 
         body {
             font-weight: bold;
+        }
+        @media screen and (max-width:460px) {
+            .btn-upload, .btn-reset{
+                width: 60% !important;
+                margin: 0.5rem !important;
+            }
+        
+        }
+        @media screen and (max-width:768px) {
+            .pic{
+                margin: auto !important;
+            }
         }
     </style>
 
