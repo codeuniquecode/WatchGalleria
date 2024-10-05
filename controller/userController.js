@@ -42,3 +42,7 @@ exports.register = [
 exports.adminDashboard = (req,res)=>{
     res.send('admin dashboard here');
 }
+exports.logout= (req,res)=>{
+    res.clearCookie('token');
+    res.redirect('/');
+}

@@ -24,17 +24,25 @@ exports.loginValidation = async (req, res) => {
             const passwordCheck = await bcrypt.compare(password, validUser.password); 
             if (passwordCheck) {
                 if (validUser.role === 'admin') {
-                    const token = jwt.sign({id: validUser.userId},process.env.SECRET_KEY,{
+                    const payload = {
+                        id: validUser.userId,
+                        name: validUser.username
+                    };
+                    const token = jwt.sign(payload,process.env.SECRET_KEY,{
                         expiresIn: "30d"
                     });
                     res.cookie('token',token);
                     return res.redirect('/admin');
                 } else {
-                    const token = jwt.sign({id: validUser.userId},process.env.SECRET_KEY,{
+                    const payload = {
+                        id: validUser.userId,
+                        name: validUser.username
+                    };
+                    const token = jwt.sign(payload,process.env.SECRET_KEY,{
                         expiresIn: "30d"
                     });
                     res.cookie('token',token);
-                    return res.send('User redirect to destination');
+                    return res.redirect('/');
                 }
             } else {
                 return res.send('Invalid password, try again');
@@ -49,7 +57,11 @@ exports.loginValidation = async (req, res) => {
         if (validVendor) {
             const passwordCheck = await bcrypt.compare(password, validVendor.password); 
             if (passwordCheck) {
-                const token = jwt.sign({id: validVendor.vendorId},process.env.SECRET_KEY,{
+                const payload = {
+                    id: validVendor.vendorId,
+                    name: validVendor.shopname
+                };
+                const token = jwt.sign(payload,process.env.SECRET_KEY,{
                     expiresIn: "30d"
                 });
                 res.cookie('token',token);

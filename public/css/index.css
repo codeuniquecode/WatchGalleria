@@ -52,6 +52,26 @@
 .badge{
     display: none;
 }
+/* dropdown and users */
+.users:hover , .dropdown-item:hover{
+    color:  rgba(42, 180, 244, 255) !important;
+    cursor: pointer;
+}
+.users{
+    font-weight: bolder;
+}
+.dropdown-item{
+    color:var(--text-color) !important;
+
+}
+.dropdown-toggle:focus {
+    outline: none; /* Remove default outline */
+    box-shadow: none; /* Remove box shadow */
+}
+
+.dropdown-toggle {
+    border: none; /* Remove border from button */
+}
 
 .custom-text{
      color: #DCAB27;
