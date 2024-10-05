@@ -9,9 +9,12 @@ const storage = require('./middleware/multerConfig').storage;
 const upload = multer({storage: storage});
 // const dbConfig = require('./config/dbConfig');
 // const {user} = dbConfig;
+const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(express.urlencoded({extended:true})); 
+app.use(cookieParser());
 // app.use(express.json());
 
 require("./model/index");
@@ -19,7 +22,7 @@ require("./model/index");
 // routing
 const userRoutes = require('./routes/userRoutes');
 const vendorRoutes = require('./routes/vendorRoutes');
-const loginRoutes = require('./routes/loginRoutes')
+const loginRoutes = require('./routes/loginRoutes');
 // Use userRoutes on the root path
 app.use('/', userRoutes);
 

@@ -31,7 +31,7 @@ db.sequelize = sequelize
 db.user = makeUserTable(sequelize,DataTypes);
 db.vendor = makeVendorTable(sequelize,DataTypes);
 db.category = makeCategoryTable(sequelize,DataTypes);
-db.sequelize.sync({alter:true}).then(()=>{
+db.sequelize.sync({force:false}).then(()=>{
     console.log('sync done');
 })
 module.exports = db;
