@@ -46,3 +46,6 @@ exports.logout= (req,res)=>{
     res.clearCookie('token');
     res.redirect('/');
 }
+exports.editProfile= (req,res)=>{
+    res.render('userEditProfile');
+}

@@ -31,6 +31,8 @@ app.use((req, res, next) => {
             res.locals.currentUser = decryptedResult; // Store full token data
             res.locals.userName = decryptedResult.name; // Specifically store the userName
         } catch (err) {
+            res.locals.currentUser = null;  // Set to null in case of error
+            res.locals.userName = null;
             console.error('Error verifying token:', err);
         }
     } else {
@@ -46,7 +48,6 @@ app.use((req, res, next) => {
     
 //     next();
 // });
-
 
 // routing
 const userRoutes = require('./routes/userRoutes');

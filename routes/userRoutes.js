@@ -11,6 +11,7 @@ router.get('/signup',userController.signup);
 router.get('/forget',isAuthenticated,userController.forget);
 router.get('/admin',isAuthenticated,userController.adminDashboard);
 router.get('/logout',userController.logout);
+router.get('/editProfile',userController.editProfile);
 // POST
 router.post('/register',userController.register);
 
