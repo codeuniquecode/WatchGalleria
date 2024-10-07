@@ -53,17 +53,17 @@
     <main>
         <div class="container text-center mt-5">
             <h4>Edit Profile</h4>
-            <form enctype="multipart/form-data" id="userForm">
+            <form enctype="multipart/form-data" id="userForm" method="post" action="/updateProfile">
                 <div class="row">
                     <div class="mb-3 text-center col-sm-12 col-md-6">
                         <label for="name" class="form-label">Name</label>
                         <input type="text" class="form-control w-75 text-center mx-auto" id="name"
-                            aria-describedby="nameHelp" required>
+                            aria-describedby="nameHelp" name="name" required value="<%-userData.username%>">
                         
                     </div>
                     <div class="mb-3 text-center col-md-6 col-sm-12">
                         <label for="phone" class="form-label">Phone No.</label>
-                        <input type="text" class="form-control w-75 text-center mx-auto" id="phone" aria-describedby="phoneHelp" required>
+                        <input type="text" class="form-control w-75 text-center mx-auto" name="phone" value="<%-userData.phonenumber%>" id="phone" aria-describedby="phoneHelp" required>
                         
                     </div>
                 </div>
@@ -71,13 +71,13 @@
                 <div class="row">
                     <div class="mb-3 text-center col-sm-12 col-md-6">
                         <label for="exampleInputEmail1" class="form-label">Email </label>
-                        <input type="email" class="form-control w-75 text-center mx-auto" id="exampleInputEmail1"
-                            aria-describedby="emailHelp" required>
+                        <input type="email" name="email" class="form-control w-75 text-center mx-auto" id="exampleInputEmail1"
+                            aria-describedby="emailHelp" value="<%-userData.email%>" required>
                     </div>
                     <div class="mb-3 text-center col-md-6 col-sm-12 mx-auto">
                         <label for="photo" class="form-label">Profile picture</label> <br>
                         <div class="pic text-center">
-                          <input type="file" name="photo" class="pic" accept=".jpg, .jpeg, .png" required>
+                          <input type="file" name="photo" class="pic" accept=".jpg, .jpeg, .png">
                         </div>
                       </div>
                 </div>
@@ -85,7 +85,7 @@
                 <div class="row">
                     <div class="mb-3 text-center col-md-6 col-sm-12">
                         <label for="address" class="form-label">Address</label>
-                        <input type="text" class="form-control w-75 text-center mx-auto" id="address" required>
+                        <input type="text" name="address" class="form-control w-75 text-center mx-auto" value="<%-userData.address%>" id="address" required>
                         <div id="addresserr" class="form-text">Add landmark at last if possible for ease in delivery.</div>
                     </div>
                    

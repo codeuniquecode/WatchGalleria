@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
-const { user } = require('../model');
+const { user, vendor } = require('../model'); // Assuming you're also importing vendor
 
 exports.isAuthenticated = async (req, res, next) => {
     try {
@@ -9,37 +9,37 @@ exports.isAuthenticated = async (req, res, next) => {
         // Check if token is provided
         if (!token) {
             const message1 = 'Please Login!!!';
-            return res.render('login',{message1});
-            
+            return res.render('login', { message1 });
         }
 
         // Verify the token
         const decryptedResult = await promisify(jwt.verify)(token, process.env.SECRET_KEY);
 
         // Check if the user exists in the database
-        const userExist = await user.findAll({
+        const userExist = await user.findOne({
             where: {
                 userId: decryptedResult.id
             }
         });
-        if(!userExist){
-            const vendorExist = await vendor.findAll({
-                where:{
+
+        // If user does not exist, check if vendor exists
+        let vendorExist = null;
+        if (!userExist) {
+            vendorExist = await vendor.findOne({
+                where: {
                     vendorId: decryptedResult.id
                 }
-
-            })
+            });
         }
-        
-        // Handle case where user does not exist
-          // If neither user nor vendor exists
-        if (!vendorExist) {
+
+        // Handle case where neither user nor vendor exists
+        if (!userExist && !vendorExist) {
             return res.status(404).send('User or Vendor does not exist');
         }
-        
-        // Store the user ID in the request for future use
-        req.user = decryptedResult.id;
-        
+
+        // Store the user ID (or vendor ID) in the request for future use
+        req.user = decryptedResult.id; // If user exists, this will be the user ID
+
         next();
 
     } catch (err) {

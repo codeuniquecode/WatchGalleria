@@ -9,9 +9,13 @@ const storage = require('./middleware/multerConfig').storage;
 const upload = multer({storage: storage});
 // const dbConfig = require('./config/dbConfig');
 // const {user} = dbConfig;
+
+const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
+
 const cookieParser = require('cookie-parser');
 app.set('view engine', 'ejs');
+
 app.use(express.static('public'));
 app.use(express.urlencoded({extended:true})); 
 app.use(cookieParser());
@@ -19,13 +23,13 @@ app.use(cookieParser());
 require("./model/index");
 
 // Middleware to decrypt token and set current user information in locals
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
     const token = req.cookies.token;
 
     if (token) {
         try {
             // Decrypt the token
-            const decryptedResult = jwt.verify(token, process.env.SECRET_KEY);
+            const decryptedResult = await promisify(jwt.verify)(token, process.env.SECRET_KEY);
 
             // Store the decrypted token content in res.locals
             res.locals.currentUser = decryptedResult; // Store full token data
