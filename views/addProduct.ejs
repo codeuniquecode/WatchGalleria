@@ -11,12 +11,24 @@
     <link rel="icon" href="/images/logo.png" type="website icon">
     <!-- <link rel="stylesheet" href="index.css"> -->
     <style>
-        *{
+        * {
             margin: 0;
             padding: 0;
         }
+
         .container-fluid {
             margin-top: 5%;
+
+        }
+
+        .main-body {
+            padding-left: 190px;
+        }
+
+        @media screen and (max-width:991px) {
+            .main-body {
+                padding-left: 0px;
+            }
         }
 
         .last {
@@ -36,21 +48,30 @@
         body {
             font-weight: bold;
         }
+
         @media screen and (max-width:460px) {
-            .btn-upload, .btn-reset{
+
+            .btn-upload,
+            .btn-reset {
                 width: 60% !important;
                 margin: 0.5rem !important;
             }
-        
+
             /* .pic{
                 margin-left:2rem !important;
             }
              */
         }
+
         @media screen and (max-width:768px) {
-            .pic{
+            .pic {
                 margin: auto !important;
             }
+        }
+
+        .active {
+            font-weight: bolder;
+            color: #DCAB27;
         }
     </style>
 
@@ -60,72 +81,91 @@
 
     <main>
         <!-- product name, description, price,quantity, category,image, vendorid and submit button   -->
-        <div class="container-fluid">
-            <h2 class="form-title text-center">Add New Product</h2>
-            <p class="form-description text-center">Please fill out the details below to add a new product to the
-                inventory.</p>
-            <hr>
-            <form enctype="multipart/form-data" action="" method="post">
-                <div class="row">
-                    <div class="mb-3 text-center col-sm-12 col-md-6">
-                        <label for="productname" class="form-label">Product Name</label>
-                        <input type="text" name="productname" class="form-control w-75 text-center mx-auto" id="name"
-                            aria-describedby="nameHelp" required>
+        <%- include('sidebar') %>
 
-                    </div>
-                    <div class="mb-3 text-center col-md-6 col-sm-12">
-                        <label for="description" class="form-label">Description</label>
-                        <textarea name="description" rows="1" class="form-control w-75 text-center mx-auto"
-                            id=""></textarea>
-                    </div>
-                </div>
-                <!-- row1sakyo -->
-                <div class="row">
-                    <div class="mb-3 text-center col-sm-12 col-md-6">
-                        <label for="price" class="form-label">Price</label>
-                        <input type="number" name="price" class="form-control w-75 text-center mx-auto"
-                            id="exampleInputEmail1" aria-describedby="emailHelp" required>
-                    </div>
-                    <div class="mb-3 text-center col-md-6 col-sm-12">
-                        <label for="quantity" class="form-label">Quantity</label>
-                        <input type="number" name="quantity" class="form-control w-75 text-center mx-auto"
-                            id="exampleInputPassword1" required>
-                        <div id="passwordHelpBox" class="form-text"> </div>
-                    </div>
-                </div>
-                <!-- row2sakyo -->
-                <div class="row">
-                    <div class="mb-3 text-center col-md-6 col-sm-12">
-                        <label for="categories" class="form-label">Select Category</label>
-                        <select name="categories" class="form-select w-75 text-center mx-auto"
-                            aria-label="Default select example">
+            <div class="container-fluid main-body">
+                <h2 class="form-title text-center">Add New Product</h2>
+                <p class="form-description text-center">Please fill out the details below to add a new product to the
+                    inventory.</p>
+                    <p class="fs-5">
+                        <% if (typeof message !== 'undefined' && message) { %>
+                            <div class="alert alert-success d-flex align-items-center fade show" role="alert">
+                                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+                                <div>
+                                 <%- message %>
+                                </div>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                              </div>
+                        <% } %>
+                    </p>
+                    
+                    
+                    
+                    
+                    
+                <hr>
+                <form enctype="multipart/form-data" action="/vendor/addProduct" method="post">
+                    <div class="row">
+                        <div class="mb-3 text-center col-sm-12 col-md-6">
+                            <label for="productname" class="form-label">Product Name</label>
+                            <input type="text" name="productname" class="form-control w-75 text-center mx-auto"
+                                id="name" aria-describedby="nameHelp" required>
 
-                            <option value="1">Mens</option>
-                            <option value="2">Womens</option>
-                            <option value="3">Smart</option>
-                            <option value="3">Luxury</option>
-                        </select>
-                    </div>
-                    <div class="mb-3 text-center col-md-6 col-sm-12 mx-auto">
-                        <label for="product_photo" class="form-label">Upload product picture</label> <br>
-                        <div class="pic text-center">
-                            <input type="file" name="product_photo" class="d-block pic text-center" accept=".jpg, .jpeg, .png"
-                                required>
+                        </div>
+                        <div class="mb-3 text-center col-md-6 col-sm-12">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea name="description" rows="1" class="form-control w-75 text-center mx-auto"
+                                id=""></textarea>
                         </div>
                     </div>
+                    <!-- row1sakyo -->
+                    <div class="row">
+                        <div class="mb-3 text-center col-sm-12 col-md-6">
+                            <label for="price" class="form-label">Price</label>
+                            <input type="number" name="price" class="form-control w-75 text-center mx-auto"
+                                id="exampleInputEmail1" aria-describedby="emailHelp" required>
+                        </div>
+                        <div class="mb-3 text-center col-md-6 col-sm-12">
+                            <label for="quantity" class="form-label">Quantity</label>
+                            <input type="number" name="quantity" class="form-control w-75 text-center mx-auto"
+                                id="exampleInputPassword1" required>
+                            <div id="passwordHelpBox" class="form-text"> </div>
+                        </div>
+                    </div>
+                    <!-- row2sakyo -->
+                    <div class="row">
+                        <div class="mb-3 text-center col-md-6 col-sm-12">
+                            <label for="categories" class="form-label">Select Category</label>
+                            <select name="categories" class="form-select w-75 text-center mx-auto"
+                                aria-label="Default select example">
 
-                </div>
-        </div>
-        <div class="last text-center mx-auto">
-            <button type="submit" class="btn btn-upload btn-primary w-25" id="submit">Add Product</button>
-            <button type="reset" class="btn btn-reset btn-primary w-25">Reset</button>
-        </div>
-        </form>
-        </div>
+                                <option value="1">Mens</option>
+                                <option value="2">Womens</option>
+                                <option value="3">Smart</option>
+                                <option value="4">Luxury</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 text-center col-md-6 col-sm-12 mx-auto">
+                            <label for="product_photo" class="form-label">Upload product picture</label> <br>
+                            <div class="pic d-flex justify-content-center align-items-center">
+                                <input type="file" name="product_photo" class="d-block pic text-center"
+                                    accept=".jpg, .jpeg, .png" required>
+                            </div>
+                        </div>
+
+                    </div>
+            </div>
+            <div class="last text-center mx-auto main-body">
+                <button type="submit" class="btn btn-upload btn-primary w-25" id="submit">Add Product</button>
+                <button type="reset" class="btn btn-reset btn-primary w-25">Reset</button>
+            </div>
+            </form>
+            </div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
+    <script src="/scripts/dashboard.js"></script>
 </body>
 
 </html>

@@ -1,5 +1,5 @@
 
-const {user,vendor, sequelize} = require('../model/index');
+const {user,vendor, sequelize, product} = require('../model/index');
 const multer = require('../middleware/multerConfig').multer;
 const storage = require('../middleware/multerConfig').storage;
 const upload = multer({ storage: storage });
@@ -52,5 +52,28 @@ exports.vendorDashboard = async (req,res)=>{
     if(vendorData.role !== 'vendor'){
         return res.send('Access Denied ! Login as a vendor to view this page');
     }
-    res.send('vendor dashboard here');
+    res.render('vendorDashboard',{vendorData});
 }
+exports.renderAddProduct = (req,res)=>{
+    res.render('addProduct');
+}
+exports.addProduct =[
+    upload.single('product_photo'),
+    async (req,res)=>{
+        const vendorId = req.user;
+        const {productname,price,description,quantity,categories} = req.body;
+        const add= await product.create({
+            vendorId,
+            productname,
+            price,
+            description,
+            productpicture:req.file.filename,
+            quantity,
+            categoryId :categories
+        });
+        if(!add){
+            return res.send('Product not added');
+        }
+        res.render('addProduct',{message:'Product added successfully'});
+    }
+]

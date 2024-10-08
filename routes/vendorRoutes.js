@@ -9,7 +9,8 @@ const { isAuthenticated } = require('../middleware/isAuthenticated');
 router.get('/forget', vendorController.forget);
 router.get('/vendorRegister', vendorController.showVendorRegister); // Use the renamed function
 router.get('/vendordashboard',isAuthenticated, vendorController.vendorDashboard);
+router.get('/addProduct',isAuthenticated, vendorController.renderAddProduct);
 // POST
 router.post('/vendorRegister', vendorController.vendorRegister);
-
+router.post('/addProduct',isAuthenticated, vendorController.addProduct);
 module.exports = router;
