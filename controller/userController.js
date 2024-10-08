@@ -41,7 +41,17 @@ exports.register = [
 ];
 
 //admin
-exports.adminDashboard = (req,res)=>{
+exports.adminDashboard = async (req,res)=>{
+    const userId = req.user;
+    const userData = await user.findOne({
+        where:{
+            userId
+        }
+    })
+    if(userData.role !== 'admin'){
+        return res.send('Access Denied ! You are not authorized to view this page');
+    }
+
     res.send('admin dashboard here');
 }
 exports.logout= (req,res)=>{

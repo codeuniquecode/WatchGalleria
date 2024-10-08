@@ -39,6 +39,18 @@ exports.vendorRegister = [
         }
     }
 ];
-exports.vendorDashboard = (req,res)=>{
+exports.vendorDashboard = async (req,res)=>{
+    const vendorId = req.user;
+    const vendorData = await vendor.findOne({
+        where:{
+            vendorId
+        }
+    })
+    if(!vendorData){
+        return res.send('Vendor does not exist');
+    }
+    if(vendorData.role !== 'vendor'){
+        return res.send('Access Denied ! Login as a vendor to view this page');
+    }
     res.send('vendor dashboard here');
 }

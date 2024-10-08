@@ -2,15 +2,13 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controller/userController');
 const { isAuthenticated } = require('../middleware/isAuthenticated');
-
 const multer = require('../middleware/multerConfig').multer;
-
 const storage = require('../middleware/multerConfig').storage;
 const upload = multer({storage: storage});
+
 // GET
 router.get('/',userController.home);
 router.get('/cs',userController.cs);
-// router.get('/login',userController.login);
 router.get('/signup',userController.signup);
 router.get('/forget',isAuthenticated,userController.forget);
 router.get('/admin',isAuthenticated,userController.adminDashboard);
