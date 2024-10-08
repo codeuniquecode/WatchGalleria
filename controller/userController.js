@@ -121,3 +121,34 @@ exports.updateProfile =async(req,res)=>{
     }
   
 }
+exports.renderChangePassword = (req,res)=>{
+    res.render('changepass.ejs');
+}
+exports.changePassword = async(req,res)=>{
+    const userId = req.user;
+    const {old_password,new_password} = req.body;
+    if(new_password.length<8){
+        return res.send('password must be atleast 8 characters long');
+    }
+    const userData = await user.findOne({
+        where:{
+            userId
+        }
+    })
+    const isMatch = bcrypt.compareSync(old_password,userData.password);
+    if(isMatch){
+        const update = await user.update({
+            password:bcrypt.hashSync(new_password,1)
+        },{
+            where:{
+                userId
+            }
+        });
+        if(update){
+            return res.redirect('/login');
+        }
+    }
+    else{
+        return res.send('old password doesnot match,please try again');
+    }
+}

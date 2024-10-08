@@ -16,8 +16,9 @@ router.get('/forget',isAuthenticated,userController.forget);
 router.get('/admin',isAuthenticated,userController.adminDashboard);
 router.get('/logout',userController.logout);
 router.get('/editProfile',isAuthenticated,userController.editProfile);
+router.get('/changePassword',isAuthenticated,userController.renderChangePassword);
 // POST
 router.post('/register',userController.register);// Route with file upload middleware
 router.post('/updateProfile', isAuthenticated, upload.single('photo'), userController.updateProfile);
-
+router.post('/changePassword', isAuthenticated, userController.changePassword);
 module.exports = router;

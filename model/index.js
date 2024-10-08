@@ -12,9 +12,9 @@ const {host} = dbConfig;
     port:3306,
     dialect :'mysql',
     pool:{
-        max:5,
+        max:10,
         min:0,
-        acquire:3000,
+        acquire:30000,
         idle:10000
     
     }

@@ -72,6 +72,12 @@
 .dropdown-toggle {
     border: none; /* Remove border from button */
 }
+@media (min-width: 992px) {
+    .dropdown-menu[data-bs-popper] {
+      
+        left: -55px; /* Adjusts horizontal alignment for large screens */
+    }
+}
 
 .custom-text{
      color: #DCAB27;
