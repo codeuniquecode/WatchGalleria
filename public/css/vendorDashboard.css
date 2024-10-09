@@ -21,14 +21,14 @@
 
 a{
     text-decoration: none;
-    color: rgba(42, 180, 244, 255);
+    color: rgba(42, 180, 244, 255) !important;
 }
 a:hover, .v_name{
-    color: #DCAB27;
+    color: #DCAB27 ;
 }
 .active{
-    font-weight: bolder;
-    color: #DCAB27;
+    font-weight: bolder !important;
+    color: #DCAB27 !important;
 }
 .custom-border{
     border-right: 2px solid rgba(42, 180, 244, 255);
