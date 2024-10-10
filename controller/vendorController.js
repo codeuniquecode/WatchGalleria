@@ -4,7 +4,8 @@ const multer = require('../middleware/multerConfig').multer;
 const storage = require('../middleware/multerConfig').storage;
 const upload = multer({ storage: storage });
 const bcrypt = require('bcrypt');
-const fs = require('fs');;
+const fs = require('fs');
+const { Op } = require('sequelize');
 exports.login = (req, res) => {
     res.render('login');
 }
@@ -44,15 +45,23 @@ exports.vendorDashboard = async (req,res)=>{
     const vendorData = await vendor.findOne({
         where:{
             vendorId
+        },
+        include:{
+            model:product
         }
     })
+    const productCount = await product.count({
+        where: {
+            vendorId
+        }
+    });
     if(!vendorData){
         return res.send('Vendor does not exist');
     }
     if(vendorData.role !== 'vendor'){
         return res.send('Access Denied ! Login as a vendor to view this page');
     }
-    res.render('vendorDashboard',{vendorData});
+    res.render('vendorDashboard',{vendorData,productCount});
 }
 exports.renderAddProduct = (req,res)=>{
     res.render('addProduct');
@@ -218,3 +227,39 @@ exports.updateProduct = [
         res.redirect('/vendor/vendordashboard');
     }
 ]
+exports.deleteProduct = async(req,res)=>{
+    const productId = req.params.id;
+    const productData = await product.findOne({
+        where:{
+            productId
+        }
+    });
+    if(!productData){
+        return res.send('Product does not exist');
+    }
+    const deleteProduct = await product.destroy({
+        where:{
+            productId
+        }
+    });
+    if(!deleteProduct){
+        return res.send('Product not deleted');
+    }
+    res.redirect('/vendor/vendordashboard');
+}
+exports.searchProduct = async(req,res)=>{
+    const vendorId = req.user;
+    const {search} = req.body;
+    const productData = await product.findAll({
+        where:{
+            vendorId,
+            productname:{
+                [Op.like]:'%'+search+'%'
+            }
+        }
+    });
+    if(!productData){
+        return res.send('Product not found');
+    }
+    res.render('viewProduct',{products:productData});
+}

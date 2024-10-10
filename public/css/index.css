@@ -274,6 +274,11 @@
         width: 42px;
     }
   }
+  @media (max-width:375px) { 
+    ol,ul{
+        padding-left: 0rem;
+    }
+  }
   @media (min-width: 992px) and (max-width: 1065px) {
     .navbar-collapse{
         margin-left: -1.6rem;
@@ -440,6 +445,7 @@
     justify-content: center;
     align-items: center;
     overflow: hidden; /* Ensures that the image does not overflow */
+    cursor:  pointer !important;
 }
 
 .watches > img {
@@ -666,3 +672,5 @@ a{
     animation: fadeLeft 0.6s ease-out forwards;
     animation-delay: 0.5s; /* Optional delay */
   }
+    /* animation ends */
+    

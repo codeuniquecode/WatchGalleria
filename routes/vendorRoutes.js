@@ -15,10 +15,13 @@ router.get('/logout', vendorController.logout);
 router.get('/changePassword',isAuthenticated, vendorController.renderChangePassword);
 router.get('/viewProduct',isAuthenticated, vendorController.viewProduct);
 router.get('/editProduct/:id',isAuthenticated, vendorController.editProduct);
+router.get('/deleteProduct/:id',isAuthenticated, vendorController.deleteProduct);
+
 // POST
 router.post('/vendorRegister', vendorController.vendorRegister);
 router.post('/addProduct',isAuthenticated, vendorController.addProduct);
 router.post('/editVendor',isAuthenticated, vendorController.editProfile);
 router.post('/vendorChangePassword',isAuthenticated, vendorController.changePassword);
 router.post('/updateProduct/:id',isAuthenticated, vendorController.updateProduct);
+router.post('/search',isAuthenticated, vendorController.searchProduct);
 module.exports = router;
