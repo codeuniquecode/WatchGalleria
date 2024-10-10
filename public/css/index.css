@@ -438,13 +438,13 @@
     justify-content: center;
     align-items: flex-start;
 }
-.watches {
+/* .watches {
     width: 100%;
-    height: 20rem; /* Set a fixed height */
+    height: 20rem; 
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden; /* Ensures that the image does not overflow */
+    overflow: hidden;
     cursor:  pointer !important;
 }
 
@@ -452,6 +452,28 @@
     width: 100%;
     height: 100%;
     object-fit:contain;
+} */
+.watches > a {
+    display: flex; /* Make the anchor a flex container */
+    justify-content: center; /* Center the image */
+    align-items: center; /* Center the image vertically */
+    height: 100%; /* Ensure anchor takes full height of .watches */
+}
+
+.watches > a > img {
+    width: 100%; /* Maintain full width of the parent */
+    height: 100%; /* Maintain aspect ratio */
+    object-fit: contain !important; /* Ensure the image fits within the box without distortion */
+}
+
+.watches {
+    width: 100%;
+    height: 20rem; /* Set a fixed height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden !important; /* Ensures that the image does not overflow */
+    cursor: pointer !important;
 }
 
 .watch-text{
