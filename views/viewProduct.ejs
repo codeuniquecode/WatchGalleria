@@ -18,7 +18,7 @@
         <div class="container-fluid">
           <!-- Logo at the start -->
           <a class="navbar-brand" href="#">
-            <img src="logo.png" alt="Logo" width="60" height="60" class="d-inline-block align-text-top">
+            <img src="/images/logo.png" alt="Logo" width="60" height="60" class="d-inline-block align-text-top">
           </a>
           
           <!-- Toggler for mobile view -->
@@ -40,7 +40,18 @@
           </div>
         </div>
       </nav>
-      
+       <!-- successful message -->
+       <p class="fs-5">
+        <% if (typeof message !== 'undefined' && message) { %>
+            <div class="alert alert-success d-flex align-items-center fade show" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+                <div>
+                 <%- message %>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+        <% } %>
+    </p>
     <main class="container">
         <table class="table">
             <thead>
@@ -53,40 +64,28 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Huwaei Ultimate</td>
-                <td>90000</td>
-                <td>10</td>
-                <td>
-                    <button type="button" class="btn btn-primary"><a href="" type="button" class="btn-small text-light">
-                    <i class="fa-solid fa-pencil"></i> Edit
-                  </a></button>
-                
-
-                  <button type="button" class="btn btn-danger"><a href="" type="button" class="btn-small text-light">
-                    <i class="fa-solid fa-trash-can"></i> Delete
-                  </a></button>
-                  
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">1</th>
-                <td>Huwaei Ultimate</td>
-                <td>90000</td>
-                <td>10</td>
-                <td>
-                    <button type="button" class="btn btn-primary"><a href="" type="button" class="btn-small text-light">
-                    <i class="fa-solid fa-pencil"></i> Edit
-                  </a></button>
-                
-
-                  <button type="button" class="btn btn-danger"><a href="" type="button" class="btn-small text-light">
-                    <i class="fa-solid fa-trash-can"></i> Delete
-                  </a></button>
-                  
-                </td>
-              </tr>
+              <%if(products.length>0){%>
+                <% products.forEach(product=>{%>
+                  <tr>
+                    <th scope="row"><%=product.productId%></th>
+                    <td><%=product.productname%></td>
+                    <td><%=product.price%></td>
+                    <td><%=product.quantity%></td>
+                    <td>
+                      <button type="button" class="btn btn-primary"><a href="/vendor/editProduct/<%=product.productId%>" type="button" class="btn-small text-light">
+                        <i class="fa-solid fa-pencil"></i> Edit
+                      </a></button>
+                      <button type="button" class="btn btn-danger"><a href="/vendor/deleteProduct/<%=product.productId%>" type="button" class="btn-small text-light">
+                        <i class="fa-solid fa-trash-can"></i> Delete
+                      </a></button>
+                    </td>
+                  </tr>
+                <%})%>
+              <%}else{%>
+                <tr>
+                  <td colspan="5" class="text-center">No products found</td>
+                </tr>
+              <%}%>
             </tbody>
           </table>
     </main>

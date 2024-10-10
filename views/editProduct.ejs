@@ -56,18 +56,18 @@
             <h2 class="form-title text-center">Update Product</h2>
             <p class="form-description text-center">Update the product details if required, leave if not</p>
             <hr>
-            <form enctype="multipart/form-data" action="" method="post">
+            <form enctype="multipart/form-data" action="/vendor/updateProduct/<%=productData.productId%>" method="post">
                 <div class="row">
                     <div class="mb-3 text-center col-sm-12 col-md-6">
                         <label for="productname" class="form-label">Edit Product Name</label>
                         <input type="text" name="productname" class="form-control w-75 text-center mx-auto" id="name"
-                            aria-describedby="nameHelp" required>
+                            aria-describedby="nameHelp" value="<%- productData.productname %>" required>
 
                     </div>
                     <div class="mb-3 text-center col-md-6 col-sm-12">
                         <label for="description" class="form-label">Edit Description</label>
                         <textarea name="description" rows="1" class="form-control w-75 text-center mx-auto"
-                            id=""></textarea>
+                            id=""><%- productData.productname %></textarea>
                     </div>
                 </div>
                 <!-- row1sakyo -->
@@ -75,12 +75,12 @@
                     <div class="mb-3 text-center col-sm-12 col-md-6">
                         <label for="price" class="form-label">Edit Price</label>
                         <input type="number" name="price" class="form-control w-75 text-center mx-auto"
-                            id="exampleInputEmail1" aria-describedby="emailHelp" required>
+                            id="exampleInputEmail1" aria-describedby="emailHelp" value="<%- productData.price %>" required>
                     </div>
                     <div class="mb-3 text-center col-md-6 col-sm-12">
                         <label for="quantity" class="form-label">Edit Quantity</label>
                         <input type="number" name="quantity" class="form-control w-75 text-center mx-auto"
-                            id="exampleInputPassword1" required>
+                            id="exampleInputPassword1" value="<%- productData.quantity %>" required>
                         <div id="passwordHelpBox" class="form-text"> </div>
                     </div>
                 </div>
@@ -88,7 +88,7 @@
                 <div class="row">
                     <div class="mb-3 text-center col-md-6 col-sm-12">
                         <label for="categories" class="form-label">Select Category</label>
-                        <select name="categories" class="form-select w-75 text-center mx-auto"
+                        <select name="categories" value="<%- productData.category %>" class="form-select w-75 text-center mx-auto"
                             aria-label="Default select example">
 
                             <option value="1">Mens</option>
@@ -101,7 +101,7 @@
                         <label for="product_photo" class="form-label">Upload new product picture</label> <br>
                         <div class="pic text-center">
                             <input type="file" name="product_photo" class="d-block mx-auto" accept=".jpg, .jpeg, .png"
-                                required>
+                                >
                         </div>
                     </div>
 

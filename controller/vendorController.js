@@ -4,7 +4,7 @@ const multer = require('../middleware/multerConfig').multer;
 const storage = require('../middleware/multerConfig').storage;
 const upload = multer({ storage: storage });
 const bcrypt = require('bcrypt');
-
+const fs = require('fs');;
 exports.login = (req, res) => {
     res.render('login');
 }
@@ -135,3 +135,86 @@ exports.changePassword = async(req,res)=>{
         return res.send('old password doesnot match,please try again');
     }
 }
+exports.viewProduct = async(req,res)=>{
+    const vendorId = req.user;
+    const vendorData = await vendor.findOne({
+        where:{
+            vendorId
+        },
+        include:{
+            model:product
+        }
+    })
+    if(!vendorData){
+        return res.send('Vendor does not exist');
+    }
+    if(vendorData.role !== 'vendor'){
+        return res.send('Access Denied ! Login as a vendor to view this page');
+    }
+    const productData = await product.findAll({
+        where:{
+            vendorId
+        }
+    });
+    if(!productData){
+        return res.send('No products found');
+    }
+    res.render('viewProduct',{products: vendorData.products});
+}
+exports.editProduct= async(req,res)=>{
+    const productId = req.params.id;
+    const productData = await product.findOne({
+        where:{
+            productId
+        }
+    });
+    if(!productData){
+        return res.send('Product does not exist');
+    }
+    res.render('editProduct',{productData});
+}
+exports.updateProduct = [
+    upload.single('product_photo'),
+    async(req,res)=>{
+        const productId = req.params.id;
+        const {productname,price,description,quantity,categories} = req.body;
+        const oldData = await product.findAll({
+            where:{
+                productId
+            }
+        })
+        var fileUrl;
+        if(req.file){
+            fileUrl = req.file.filename
+            const oldImage =  oldData[0].productpicture;
+            //purano file delete garne
+            fs.unlink('storage/'+oldImage ,(err)=>{
+                if(err){
+                    console.log('error happened');
+                }
+                else{
+                    console.log('deleted successfully');
+                }
+            })
+        }
+        else{
+            fileUrl = oldData[0].productpicture
+        }
+        const update = await product.update({
+            productname,
+            price,
+            description,
+            productpicture:fileUrl,
+            quantity,
+            categoryId :categories
+        },{
+            where:{
+                productId
+            }
+        });
+        if(!update){
+            return res.send('Product not updated');
+        }
+        res.redirect('/vendor/vendordashboard');
+    }
+]
