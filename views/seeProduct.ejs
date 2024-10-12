@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product | WatchGalleria</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/2c8d038c04.js" crossorigin="anonymous"></script>
+    <style>
+        .btn {
+            background-color: #DCAB27;
+            border: none;
+        }
+
+        .btn:hover {
+            background-color: rgba(42, 180, 244, 255);
+            transition: 0.3s;
+        }
+
+        .left-image img {
+            width: 100%;
+            height: auto;
+            
+            max-height: 400px;
+           
+            object-fit: contain;
+        }
+
+
+        .left-image img:hover {
+            transform: scale(1.2);
+            transition: 0.3s;
+        }
+
+        .description {
+            text-align: justify;
+        }
+    </style>
+</head>
+
+<body>
+    
+        <!-- Navbar -->
+        <%- include ('navbar2.ejs') %>
+    <main>
+        <div class="container mt-lg-5 mt-md-3 mt-sm-1">
+            <div class="row">
+                <div class="left-image col-lg-6 col-md-6 col-sm-12 text-center">
+                    <img class="img-fluid " src="/images/luxury/huwaei-watch-ultimate.jpg" alt="Huwaei Watch Ultimate">
+                </div>
+                <div class="right-description col-lg-6 col-md-6 col-sm-12 text-start">
+                    <p class="fs-2 fw-bold">Product Name</p>
+                    <p class="fs-5 fw-bold">Price: Rs. 99000/-</p>
+                    <p class="fs-5 description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed quis
+                        asperiores debitis nemo. Voluptates dicta et eveniet consequatur labore consectetur non
+                        possimus, quibusdam, doloremque nam vitae expedita deleniti porro laborum.</p>
+                    <button class="btn btn-primary"><i class="fa-solid fa-cart-shopping"></i> Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
