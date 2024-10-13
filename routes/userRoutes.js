@@ -15,6 +15,10 @@ router.get('/admin',isAuthenticated,userController.adminDashboard);
 router.get('/logout',userController.logout);
 router.get('/editProfile',isAuthenticated,userController.editProfile);
 router.get('/changePassword',isAuthenticated,userController.renderChangePassword);
+
+
+//GET-- see products
+router.get('/men',userController.renderMen);
 // POST
 router.post('/register',userController.register);// Route with file upload middleware
 router.post('/updateProfile', isAuthenticated, upload.single('photo'), userController.updateProfile);

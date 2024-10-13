@@ -1,5 +1,5 @@
 
-const {user,vendor, sequelize} = require('../model/index');
+const {user,vendor, sequelize, category, product} = require('../model/index');
 const multer = require('../middleware/multerConfig').multer;
 const jwt = require('jsonwebtoken');
 const storage = require('../middleware/multerConfig').storage;
@@ -162,3 +162,25 @@ exports.changePassword = async(req,res)=>{
         return res.send('old password doesnot match,please try again');
     }
 }
+//see products
+exports.renderMen = async (req, res) => {
+    try {
+        const data = await product.findAll({
+            include: {
+                model: category,
+                where: {
+                    categoryName: 'Mens' // Filter using the category model
+                }
+            }
+        });
+
+        if (!data || data.length === 0) {
+            return res.send('No products found');
+        }
+
+        res.render('product.ejs', { data });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server error');
+    }
+};

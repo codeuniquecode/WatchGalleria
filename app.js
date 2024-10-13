@@ -17,6 +17,8 @@ const cookieParser = require('cookie-parser');
 app.set('view engine', 'ejs');
 
 app.use(express.static('public'));
+app.use(express.static('storage'));
+
 app.use(express.urlencoded({extended:true})); 
 app.use(cookieParser());
 // app.use(express.json());
