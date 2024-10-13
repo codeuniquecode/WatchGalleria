@@ -184,3 +184,66 @@ exports.renderMen = async (req, res) => {
         res.status(500).send('Server error');
     }
 };
+exports.renderWomen = async (req, res) => {
+    try {
+        const data = await product.findAll({
+            include: {
+                model: category,
+                where: {
+                    categoryName: 'Womens' // Filter using the category model
+                }
+            }
+        });
+
+        if (!data || data.length === 0) {
+            return res.send('No products found');
+        }
+
+        res.render('product.ejs', { data });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server error');
+    }
+};
+exports.renderSmart = async (req, res) => {
+    try {
+        const data = await product.findAll({
+            include: {
+                model: category,
+                where: {
+                    categoryName: 'Sports' // Filter using the category model
+                }
+            }
+        });
+
+        if (!data || data.length === 0) {
+            return res.send('No products found');
+        }
+
+        res.render('product.ejs', { data });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server error');
+    }
+};
+exports.renderLuxury = async (req, res) => {
+    try {
+        const data = await product.findAll({
+            include: {
+                model: category,
+                where: {
+                    categoryName: 'Luxury' // Filter using the category model
+                }
+            }
+        });
+
+        if (!data || data.length === 0) {
+            return res.send('No products found');
+        }
+
+        res.render('product.ejs', { data });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server error');
+    }
+};

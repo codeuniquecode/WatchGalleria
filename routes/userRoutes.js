@@ -19,6 +19,9 @@ router.get('/changePassword',isAuthenticated,userController.renderChangePassword
 
 //GET-- see products
 router.get('/men',userController.renderMen);
+router.get('/women',userController.renderWomen);
+router.get('/smart',userController.renderSmart);
+router.get('/luxury',userController.renderLuxury);
 // POST
 router.post('/register',userController.register);// Route with file upload middleware
 router.post('/updateProfile', isAuthenticated, upload.single('photo'), userController.updateProfile);
