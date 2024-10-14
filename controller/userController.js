@@ -247,3 +247,15 @@ exports.renderLuxury = async (req, res) => {
         res.status(500).send('Server error');
     }
 };
+exports.seeProduct = async (req, res) => {
+    const productId = req.params.id;
+    const data = await product.findOne({
+        where: {
+            productId
+        }
+    });
+    if(!data){
+        return res.send('Product not found');
+    }
+    res.render('seeProduct.ejs', { data });
+}

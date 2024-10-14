@@ -56,12 +56,12 @@
         <div class="row">
             <% data.forEach(function(product) { %> <!-- Loop through each product -->
                 <div class="card col-lg-3 col-md-4 col-sm-6 mb-3">
-                    <a href="">
+                    <a href="/seeProduct/<%=product.productId %>">
                         <img src="http://localhost:3000/<%=product.productpicture %>" class="card-img-top" alt="<%= product.productname %>">
                     </a>
                     <div class="card-body text-center">
                         <h5 class="card-title productname">
-                            <a href="" class="productname"><%= product.productname %></a> <!-- Product name -->
+                            <a href="/seeProduct/<%=product.productId %>" class="productname"><%= product.productname %></a> <!-- Product name -->
                         </h5>
                         <p class="card-text text-center fw-bold">Rs. <%= product.price %>/-</p> <!-- Product price -->
                         <div class="text-center">
