@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart | WatchGalleria</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://kit.fontawesome.com/2c8d038c04.js" crossorigin="anonymous"></script>
+<link rel="icon" href="/images/logo.png" type="website icon">
+<link rel="stylesheet" href="/css/index.css">
+<style>
+    .table img{
+        width: 100px;
+        max-height: 100px !important;
+    }
+    td{
+        vertical-align: middle;
+    }
+    
+    #quantity{
+    
+        border: none;
+        width: 1.8rem;
+        text-align: center !important;
+    }
+    .counter{
+        flex-wrap: nowrap !important;
+    }
+    .counter button{
+        background-color: white;
+        border: none;
+    }
+    .counter button:hover{
+        background-color: white;
+        color: black;
+    }
+    .quant{
+        min-width: 2rem !important;
+        background-color: white !important;
+    }
+
+
+    .change{
+        background-color: white;
+        border: none;
+    }
+    @media screen and (max-width: 468px){
+        .table img{
+            width: 50px;
+            max-height: 50px !important;
+            min-height: 40px !important;
+        }
+        
+    }
+    
+   
+</style>
+</head>
+<body>
+      <!-- Navbar -->
+      <%- include ('navbar2.ejs') %>
+    <main class="mt-lg-5 mt-md-3 mt-sm-1">
+        <table class="table container text-center">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Total</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <img src="/images/luxury/huwaei-watch-ultimate.jpg" alt="" class="img-fluid">
+                </td>
+                <td>Huwaei Watch Ulimate</td>
+                <td id="price">90000</td>
+                <td class="counter text-center">
+                    <div class="input-group counter text-center" >
+                        <button class="btn btn-outline-secondary" type="button" onclick="decreaseQuantity()">-</button>
+                        <input type="text" class="form-control text-center quant" id="quantity" value="1"  min="1" max="5" readonly>
+                        <button class="btn btn-outline-secondary" type="button" onclick="increaseQuantity()">+</button>
+                      </div>
+                      
+                </td>
+                <td id="total">90000</td>
+                <td> <button class="btn btn-danger"><i class="fa-solid fa-trash"></i></button> </td>
+              </tr>
+              
+            </tbody>
+          </table>
+            <div class="container text-center">
+                <button class="btn btn-primary" onclick="goBack()"> <i class="fa-solid fa-cart-shopping "></i> Continue Shopping</button>
+                <button class="btn btn-primary"><i class="fa-regular fa-credit-card"></i> Checkout</button>
+            </div>
+
+    </main>
+    <script>
+        function goBack() {
+          history.back();
+        }
+        let quantity = 1;
+        const price = document.getElementById("price").textContent;
+        const totalElement = document.getElementById("total");
+  const quantityElement = document.getElementById("quantity");
+
+  function updateTotal() {
+    const total = price * quantity;
+    totalElement.textContent = total;
+  }
+
+  function increaseQuantity() {
+    quantity++;
+    quantityElement.value = quantity;
+    updateTotal();
+  }
+
+  function decreaseQuantity() {
+    if (quantity > 1) {
+      quantity--;
+      quantityElement.value = quantity;
+      updateTotal();
+    }
+  }
+      </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+</body>
+</html>

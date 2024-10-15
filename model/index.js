@@ -78,7 +78,7 @@ db.user.hasOne(db.cart, {
   });
 
   
-db.sequelize.sync({alter:true}).then(()=>{
+db.sequelize.sync({force:false}).then(()=>{
     console.log('sync done');
 })
 module.exports = db;
