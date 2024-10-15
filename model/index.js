@@ -4,6 +4,8 @@ const makeUserTable = require('./userModel');
 const makeVendorTable = require('./vendorModel');
 const makeCategoryTable = require('./categoryModel');
 const makeProductTable = require('./productModel');
+const makeCartTable = require('./cartModel');
+const { makeCartItemTable } = require('./cartItemModel');
 
 const {host} = dbConfig;
 
@@ -33,7 +35,8 @@ db.user = makeUserTable(sequelize,DataTypes);
 db.vendor = makeVendorTable(sequelize,DataTypes);
 db.category = makeCategoryTable(sequelize,DataTypes);
 db.product = makeProductTable(sequelize,DataTypes);
-
+db.cart = makeCartTable(sequelize,DataTypes);
+db.cartItem = makeCartItemTable(sequelize,DataTypes);
 // Vendor-Product relationship
 db.vendor.hasMany(db.product, {
     foreignKey: 'vendorId' // Specify the foreign key name
@@ -49,8 +52,33 @@ db.vendor.hasMany(db.product, {
   db.product.belongsTo(db.category, {
     foreignKey: 'categoryId' 
   });
+
+  // User-Cart relationship
+db.user.hasOne(db.cart, {
+    foreignKey: 'userId' 
+  });
+  db.cart.belongsTo(db.user, {  
+    foreignKey: 'userId' 
+  });
+
+  // Cart-cartItem relationship
+  db.cart.hasMany(db.cartItem, {
+    foreignKey: 'cartId' 
+  });
+  db.cartItem.belongsTo(db.cart, {
+    foreignKey: 'cartId' 
+  });
+
+  // Product-cartItem relationship
+  db.product.hasMany(db.cartItem, {
+    foreignKey: 'productId' 
+  });
+  db.cartItem.belongsTo(db.product, {
+    foreignKey: 'productId' 
+  });
+
   
-db.sequelize.sync({force:false}).then(()=>{
+db.sequelize.sync({alter:true}).then(()=>{
     console.log('sync done');
 })
 module.exports = db;
