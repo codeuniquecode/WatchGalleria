@@ -1,5 +1,5 @@
 
-const {user,vendor, sequelize, category, product} = require('../model/index');
+const {user, sequelize, category, product, cart, cartItem} = require('../model/index');
 const multer = require('../middleware/multerConfig').multer;
 const jwt = require('jsonwebtoken');
 const storage = require('../middleware/multerConfig').storage;
@@ -259,3 +259,34 @@ exports.seeProduct = async (req, res) => {
     }
     res.render('seeProduct.ejs', { data });
 }
+exports.renderCart = async (req, res) => {
+    const userId = req.user;
+    if (!userId) {
+        return res.send('Please login to view your cart');
+    }
+
+    try {
+        // Find the user's cart
+        const userCart = await cart.findOne({
+            where: {
+                userId
+            },
+            include: {
+                model: cartItem,
+                include: {
+                    model: product // Include the related product details for each cart item
+                }
+            }
+        });
+
+        if (!userCart) {
+            return res.render('cart.ejs', { cartItems: [] }); // If no cart exists for the user
+        }
+
+        // Render the cart page with the product details in the cart
+        res.render('cart.ejs', { cartItems: userCart.cartItems });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Something went wrong while fetching the cart');
+    }
+};

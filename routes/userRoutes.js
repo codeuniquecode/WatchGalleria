@@ -23,6 +23,10 @@ router.get('/women',userController.renderWomen);
 router.get('/smart',userController.renderSmart);
 router.get('/luxury',userController.renderLuxury);
 router.get('/seeProduct/:id',userController.seeProduct);
+
+//GET-- cart
+router.get('/addToCart',isAuthenticated, userController.renderCart);
+
 // POST
 router.post('/register',userController.register);// Route with file upload middleware
 router.post('/updateProfile', isAuthenticated, upload.single('photo'), userController.updateProfile);
