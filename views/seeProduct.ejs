@@ -60,7 +60,7 @@
                     <p class="fs-2 fw-bold"><%=data.productname%></p>
                     <p class="fs-5 fw-bold">Price: Rs. <%=data.price%>/-</p>
                     <p class="fs-5 description"><%=data.description %></p>
-                    <button class="btn btn-primary"><a href="/addToCart" class="cart-btn"><i class="fa-solid fa-cart-shopping"></i> Add to Cart</a></button>
+                    <button class="btn btn-primary"><a href="/addToCart/<%= data.productId %>" class="cart-btn"><i class="fa-solid fa-cart-shopping"></i> Add to Cart</a></button>
                 </div>
             </div>
         </div>

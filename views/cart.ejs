@@ -81,10 +81,12 @@
                 <% cartItems.forEach(item => { %>
                   <tr>
                     <td>
-                      <img src="http://localhost:3000/<%= item.product.image %>" alt="<%= item.product.productName %>" class="img-fluid">
+                      <img src="http://localhost:3000/<%= item.product.productpicture %>" alt="<%= item.product.productName %>" class="img-fluid">
                     </td>
-                    <td><%= item.product.productName %></td>
-                    <td id="price"><%= item.product.price %></td>
+                    <td><%= item.product.productname %></td>
+                    <td id="price-<%= item.productId %>"><%= item.product.price %></td>
+
+
                     <td class="counter text-center">
                       <div class="input-group counter text-center">
                         <button class="btn btn-outline-secondary" type="button" onclick="decreaseQuantity('<%= item.productId %>')">-</button>
@@ -92,7 +94,7 @@
                         <button class="btn btn-outline-secondary" type="button" onclick="increaseQuantity('<%= item.productId %>')">+</button>
                       </div>
                     </td>
-                    <td id="total"><%= item.product.price * item.quantity %></td>
+                    <td id="total-<%= item.productId %>"><%= item.product.price * item.quantity %></td>
                     <td> 
                       <button class="btn btn-danger" onclick="removeFromCart('<%= item.productId %>')">
                         <i class="fa-solid fa-trash"></i>
@@ -111,42 +113,42 @@
 
     </main>
     <script>
-        function goBack() {
+      function goBack() {
           history.back();
-        }
-        let quantity = 1;
-        const price = document.getElementById("price").textContent;
-        const totalElement = document.getElementById("total");
-  const quantityElement = document.getElementById("quantity");
-
-  function updateTotal() {
-    const total = price * quantity;
-    totalElement.textContent = total;
-  }
-
-  function increaseQuantity(productId) {
-    let quantityInput = document.getElementById('quantity-' + productId);
-    let currentQuantity = parseInt(quantityInput.value);
-    if (currentQuantity < 5) {
-        quantityInput.value = currentQuantity + 1;
-    }
-    // Optionally: Update total and send the change to the server
-}
-
-function decreaseQuantity(productId) {
-    let quantityInput = document.getElementById('quantity-' + productId);
-    let currentQuantity = parseInt(quantityInput.value);
-    if (currentQuantity > 1) {
-        quantityInput.value = currentQuantity - 1;
-    }
-    // Optionally: Update total and send the change to the server
-}
-
-function removeFromCart(productId) {
-    // Code to remove item from the cart, perhaps by sending an AJAX request to the server
-}
-
-      </script>
+      }
+  
+      function updateTotal(productId) {
+          const quantityInput = document.getElementById('quantity-' + productId);
+          const price = parseFloat(document.getElementById('price-' + productId).textContent);
+          const totalElement = document.getElementById('total-' + productId);
+  
+          const total = price * parseInt(quantityInput.value);
+          totalElement.textContent = total;
+      }
+  
+      function increaseQuantity(productId) {
+          let quantityInput = document.getElementById('quantity-' + productId);
+          let currentQuantity = parseInt(quantityInput.value);
+          if (currentQuantity < 5) {
+              quantityInput.value = currentQuantity + 1;
+              updateTotal(productId);  // Update the total after increasing quantity
+          }
+      }
+  
+      function decreaseQuantity(productId) {
+          let quantityInput = document.getElementById('quantity-' + productId);
+          let currentQuantity = parseInt(quantityInput.value);
+          if (currentQuantity > 1) {
+              quantityInput.value = currentQuantity - 1;
+              updateTotal(productId);  // Update the total after decreasing quantity
+          }
+      }
+  
+      function removeFromCart(productId) {
+          // Code to remove item from the cart, perhaps by sending an AJAX request to the server
+      }
+  </script>
+  
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"></script>

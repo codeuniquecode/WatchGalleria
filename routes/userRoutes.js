@@ -25,7 +25,8 @@ router.get('/luxury',userController.renderLuxury);
 router.get('/seeProduct/:id',userController.seeProduct);
 
 //GET-- cart
-router.get('/addToCart',isAuthenticated, userController.renderCart);
+router.get('/addToCart/:id',isAuthenticated, userController.addToCart);
+router.get('/cart',isAuthenticated, userController.renderCart);
 
 // POST
 router.post('/register',userController.register);// Route with file upload middleware

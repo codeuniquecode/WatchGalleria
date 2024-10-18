@@ -259,34 +259,97 @@ exports.seeProduct = async (req, res) => {
     }
     res.render('seeProduct.ejs', { data });
 }
+exports.addToCart = async (req, res) => {
+    const userId = req.user; // Assuming `req.user` contains the logged-in user ID
+    const productId = req.params.id; // Fetching product ID from URL parameters
+    const quantity = 1; // Default quantity to add to the cart
+
+    if (!userId) {
+        return res.send('Please login to add items to your cart');
+    }
+
+    try {
+        // Check if the product exists first (Optional but recommended)
+        const foundproduct = await product.findOne({
+            where: { productId }
+        });
+
+        if (!foundproduct) {
+            return res.status(404).send('Product not found');
+        }
+
+        // Find or create the cart for the user
+        let userCart = await cart.findOne({ where: { userId } });
+
+        if (!userCart) {
+            // If the user doesn't have a cart, create one
+            userCart = await cart.create({ userId });
+        }
+
+        // Ensure userCart.cartId is properly populated
+        const cartId = userCart.cartId;  // Here, we use cartId as the PK
+
+        if (!cartId) {
+            throw new Error('Cart creation failed');
+        }
+
+        // Check if the product is already in the cart
+        const existingCartItem = await cartItem.findOne({
+            where: {
+                cartId,
+                productId
+            }
+        });
+
+        if (existingCartItem) {
+            // If the product is already in the cart, increment the quantity
+            await existingCartItem.update({
+                quantity: existingCartItem.quantity + 1
+            });
+        } else {
+            // If the product is not in the cart, add it with a default quantity of 1
+            await cartItem.create({
+                cartId,
+                productId,
+                quantity
+            });
+        }
+
+        // Redirect to the cart page after adding the item
+        res.redirect('/cart');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error adding item to the cart');
+    }
+};
+
 exports.renderCart = async (req, res) => {
-    const userId = req.user;
+    const userId = req.user; // Assuming `req.user` contains the logged-in user ID
+
     if (!userId) {
         return res.send('Please login to view your cart');
     }
 
     try {
-        // Find the user's cart
-        const userCart = await cart.findOne({
-            where: {
-                userId
-            },
-            include: {
-                model: cartItem,
-                include: {
-                    model: product // Include the related product details for each cart item
-                }
-            }
-        });
-
+        const userCart = await cart.findOne({ where: { userId } });
         if (!userCart) {
-            return res.render('cart.ejs', { cartItems: [] }); // If no cart exists for the user
+            return res.send('No items in your cart');
         }
 
-        // Render the cart page with the product details in the cart
-        res.render('cart.ejs', { cartItems: userCart.cartItems });
+        const cartItems = await cartItem.findAll({
+            where: {
+                cartId: userCart.cartId
+            },
+            include: product
+        });
+
+        if (!cartItems || cartItems.length === 0) {
+            return res.send('No items in your cart');
+        }
+
+        res.render('cart.ejs', { cartItems });
     } catch (error) {
         console.error(error);
-        res.status(500).send('Something went wrong while fetching the cart');
+        res.status(500).send('Error fetching cart items');
     }
-};
+}
