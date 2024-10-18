@@ -28,8 +28,13 @@ router.get('/seeProduct/:id',userController.seeProduct);
 router.get('/addToCart/:id',isAuthenticated, userController.addToCart);
 router.get('/cart',isAuthenticated, userController.renderCart);
 router.get('/removeProduct/:id',isAuthenticated, userController.removeProduct);
+
+//GET -- order
+
+
 // POST
 router.post('/register',userController.register);// Route with file upload middleware
 router.post('/updateProfile', isAuthenticated, upload.single('photo'), userController.updateProfile);
 router.post('/changePassword', isAuthenticated, userController.changePassword);
+router.post('/placeOrder',isAuthenticated, userController.placeOrder);
 module.exports = router;

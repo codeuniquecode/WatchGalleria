@@ -391,3 +391,42 @@ exports.removeProduct = async (req, res) => {
         res.status(500).send('Error removing item from the cart');
     }
 }
+exports.placeOrder = async (req, res) => {
+    const userId = req.user; // Assuming `req.user` contains the logged-in user ID
+    
+        const productIds = req.body.productIds;  // Array of product IDs
+        const quantities = req.body.quantities;  // Array of quantities
+        const prices = req.body.prices;          // Array of prices
+        const totals = req.body.totals;          // Array of totals
+        res.send(`the user id is ${userId}, productIds are ${productIds}, quantities are ${quantities}, prices are ${prices}, totals are ${totals}`);
+    return;
+    if (!userId) {
+        return res.send('Please login to place an order');
+    }
+
+    try {
+        const userCart = await cart.findOne({ where: { userId } });
+        if (!userCart) {
+            return res.send('No items in your cart');
+        }
+
+        const cartItems = await cartItem.findAll({
+            where: {
+                cartId: userCart.cartId
+            },
+            include: product
+        });
+
+        if (!cartItems || cartItems.length === 0) {
+            return res.send('No items in your cart');
+        }
+        //aba chai order ko code halne
+        // create order table and orderItem table if they dont exists, then insert the data and remove datas from cartItem and cart table 
+        // finally redirect to order page
+
+        res.render('order.ejs', { cartItems });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error fetching cart items');
+    }
+}

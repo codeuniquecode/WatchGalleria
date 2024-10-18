@@ -61,70 +61,81 @@
       <!-- Navbar -->
       <%- include ('navbar2.ejs') %>
     <main class="mt-lg-5 mt-md-3 mt-sm-1">
+      <form action="/placeOrder" method="post">
         <table class="table container text-center">
-            <thead>
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">Name</th>
+              <th scope="col">Price</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Total</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (cartItems.length === 0) { %>
               <tr>
-                <th scope="col"></th>
-                <th scope="col">Name</th>
-                <th scope="col">Price</th>
-                <th scope="col">Quantity</th>
-                <th scope="col">Total</th>
-                <th scope="col"></th>
+                <td colspan="6">Your cart is empty</td>
               </tr>
-            </thead>
-            <tbody>
-              <% if (cartItems.length === 0) { %>
+            <% } else { %>
+              <% cartItems.forEach(item => { %>
                 <tr>
-                  <td colspan="6">Your cart is empty</td>
+                  <td>
+                    <img src="http://localhost:3000/<%= item.product.productpicture %>" alt="<%= item.product.productName %>" class="img-fluid">
+                  </td>
+                  <td><%= item.product.productname %></td>
+                  <td id="price-<%= item.productId %>"><%= item.product.price %></td>
+                  
+                  <td class="counter text-center">
+                    <div class="input-group counter text-center">
+                      <button class="btn btn-outline-secondary" type="button" onclick="decreaseQuantity('<%= item.productId %>')">-</button>
+                      <input type="text" class="form-control text-center quant" id="quantity-<%= item.productId %>" value="<%= item.quantity %>" min="1" max="5" readonly>
+                      <button class="btn btn-outline-secondary" type="button" onclick="increaseQuantity('<%= item.productId %>')">+</button>
+                    </div>
+                  </td>
+                  <td id="total-<%= item.productId %>"><%= item.product.price * item.quantity %></td>
+                  <td>
+                    <button class="btn btn-danger" onclick="removeFromCart('<%= item.productId %>')">
+                      <a href="/removeProduct/<%= item.productId %>"><i class="fa-solid fa-trash"></i></a>
+                    </button>
+                  </td>
+                  
+                  <!-- Hidden fields for each product inside the loop -->
+                  <input type="hidden" name="productIds[]" value="<%= item.productId %>">
+                  <input type="hidden" name="quantities[]" id="hiddenQuantity-<%= item.productId %>" value="<%= item.quantity %>">
+                  <input type="hidden" name="prices[]" id="hiddenPrice-<%= item.productId %>" value="<%= item.product.price %>">
+                  <input type="hidden" name="totals[]" id="hiddenTotal-<%= item.productId %>" value="<%= item.product.price * item.quantity %>">
                 </tr>
-              <% } else { %>
-                <% cartItems.forEach(item => { %>
-                  <tr>
-                    <td>
-                      <img src="http://localhost:3000/<%= item.product.productpicture %>" alt="<%= item.product.productName %>" class="img-fluid">
-                    </td>
-                    <td><%= item.product.productname %></td>
-                    <td id="price-<%= item.productId %>"><%= item.product.price %></td>
-
-
-                    <td class="counter text-center">
-                      <div class="input-group counter text-center">
-                        <button class="btn btn-outline-secondary" type="button" onclick="decreaseQuantity('<%= item.productId %>')">-</button>
-                        <input type="text" class="form-control text-center quant" id="quantity-<%= item.productId %>" value="<%= item.quantity %>" min="1" max="5" readonly>
-                        <button class="btn btn-outline-secondary" type="button" onclick="increaseQuantity('<%= item.productId %>')">+</button>
-                      </div>
-                    </td>
-                    <td id="total-<%= item.productId %>"><%= item.product.price * item.quantity %></td>
-                    <td> 
-                      <button class="btn btn-danger" onclick="removeFromCart('<%= item.productId %>')">
-                       <a href="/removeProduct/<%= item.productId %>"><i class="fa-solid fa-trash"></i></a> 
-                      </button>
-                    </td>
-                  </tr>
-                <% }); %>
-              <% } %>
-            </tbody>
-            
-          </table>
+              <% }); %>
+            <% } %>
+          </tbody>
+        </table>
             <div class="container text-center">
                 <button class="btn btn-primary" onclick="goBack()"> <i class="fa-solid fa-cart-shopping "></i> Continue Shopping</button>
-                <button class="btn btn-primary"><i class="fa-regular fa-credit-card"></i> Checkout</button>
+                <button class="btn btn-primary" type="submit"><i class="fa-solid fa-truck"></i> Place Order</button>
+                <!-- <i class="fa-regular fa-credit-card"></i> Checkout -->
             </div>
+          </form>
 
     </main>
     <script>
       function goBack() {
           history.back();
       }
-  
       function updateTotal(productId) {
-          const quantityInput = document.getElementById('quantity-' + productId);
-          const price = parseFloat(document.getElementById('price-' + productId).textContent);
-          const totalElement = document.getElementById('total-' + productId);
-  
-          const total = price * parseInt(quantityInput.value);
-          totalElement.textContent = total;
-      }
+    const quantityInput = document.getElementById('quantity-' + productId);
+    const price = parseFloat(document.getElementById('price-' + productId).textContent);
+    const totalElement = document.getElementById('total-' + productId);
+
+    const total = price * parseInt(quantityInput.value);
+    totalElement.textContent = total;
+
+    // Update hidden fields for backend submission
+    document.getElementById('hiddenQuantity-' + productId).value = quantityInput.value;
+    document.getElementById('hiddenTotal-' + productId).value = total;
+}
+
   
       function increaseQuantity(productId) {
           let quantityInput = document.getElementById('quantity-' + productId);

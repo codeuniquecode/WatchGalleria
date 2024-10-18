@@ -56,11 +56,13 @@ app.use(async (req, res, next) => {
         } catch (err) {
             res.locals.currentUser = null;  // Set to null in case of error
             res.locals.userName = null;
+            res.locals.cartCount = 0;
             console.error('Error verifying token:', err);
         }
     } else {
         res.locals.currentUser = null;
         res.locals.userName = null;
+        res.locals.cartCount = 0;
     }
 
     next();
