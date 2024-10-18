@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
-const {user,vendor, sequelize} = require('./model/index');
+const {user,vendor, sequelize, cart, cartItem} = require('./model/index');
 require('dotenv').config();
 const multer = require('./middleware/multerConfig').multer;
 const bcrypt = require('bcrypt');
@@ -27,15 +27,32 @@ require("./model/index");
 // Middleware to decrypt token and set current user information in locals
 app.use(async (req, res, next) => {
     const token = req.cookies.token;
-
     if (token) {
         try {
             // Decrypt the token
             const decryptedResult = await promisify(jwt.verify)(token, process.env.SECRET_KEY);
-
             // Store the decrypted token content in res.locals
             res.locals.currentUser = decryptedResult; // Store full token data
             res.locals.userName = decryptedResult.name; // Specifically store the userName
+            const userId = decryptedResult.id;
+            // Fetch the user from the database
+            const userRecord = await user.findOne({ where: { userId } });
+            if (!userRecord) {
+                res.locals.cartCount = 0;
+            }
+            else {
+                // Fetch the cart items for the user
+                const userCart = await cart.findOne({ where: { userId } });
+                
+                if (userCart) {
+                    // Fetch the count of items in the cart
+                    const itemCount = await cartItem.count({ where: { cartId: userCart.cartId } });
+                    res.locals.cartCount = itemCount; // Set cart count based on the number of items
+                } else {
+                    res.locals.cartCount = 0; // No cart found
+                }
+            }
+
         } catch (err) {
             res.locals.currentUser = null;  // Set to null in case of error
             res.locals.userName = null;
