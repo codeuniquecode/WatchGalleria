@@ -97,7 +97,7 @@
                     <td id="total-<%= item.productId %>"><%= item.product.price * item.quantity %></td>
                     <td> 
                       <button class="btn btn-danger" onclick="removeFromCart('<%= item.productId %>')">
-                        <i class="fa-solid fa-trash"></i>
+                       <a href="/removeProduct/<%= item.productId %>"><i class="fa-solid fa-trash"></i></a> 
                       </button>
                     </td>
                   </tr>

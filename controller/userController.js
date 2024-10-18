@@ -353,3 +353,41 @@ exports.renderCart = async (req, res) => {
         res.status(500).send('Error fetching cart items');
     }
 }
+exports.removeProduct = async (req, res) => {
+    const userId = req.user; // Assuming `req.user` contains the logged-in user ID
+    const productId = req.params.id; // Fetching product ID from URL parameters
+
+    if (!userId) {
+        return res.send('Please login to remove items from your cart');
+    }
+
+    try {
+        const userCart = await cart.findOne({ where: { userId } });
+        if (!userCart) {
+            return res.send('No items in your cart');
+        }
+
+        const foundcartItem = await cartItem.findOne({
+            where: {
+                cartId: userCart.cartId,
+                productId
+            }
+        });
+
+        if (!foundcartItem) {
+            return res.send('Item not found in your cart');
+        }
+
+        await cartItem.destroy({
+            where: {
+                cartId: userCart.cartId,
+                productId
+            }
+        });
+
+        res.redirect('/cart');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error removing item from the cart');
+    }
+}

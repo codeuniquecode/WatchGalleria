@@ -27,7 +27,7 @@ router.get('/seeProduct/:id',userController.seeProduct);
 //GET-- cart
 router.get('/addToCart/:id',isAuthenticated, userController.addToCart);
 router.get('/cart',isAuthenticated, userController.renderCart);
-
+router.get('/removeProduct/:id',isAuthenticated, userController.removeProduct);
 // POST
 router.post('/register',userController.register);// Route with file upload middleware
 router.post('/updateProfile', isAuthenticated, upload.single('photo'), userController.updateProfile);
