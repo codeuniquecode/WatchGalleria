@@ -45,6 +45,10 @@
         background-color: white;
         border: none;
     }
+    .deletebtn{
+        color: red !important;
+        padding: 0.5rem;
+    }
     @media screen and (max-width: 468px){
         .table img{
             width: 50px;
@@ -96,9 +100,8 @@
                   </td>
                   <td id="total-<%= item.productId %>"><%= item.product.price * item.quantity %></td>
                   <td>
-                    <button class="btn btn-danger" onclick="removeFromCart('<%= item.productId %>')">
-                      <a href="/removeProduct/<%= item.productId %>"><i class="fa-solid fa-trash"></i></a>
-                    </button>
+                      <a href="/removeProduct/<%= item.productId %>" class="deletebtn"><i class="fa-solid fa-trash"></i></a>
+                   
                   </td>
                   
                   <!-- Hidden fields for each product inside the loop -->
@@ -112,17 +115,25 @@
           </tbody>
         </table>
             <div class="container text-center">
-                <button class="btn btn-primary" onclick="goBack()"> <i class="fa-solid fa-cart-shopping "></i> Continue Shopping</button>
+               
                 <button class="btn btn-primary" type="submit"><i class="fa-solid fa-truck"></i> Place Order</button>
                 <!-- <i class="fa-regular fa-credit-card"></i> Checkout -->
             </div>
           </form>
+          <div class="container text-center mt-3">
+            <button class="btn btn-primary" onclick="goBack()">
+                <i class="fa-solid fa-cart-shopping"></i> Continue Shopping
+            </button>
+        </div>
 
     </main>
     <script>
-      function goBack() {
-          history.back();
-      }
+function goBack() {
+        history.back();  // Go to the previous page
+  
+}
+
+
       function updateTotal(productId) {
     const quantityInput = document.getElementById('quantity-' + productId);
     const price = parseFloat(document.getElementById('price-' + productId).textContent);
