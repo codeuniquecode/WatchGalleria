@@ -458,7 +458,7 @@ exports.placeOrder = async (req, res) => {
         res.status(500).send('Error placing the order');
     }
 };
-const { Sequelize } = require('sequelize'); // Ensure you import Sequelize
+const { Sequelize, Op } = require('sequelize'); // Ensure you import Sequelize
 
 exports.renderOrder = async (req, res) => {
     const userId = req.user; // Assuming `req.user` contains the logged-in user ID
@@ -504,3 +504,18 @@ exports.renderOrder = async (req, res) => {
         res.status(500).send('Error fetching user orders');
     }
 };
+exports.searchProduct = async (req,res)=>{
+    
+    const {search} = req.body;
+    const data = await product.findAll({
+        where:{
+            productname:{
+               [Op.like]:'%'+search+'%'
+            }
+        }
+    });
+    if(!data || data.length === 0){
+        return res.send('No products found');
+    }
+    res.render('product.ejs',{data});
+}

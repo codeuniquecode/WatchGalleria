@@ -17,6 +17,7 @@ router.get('/editProfile',isAuthenticated,userController.editProfile);
 router.get('/changePassword',isAuthenticated,userController.renderChangePassword);
 
 
+
 //GET-- see products
 router.get('/men',userController.renderMen);
 router.get('/women',userController.renderWomen);
@@ -36,5 +37,6 @@ router.get('/userOrder',isAuthenticated, userController.renderOrder);
 router.post('/register',userController.register);// Route with file upload middleware
 router.post('/updateProfile', isAuthenticated, upload.single('photo'), userController.updateProfile);
 router.post('/changePassword', isAuthenticated, userController.changePassword);
+router.post('/searchProduct',userController.searchProduct);
 router.post('/placeOrder',isAuthenticated, userController.placeOrder);
 module.exports = router;

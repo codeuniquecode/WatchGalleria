@@ -50,8 +50,8 @@
 
         </ul>
         <!-- search box and button -->
-        <form class="d-flex mx-auto searchbox">
-          <input class="form-control me-2 btn-small s-box" type="search" placeholder="Search items" aria-label="Search">
+        <form class="d-flex mx-auto searchbox" action="/searchProduct" method="post">
+          <input class="form-control me-2 btn-small s-box" name="search" type="search" placeholder="Search items" aria-label="Search">
           <button class="btn btn-outline-success search btn-small s-btn" type="submit">Search</button>
         </form>
         <%if(currentUser){%>
