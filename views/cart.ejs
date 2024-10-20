@@ -98,7 +98,7 @@
                       <button class="btn btn-outline-secondary" type="button" onclick="increaseQuantity('<%= item.productId %>')">+</button>
                     </div>
                   </td>
-                  <td id="total-<%= item.productId %>"><%= item.product.price * item.quantity %></td>
+                  <td id="total-<%= item.productId %>" class="fw-bold"><%= item.product.price * item.quantity %></td>
                   <td>
                       <a href="/removeProduct/<%= item.productId %>" class="deletebtn"><i class="fa-solid fa-trash"></i></a>
                    

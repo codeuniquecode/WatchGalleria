@@ -30,7 +30,7 @@ router.get('/cart',isAuthenticated, userController.renderCart);
 router.get('/removeProduct/:id',isAuthenticated, userController.removeProduct);
 
 //GET -- order
-
+router.get('/userOrder',isAuthenticated, userController.renderOrder);
 
 // POST
 router.post('/register',userController.register);// Route with file upload middleware

@@ -16,7 +16,8 @@ const makeOrderTable = (sequelize,DataTypes)=>{
         },
         status:{
             type:DataTypes.STRING,
-            allowNull:false
+            allowNull:false,
+            defaultValue:'Pending'
         },
         Totalamount:{
             type:DataTypes.INTEGER,

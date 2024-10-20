@@ -1,5 +1,5 @@
 
-const {user, sequelize, category, product, cart, cartItem} = require('../model/index');
+const {user, sequelize, category, product, cart, cartItem, order, orderItem} = require('../model/index');
 const multer = require('../middleware/multerConfig').multer;
 const jwt = require('jsonwebtoken');
 const storage = require('../middleware/multerConfig').storage;
@@ -393,13 +393,11 @@ exports.removeProduct = async (req, res) => {
 }
 exports.placeOrder = async (req, res) => {
     const userId = req.user; // Assuming `req.user` contains the logged-in user ID
-    
-        const productIds = req.body.productIds;  // Array of product IDs
-        const quantities = req.body.quantities;  // Array of quantities
-        const prices = req.body.prices;          // Array of prices
-        const totals = req.body.totals;          // Array of totals
-        res.send(`the user id is ${userId}, productIds are ${productIds}, quantities are ${quantities}, prices are ${prices}, totals are ${totals}`);
-    return;
+    const productIds = req.body.productIds;  // Array of product IDs
+    const quantities = req.body.quantities;  // Array of quantities
+    const prices = req.body.prices;          // Array of prices
+    const totals = req.body.totals;          // Array of totals
+
     if (!userId) {
         return res.send('Please login to place an order');
     }
@@ -420,13 +418,89 @@ exports.placeOrder = async (req, res) => {
         if (!cartItems || cartItems.length === 0) {
             return res.send('No items in your cart');
         }
-        //aba chai order ko code halne
-        // create order table and orderItem table if they dont exists, then insert the data and remove datas from cartItem and cart table 
-        // finally redirect to order page
 
-        res.render('order.ejs', { cartItems });
+        // Calculate total order amount
+        let totalAmount = 0;
+        cartItems.forEach(item => {
+            totalAmount += item.quantity * item.product.price;
+        });
+        console.log('Total amount:', totalAmount);
+        
+        
+        // Create a new order
+        const newOrder = await order.create({
+            orderDate: new Date(),
+            Totalamount: totalAmount,
+            userId,
+        });
+
+        // Create order items
+        for (let i = 0; i < cartItems.length; i++) {
+            await orderItem.create({
+                orderId: newOrder.orderId,
+                productId: productIds[i],
+                quantity: quantities[i],
+                price: prices[i],
+            });
+        }
+
+        // Clear the cart items after order is placed
+        await cartItem.destroy({ where: { cartId: userCart.cartId } });
+
+        // Optionally, clear the cart itself if no items are left
+        await cart.destroy({ where: { userId } });
+
+        // Redirect to the order confirmation page or render the order summary
+        res.render('order.ejs', { order: newOrder, orderItems: cartItems });
+
     } catch (error) {
         console.error(error);
-        res.status(500).send('Error fetching cart items');
+        res.status(500).send('Error placing the order');
     }
-}
+};
+const { Sequelize } = require('sequelize'); // Ensure you import Sequelize
+
+exports.renderOrder = async (req, res) => {
+    const userId = req.user; // Assuming `req.user` contains the logged-in user ID
+
+    if (!userId) {
+        return res.send('Please login to view your orders');
+    }
+
+    try {
+        // Find all orders for the user
+        const userOrders = await order.findAll({
+            where: { userId },
+            include: {
+                model: orderItem,
+                include: product // Assuming orderItem has a product relation
+            }
+        });
+
+        // Calculate the total amount for each order (similar to what you did previously)
+        // userOrders.forEach(order => {
+        //     let totalAmount = 0;
+        //     order.orderItems.forEach(item => {
+        //         totalAmount += item.quantity * item.price;
+        //     });
+        //     order.Totalamount = totalAmount; // Temporarily set this for rendering
+        // });
+
+        // Check if orders exist
+        if (!userOrders || userOrders.length === 0) {
+            return res.send('No orders found');
+        }
+
+        // Aggregate the sum of all total amounts for this user's orders
+        const sumTotalAmount = await order.sum('Totalamount', {
+            where: { userId }
+        });
+
+        // Render the order page and pass the total sum and the individual user orders
+        res.render('userOrder.ejs', { userOrders, sumTotalAmount });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error fetching user orders');
+    }
+};

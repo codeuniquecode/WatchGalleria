@@ -55,54 +55,70 @@
     
     <!-- Navbar -->
     <%- include('navbar2.ejs') %>
-
     <main class="mt-lg-5 mt-md-3 mt-sm-1">
         <table class="table container text-center">
             <thead>
                 <tr>
                     <th scope="col"></th>
+                    <th scope="col">Order Id</th>
                     <th scope="col">Name</th>
                     <th scope="col">Price</th>
                     <th scope="col">Quantity</th>
                     <th scope="col">Total</th>
+                    <th scope="col">Status</th>
                 </tr>
             </thead>
             <tbody>
-                <% if (orderItems.length === 0) { %>
+                <% if (userOrders.length === 0) { %>
                     <tr>
                         <td colspan="5">You don't have any orders</td>
                     </tr>
                 <% } else { %>
-                    <% orderItems.forEach(item => { 
-                        const itemTotal = item.product.price * item.quantity;
-                    %>
-                        <tr>
-                            <td>
-                                <img src="http://localhost:3000/<%= item.product.productpicture %>" 
-                                    alt="<%= item.product.productname %>" class="img-fluid" style="max-width: 100px;">
-                            </td>
-                            <td><%= item.product.productname %></td>
-                            <td id="price-<%= item.productId %>">Rs. <%= item.product.price %></td>
-                            <td class="counter text-center">
-                                <%= item.quantity %>
-                            </td>
-                            <td id="total-<%= item.productId %>">Rs. <%= itemTotal %></td>
-                        </tr>
-                    <% }); %>
+                    <% userOrders.forEach(order => { %>
+                        <!-- Loop through each order and then order items inside -->
+                        <% order.orderItems.forEach(item => {
+                            const itemTotal = item.product.price * item.quantity;
+                        %>
+                            <tr>
+                                <td>
+                                    <%= order.orderId %>
+                                </td>
+                                <td>
+                                    <img src="http://localhost:3000/<%= item.product.productpicture %>" 
+                                        alt="<%= item.product.productname %>" class="img-fluid" style="max-width: 100px;">
+                                </td>
+                                <td><%= item.product.productname %></td>
+                                <td id="price-<%= item.productId %>">Rs. <%= item.product.price %></td>
+                                <td class="counter text-center">
+                                    <%= item.quantity %>
+                                </td>
+                                <td id="total-<%= item.productId %>">Rs. <%= itemTotal %></td>
+                                <td>
+                                    <% if (order.status === 'Delivered') { %>
+                                        <span class="fw-bold"><%= order.status %></span>
+                                    <% } else { %>
+                                        <span class="fw-bold"><%= order.status %></span>
+                                    <% } %>
+                            </tr>
+                        <% }); %>
     
-                    <!-- Row to display total amount -->
-                    <tr class="fw-bold">
-                        <td colspan="4" class="text-end">Total Amount:</td>
-                        <td>Rs. <%= order.Totalamount %></td>
-                    </tr>
+                        <!-- Only display the total amount once per order, after all items -->
+                        
+                    <% }); %>
                 <% } %>
+                <p class="fw-bold text-center">
+                    <td colspan="4" class="text-end fw-bold">Total Amount:</td>
+                    <td class="fw-bold">Rs. <%= sumTotalAmount %></td>
+                </p>
             </tbody>
         </table>
     
-        <div class="container text-center">
+        <!-- <div class="container text-center">
             <button class="btn btn-primary"><i class="fa-regular fa-credit-card"></i> Checkout</button>
-        </div>
+        </div> -->
     </main>
+    
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"></script>
