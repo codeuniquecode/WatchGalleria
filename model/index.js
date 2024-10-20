@@ -104,6 +104,15 @@ db.user.hasOne(db.cart, {
   db.orderItem.belongsTo(db.product, {
     foreignKey: 'productId' 
   });
+
+  //vendor-order relationship
+  db.vendor.hasMany(db.order,{
+      foreignKey:'vendorId'
+  });
+  db.order.belongsTo(db.vendor,{
+      foreignKey:'vendorId'
+  });
+
 db.sequelize.sync({force:false}).then(()=>{
     console.log('sync done');
 })

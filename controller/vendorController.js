@@ -1,5 +1,5 @@
 
-const {user,vendor, sequelize, product} = require('../model/index');
+const {user,vendor, sequelize, product, order, Sequelize, orderItem} = require('../model/index');
 const multer = require('../middleware/multerConfig').multer;
 const storage = require('../middleware/multerConfig').storage;
 const upload = multer({ storage: storage });
@@ -55,13 +55,37 @@ exports.vendorDashboard = async (req,res)=>{
             vendorId
         }
     });
+        // Step 1: Find number of orders for this vendor by checking order items
+        const orderCount = await orderItem.count({
+            include: {
+                model: product,
+                where: {
+                    vendorId
+                }
+            }
+        });
+
+       // Step 2: Calculate total sales by summing the price * quantity for all order items related to this vendor
+       const totalSaleResult = await orderItem.findOne({
+        include: {
+            model: product,
+            where: {
+                vendorId
+            }
+        },
+        attributes: [[Sequelize.fn('SUM', Sequelize.literal('product.price * product.quantity')), 'totalSales']],
+        raw: true  // This ensures the result is a plain object
+    });
+
+    // Extract total sales from the result
+    const totalSales = totalSaleResult ? totalSaleResult.totalSales : 0;
     if(!vendorData){
         return res.send('Vendor does not exist');
     }
     if(vendorData.role !== 'vendor'){
         return res.send('Access Denied ! Login as a vendor to view this page');
     }
-    res.render('vendorDashboard',{vendorData,productCount});
+    res.render('vendorDashboard',{vendorData,productCount,orderCount,totalSales});
 }
 exports.renderAddProduct = (req,res)=>{
     res.render('addProduct');
