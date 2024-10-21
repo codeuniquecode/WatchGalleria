@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Order | WatchGalleria</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/2c8d038c04.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/vendorDashboard.css">
+    <style>
+        a{
+            text-decoration: none;
+        }
+        .main-body {
+            padding-left: 190px;
+        }
+        @media screen and (max-width:991px) {
+            .main-body {
+                padding-left: 0px;
+            }
+        }
+        .active {
+            font-weight: bolder;
+            color: #DCAB27;
+        }
+    </style>
+</head>
+<body>
+    <%- include('sidebar') %>
+       <!-- successful message -->
+       <main class="container main-body">
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">OrderItem Id</th>
+                <th scope="col">Product Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            
+            <tbody>
+              <% if (orderData.length > 0) { %>
+                <% orderData.forEach(item => { %>
+                  <tr>
+                    <th scope="row"><%= item.orderItem.orderItemId %></th>
+                    <td><%= item.product.productname %></td>
+                    <td><%= item.product.price %></td>
+                    <td><%= item.orderItem.quantity %></td>
+                    <td>
+                      <button type="button" class="btn btn-success">
+                        <a href="/vendor/editProduct/<%= item.product.productId %>" class="btn-small text-light">
+                            <i class="fa-solid fa-check"></i> Confirm
+                        </a>
+                      </button>
+                      <button type="button" class="btn btn-danger">
+                        <a href="/vendor/deleteProduct/<%= item.product.productId %>" class="btn-small text-light">
+                            <i class="fa-solid fa-xmark"></i> Reject
+                        </a>
+                      </button>
+                    </td>
+                  </tr>
+                <% }) %>
+              <% } else { %>
+                <tr>
+                  <td colspan="5" class="text-center">No orders found for your products.</td>
+                </tr>
+              <% } %>
+            </tbody>
+        </table>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+    <script src="/scripts/dashboard.js"></script>
+</body>
+</html>

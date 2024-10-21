@@ -16,7 +16,7 @@ router.get('/changePassword',isAuthenticated, vendorController.renderChangePassw
 router.get('/viewProduct',isAuthenticated, vendorController.viewProduct);
 router.get('/editProduct/:id',isAuthenticated, vendorController.editProduct);
 router.get('/deleteProduct/:id',isAuthenticated, vendorController.deleteProduct);
-
+router.get('/viewOrder',isAuthenticated, vendorController.viewOrder);
 // POST
 router.post('/vendorRegister', vendorController.vendorRegister);
 router.post('/addProduct',isAuthenticated, vendorController.addProduct);
@@ -24,4 +24,5 @@ router.post('/editVendor',isAuthenticated, vendorController.editProfile);
 router.post('/vendorChangePassword',isAuthenticated, vendorController.changePassword);
 router.post('/updateProduct/:id',isAuthenticated, vendorController.updateProduct);
 router.post('/search',isAuthenticated, vendorController.searchProduct);
+// router.post('/orderSearch', isAuthenticated, vendorController.searchOrder);
 module.exports = router;

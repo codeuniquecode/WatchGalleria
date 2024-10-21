@@ -287,3 +287,54 @@ exports.searchProduct = async(req,res)=>{
     }
     res.render('viewProduct',{products:productData});
 }
+exports.viewOrder = async (req, res) => {
+    const vendorId = req.user; // Assuming req.user contains vendorId
+    
+    try {
+        // Fetch vendor's products and their associated orderItems with status 'pending'
+        const vendorData = await vendor.findOne({
+            where: { vendorId },
+            include: {
+                model: product,
+                include: [{
+                    model: orderItem,
+                    include: [{
+                        model: order, // Include the order table to check the order status
+                        where: { status: 'pending' } // Filter by status 'pending'
+                    }]
+                }]
+            }
+        });
+
+        if (!vendorData) {
+            return res.send('Vendor does not exist');
+        }
+
+        if (vendorData.products.length === 0) {
+            return res.send('No products found for this vendor.');
+        }
+
+        // Prepare orderData (products with their pending orders)
+        const orderData = vendorData.products.reduce((acc, product) => {
+            product.orderItems.forEach(orderItem => {
+                acc.push({
+                    product,
+                    orderItem
+                });
+            });
+            return acc;
+        }, []);
+
+        // Check if no pending orders exist
+        if (orderData.length === 0) {
+            return res.send('No pending orders found.');
+        }
+
+        // Render the orders with the pending status
+        res.render('viewOrder', { orderData });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error fetching vendor data.');
+    }
+};
+
