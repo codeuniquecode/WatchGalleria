@@ -298,13 +298,16 @@ exports.viewOrder = async (req, res) => {
                 model: product,
                 include: [{
                     model: orderItem,
+                    required: true,  // Ensure orderItems exist
                     include: [{
-                        model: order, // Include the order table to check the order status
-                        where: { status: 'pending' } // Filter by status 'pending'
+                        model: order,
+                        required: true,  // Ensure orders exist
+                        where: { status: 'pending' }
                     }]
                 }]
             }
         });
+        
 
         if (!vendorData) {
             return res.send('Vendor does not exist');
@@ -337,4 +340,42 @@ exports.viewOrder = async (req, res) => {
         res.status(500).send('Error fetching vendor data.');
     }
 };
+exports.confirmOrder = async (req, res) => {    
+    const orderItemId = req.params.id;
+    try {
+        // Find the orderItem and include the product and order
+        const orderItemData = await orderItem.findOne({
+            where: { orderItemId },
+            include: [{
+                model: product,
+                include: [{ model: vendor }]
+            }, { model: order }]
+        });
 
+        if (!orderItemData) {
+            return res.send('Order item not found.');
+        }
+
+        // Check if the vendorId from the product matches the authenticated vendor
+        if (orderItemData.product.vendor.vendorId !== req.user) {
+            return res.send('Access denied. Order does not belong to this vendor.');
+        }
+
+        // Update the order status to 'confirmed'
+        const updateOrder = await order.update({
+            status: 'confirmed',
+            vendorId: req.user // Assign the vendorId to the order
+        }, {
+            where: { orderId: orderItemData.order.orderId }
+        });
+
+        if (updateOrder[0] === 0) {
+            return res.send('Error updating order status.');
+        }
+
+        res.redirect('/vendor/viewOrder?status=pending');  // Redirect to view pending orders
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error confirming order.');
+    }
+}
