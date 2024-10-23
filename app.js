@@ -78,12 +78,14 @@ app.use(async (req, res, next) => {
 const userRoutes = require('./routes/userRoutes');
 const vendorRoutes = require('./routes/vendorRoutes');
 const loginRoutes = require('./routes/loginRoutes');
+const adminRoutes= require('./routes/adminRoutes');
 // Use userRoutes on the root path
 app.use('/', userRoutes);
 
 // Use vendorRoutes on a different path
 app.use('/vendor', vendorRoutes);
 app.use('/', loginRoutes);
+app.use('/admin',adminRoutes);
 app.listen(port,()=>{
     console.log(`the server is running on port ${port}`);
 })

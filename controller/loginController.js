@@ -32,7 +32,7 @@ exports.loginValidation = async (req, res) => {
                         expiresIn: "30d"
                     });
                     res.cookie('token',token);
-                    return res.redirect('/admin');
+                    return res.redirect('/admin/adminDashboard');
                 } else {
                     const payload = {
                         id: validUser.userId,

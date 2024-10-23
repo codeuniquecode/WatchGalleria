@@ -11,7 +11,6 @@ router.get('/',userController.home);
 router.get('/cs',userController.cs);
 router.get('/signup',userController.signup);
 router.get('/forget',isAuthenticated,userController.forget);
-router.get('/admin',isAuthenticated,userController.adminDashboard);
 router.get('/logout',userController.logout);
 router.get('/editProfile',isAuthenticated,userController.editProfile);
 router.get('/changePassword',isAuthenticated,userController.renderChangePassword);
