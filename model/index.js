@@ -43,7 +43,8 @@ db.order = makeOrderTable(sequelize,DataTypes);
 db.orderItem = makeOrderItemTable(sequelize,DataTypes);
 // Vendor-Product relationship
 db.vendor.hasMany(db.product, {
-    foreignKey: 'vendorId' // Specify the foreign key name
+    foreignKey: 'vendorId', // Specify the foreign key name
+    onDelete: 'CASCADE', // When vendor is deleted, related products will be deleted
   });
   db.product.belongsTo(db.vendor, {
     foreignKey: 'vendorId' 
@@ -59,7 +60,8 @@ db.vendor.hasMany(db.product, {
 
   // User-Cart relationship
 db.user.hasOne(db.cart, {
-    foreignKey: 'userId' 
+    foreignKey: 'userId' ,
+    onDelete: 'CASCADE', // When user is deleted, related cart will be deleted
   });
   db.cart.belongsTo(db.user, {  
     foreignKey: 'userId' 
@@ -67,7 +69,8 @@ db.user.hasOne(db.cart, {
 
   // Cart-cartItem relationship
   db.cart.hasMany(db.cartItem, {
-    foreignKey: 'cartId' 
+    foreignKey: 'cartId',
+    onDelete: 'CASCADE' // When cart is deleted, related cart items will be deleted
   });
   db.cartItem.belongsTo(db.cart, {
     foreignKey: 'cartId' 
@@ -83,7 +86,8 @@ db.user.hasOne(db.cart, {
 
   // User-Order relationship
   db.user.hasMany(db.order, {
-    foreignKey: 'userId' 
+    foreignKey: 'userId' ,
+    onDelete: 'CASCADE', // When user is deleted, related orders will be deleted
   });
   db.order.belongsTo(db.user, {
     foreignKey: 'userId'
@@ -91,7 +95,8 @@ db.user.hasOne(db.cart, {
 
   // Order-OrderItem relationship
   db.order.hasMany(db.orderItem, {
-    foreignKey: 'orderId' 
+    foreignKey: 'orderId',
+    onDelete: 'CASCADE' // When order is deleted, related order items will be deleted 
   });
   db.orderItem.belongsTo(db.order, {
     foreignKey: 'orderId' 

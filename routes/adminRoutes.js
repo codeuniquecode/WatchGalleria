@@ -9,8 +9,10 @@ const {isAdmin}= require('../middleware/isAdmin')
 router.get('/adminDashboard',isAdmin,adminController.renderAdminDashboard);
 router.get('/logout',adminController.logout);
 router.get('/orderStatus',isAdmin,adminController.renderOrderStatus);
-
+router.get('/userMgmt',isAdmin,adminController.renderUserMgmt);
+router.get('/deleteUser/:id',isAdmin,adminController.deleteUser);
 
 //POST -- request
 router.post('/orderSearch',isAdmin,adminController.orderSearch);
+router.post('/userSearch',isAdmin,adminController.userSearch);
 module.exports = router;
