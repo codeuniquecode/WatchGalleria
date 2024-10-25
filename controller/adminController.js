@@ -1,6 +1,9 @@
 const moment = require("moment");
 const { user, order } = require("../model");
 const { Op } = require("sequelize");
+const multer = require('../middleware/multerConfig').multer;
+const storage = require('../middleware/multerConfig').storage;
+const upload = multer({ storage: storage });
 exports.renderAdminDashboard = async (req, res) => {
     return res.render('adminDashboard.ejs');
 }
@@ -67,10 +70,77 @@ exports.deleteUser = async (req,res)=>{
         const userData = await user.findAll();
         return res.render('userMgmt.ejs',{message:'Admin Account cannot be deleted',userData});
     }
-    await user.destroy({
+    const del=await user.destroy({
         where:{
             userId:id
         }
     });
-    return res.redirect('/admin/userMgmt');
+    if(del){
+        const userData = await user.findAll();
+        return res.render('userMgmt.ejs',{message:'User Deleted Successfully',userData});
+    }
+    else{
+        return res.send('user doesnt exists');
+    }
+    
 }
+exports.renderEditUser = async (req,res)=>{
+    const {id} = req.params;
+    const userData = await user.findAll({
+        where:{
+            userId:id
+        }
+    });
+    if(userData.length==0){
+        return res.send('user doesnt exists');
+    }
+    return res.render('adminEditUser.ejs',{userData:userData[0]});
+}
+exports.editUser =[upload.single('photo'),async(req,res)=>{
+    const userId = req.params.id;
+    const {name,phone,email,address} = req.body;
+    const oldData = await user.findOne({
+        where:{
+            userId
+        }
+    })
+    var fileUrl;
+    if(req.file){
+        fileUrl = req.file.filename
+        const oldImage =  oldData.profilepic;
+        //purano file delete garne
+        fs.unlink('storage/'+oldImage ,(err)=>{
+            if(err){
+                console.log('error happened');
+            }
+            else{
+                console.log('deleted successfully');
+            }
+        })
+    }
+    else{
+        fileUrl = oldData.profilepic
+    }
+    if(userId){
+         const update = await user.update({
+            username:name,
+            phonenumber:phone,
+            email:email,
+            address:address,
+            profilepic:fileUrl
+        },{
+            where:{
+                userId
+            }
+        });
+        if (update) {
+            const userData = await user.findAll();
+        return res.render('userMgmt.ejs',{message:'User Profile Updated Successfully',userData});
+        }
+    }
+    else{
+        return res.send('user doesnt exists');
+    }
+  
+}
+]

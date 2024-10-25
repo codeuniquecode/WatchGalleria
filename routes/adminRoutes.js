@@ -11,8 +11,11 @@ router.get('/logout',adminController.logout);
 router.get('/orderStatus',isAdmin,adminController.renderOrderStatus);
 router.get('/userMgmt',isAdmin,adminController.renderUserMgmt);
 router.get('/deleteUser/:id',isAdmin,adminController.deleteUser);
+router.get('/editUser/:id',isAdmin,adminController.renderEditUser);
 
 //POST -- request
 router.post('/orderSearch',isAdmin,adminController.orderSearch);
 router.post('/userSearch',isAdmin,adminController.userSearch);
+
+router.post('/editUser/:id',isAdmin,adminController.editUser);
 module.exports = router;
