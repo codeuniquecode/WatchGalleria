@@ -209,3 +209,27 @@ exports.rejectVendor = async (req,res)=>{
         return res.send('vendor doesnt exists');
     }
 }
+exports.renderVendorMgmt = async (req,res)=>{
+    const vendorData = await vendor.findAll(
+        {
+            where:{
+                status:'approved'
+            }
+        }
+    );
+    return res.render('vendorMgmt.ejs',{vendorData});
+}
+exports.shopnameSearch = async (req,res)=>{
+    const {shopname} = req.body;
+    const vendorData = await vendor.findAll({
+        where:{
+            shopname:{
+                [Op.like]:'%'+shopname+'%'
+            }
+        }
+    });
+    if(vendorData.length==0){
+        return res.send('invalid keyword');
+    }
+    return res.render('vendorMgmt.ejs',{vendorData});
+}
