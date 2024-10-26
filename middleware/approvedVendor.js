@@ -15,9 +15,15 @@ exports.approvedVendor = async (req, res, next) => {
         if(vendorData.status === 'pending'){
             return res.send('Your account is pending, please wait for approval');
         }
-        if(vendorData.status === 'rejected'){
-            return res.send('Your account has been rejected, please contact admin');
+        if (vendorData.status === 'rejected') {
+            const vendorId = req.user; // Assuming req.user contains the vendor's ID
+            return res.send(`
+                <div>
+                    <p>Your application has been rejected. Please <a href="/vendor/resubmit/${vendorId}">click here</a> to update and resubmit your application.</p>
+                </div>
+            `);
         }
+        
         if(vendorData.status === 'blocked'){
             return res.send('Your account has been blocked, please contact admin');
             }

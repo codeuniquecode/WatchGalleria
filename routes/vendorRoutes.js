@@ -18,6 +18,7 @@ router.get('/editProduct/:id',isAuthenticated,approvedVendor, vendorController.e
 router.get('/deleteProduct/:id',isAuthenticated, vendorController.deleteProduct);
 router.get('/viewOrder',isAuthenticated,approvedVendor, vendorController.viewOrder);
 router.get('/confirmOrder/:id',isAuthenticated,approvedVendor, vendorController.confirmOrder);
+router.get('/resubmit/:id',isAuthenticated, vendorController.renderResubmit);
 // POST
 router.post('/vendorRegister', vendorController.vendorRegister);
 router.post('/addProduct',isAuthenticated, vendorController.addProduct);
@@ -25,5 +26,6 @@ router.post('/editVendor',isAuthenticated, vendorController.editProfile);
 router.post('/vendorChangePassword',isAuthenticated, vendorController.changePassword);
 router.post('/updateProduct/:id',isAuthenticated, vendorController.updateProduct);
 router.post('/search',isAuthenticated, vendorController.searchProduct);
+router.post('/resubmit/:id',isAuthenticated, vendorController.resubmit);
 // router.post('/orderSearch', isAuthenticated, vendorController.searchOrder);
 module.exports = router;

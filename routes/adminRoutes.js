@@ -14,11 +14,10 @@ router.get('/deleteUser/:id',isAdmin,adminController.deleteUser);
 router.get('/editUser/:id',isAdmin,adminController.renderEditUser);
 router.get('/approveVendor',isAdmin,adminController.renderApproveVendor);
 router.get('/approved/:id',isAdmin,adminController.approveVendor);
-
+router.get('/rejected/:id',isAdmin,adminController.rejectVendor);
 //POST -- request
 router.post('/orderSearch',isAdmin,adminController.orderSearch);
 router.post('/userSearch',isAdmin,adminController.userSearch);
 router.post('/searchVendor',isAdmin,adminController.searchVendor);   
 router.post('/editUser/:id',isAdmin,adminController.editUser);
-// router.post('/rejected/:id',isAdmin,adminController.rejectVendor);
 module.exports = router;

@@ -379,3 +379,68 @@ exports.confirmOrder = async (req, res) => {
         res.status(500).send('Error confirming order.');
     }
 }
+exports.renderResubmit = async (req, res) => {
+    const vendorId = req.params.id;
+    const vendorData = await vendor.findByPk(vendorId);
+    if (!vendorData) {
+        return res.send('Vendor not found.');
+    }
+    res.render('reapplyVendor.ejs', { vendorData });
+}
+exports.resubmit = [
+    upload.single('photo'),
+    async (req, res) => {
+        const vendorId = req.params.id;
+        const { shopname, phonenumber, email, password, address } = req.body;
+        const oldData = await vendor.findAll({
+            where:{
+                vendorId
+            }
+        })
+        var fileUrl;
+        if(req.file){
+            fileUrl = req.file.filename
+            const oldImage =  oldData[0].photo;
+            //purano file delete garne
+            fs.unlink('storage/'+oldImage ,(err)=>{
+                if(err){
+                    console.log('error happened');
+                }
+                else{
+                    console.log('deleted successfully');
+                }
+            })
+        }
+        else{
+            fileUrl = oldData[0].photo
+        }
+        try {
+            // Prepare the updated fields
+            const updateData = {
+                shopname,
+                email,
+                password: bcrypt.hashSync(password, 1),
+                phonenumber,
+                address,
+                status: 'pending'
+            };
+            if (req.file) {
+                updateData.photo = fileUrl; // Only add photo if uploaded
+            }
+
+            // Perform update
+            const [updatedRows] = await vendor.update(updateData, {
+                where: {vendorId } // Make sure to use the correct column name
+            });
+
+            if (updatedRows === 0) {
+                return res.send('Error updating vendor data: No vendor found with this ID.');
+            }
+
+            res.redirect('/login');
+        } catch (error) {
+            console.error(error);
+            res.status(500).send('Server Error');
+        }
+    }
+];

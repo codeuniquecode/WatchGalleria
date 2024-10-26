@@ -187,3 +187,25 @@ exports.approveVendor = async (req,res)=>{
         return res.send('vendor doesnt exists');
     }
 }
+
+exports.rejectVendor = async (req,res)=>{
+    const vendorId = req.params.id;
+    const approve = await vendor.update({
+        status:'rejected'
+    },{
+        where:{
+            vendorId
+        }
+    });
+    if(approve){
+        const vendorData = await vendor.findAll({
+            where:{
+                status:'pending'
+            }
+        });
+        return res.render('vendorApproval.ejs',{message:'Vendor Rejected Successfully',vendorData});
+    }
+    else{
+        return res.send('vendor doesnt exists');
+    }
+}
