@@ -12,6 +12,15 @@
      a{
             text-decoration: none;
         }
+        .shopimage{
+          height:2rem;
+          width:2rem;
+          border-radius: 50%;
+        }
+        .shopimage:hover{
+          height:5rem;
+          width:5rem;
+        }
  
 </style>
 </head>
@@ -20,7 +29,7 @@
         <div class="container-fluid">
           <!-- Logo at the start -->
           <a class="navbar-brand" href="#">
-            <img src="logo.png" alt="Logo" width="60" height="60" class="d-inline-block align-text-top">
+            <img src="/images/logo.png" alt="Logo" width="60" height="60" class="d-inline-block align-text-top">
           </a>
           
           <!-- Toggler for mobile view -->
@@ -35,44 +44,60 @@
             </ul>
       
             <!-- Search box and button at the end -->
-            <form class="d-flex ms-auto">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <form class="d-flex ms-auto" method="post" action="/admin/searchVendor">
+              <input class="form-control me-2" name="shopname" type="search" placeholder="Search" aria-label="Search">
               <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
           </div>
         </div>
       </nav>
+     
     <main class="container mt-lg-5 mt-md-3 mt-sm-1">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/admin/adminDashboard">Return to Dashboard</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Approve Vendor</li>
+        </ol>
+      </nav>
+       <!-- messages if any -->
+       <% if(typeof message !== 'undefined' && message ){ %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <%= message %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <% } %>
         <table class="table">
             <thead>
               <tr>
-                <th scope="col">Vendor Id</th>
+                <th scope="col">Profile</th>
                 <th scope="col">Shopname</th>
                 <th scope="col">Email</th>
-                <th scope="col">PAN No.</th>
+                <th scope="col">Address</th>
                 <th scope="col">Status</th>
                 <th scope="col">Action</th>
               </tr>
             </thead>
             <tbody>
+              <%vendorData.forEach((vendor)=>{%>
               <tr>
-                <th scope="row">1</th>
-                <td>Huwaei Ultimate</td>
-                <td>abc@gmail.com</td>
-                <td>8090483043</td>
-                <td class="fw-bold">Pending</td>
+                <td> <img src="http://localhost:3000/<%=vendor.photo %>" class="shopimage img-fluid" alt="user image"></td>
+                <td><%=vendor.shopname %></td>
+                <td><%=vendor.email %></td>
+                <td><%=vendor.address %></td>
+                <td class="fw-bold"><%=vendor.status %></td>
                 <td>
-                    <button type="button" class="btn btn-success"><a href="" type="button" class="btn-small text-light">
+                    <button type="button" class="btn btn-success"><a href="/admin/approved/<%-vendor.vendorId%>" type="button" class="btn-small text-light">
                         <i class="fa-solid fa-check"></i> Approve
                   </a></button>
                 
 
-                  <button type="button" class="btn btn-danger"><a href="" type="button" class="btn-small text-light">
+                  <button type="button" class="btn btn-danger"><a href="/admin/rejected/<%-vendor.vendorId%>" type="button" class="btn-small text-light">
                     <i class="fa-solid fa-xmark"></i> Reject
                   </a></button>
                   
                 </td>
               </tr>
+              <%})%>
             </tbody>
           </table>
     </main>

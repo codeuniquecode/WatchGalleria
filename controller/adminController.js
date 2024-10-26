@@ -1,5 +1,5 @@
 const moment = require("moment");
-const { user, order } = require("../model");
+const { user, order, vendor } = require("../model");
 const { Op } = require("sequelize");
 const multer = require('../middleware/multerConfig').multer;
 const storage = require('../middleware/multerConfig').storage;
@@ -144,3 +144,46 @@ exports.editUser =[upload.single('photo'),async(req,res)=>{
   
 }
 ]
+exports.searchVendor = async (req,res)=>{
+    const {shopname} = req.body;
+    const vendorData = await vendor.findAll({
+        where:{
+            shopname:{
+                [Op.like]:'%'+shopname+'%'
+            }
+        }
+    });
+    if(vendorData.length==0){
+        return res.send('invalid keyword');
+    }
+    return res.render('vendorApproval.ejs',{vendorData});
+}
+exports.renderApproveVendor = async (req,res)=>{
+    const vendorData = await vendor.findAll({
+        where:{
+            status:'pending'
+        }
+    });
+    return res.render('vendorApproval.ejs',{vendorData});
+}
+exports.approveVendor = async (req,res)=>{
+    const vendorId = req.params.id;
+    const approve = await vendor.update({
+        status:'approved'
+    },{
+        where:{
+            vendorId
+        }
+    });
+    if(approve){
+        const vendorData = await vendor.findAll({
+            where:{
+                status:'pending'
+            }
+        });
+        return res.render('vendorApproval.ejs',{message:'Vendor Approved Successfully',vendorData});
+    }
+    else{
+        return res.send('vendor doesnt exists');
+    }
+}
