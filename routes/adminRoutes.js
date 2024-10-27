@@ -16,6 +16,9 @@ router.get('/approveVendor',isAdmin,adminController.renderApproveVendor);
 router.get('/approved/:id',isAdmin,adminController.approveVendor);
 router.get('/rejected/:id',isAdmin,adminController.rejectVendor);
 router.get('/vendorMgmt',isAdmin,adminController.renderVendorMgmt);
+router.get('/deleteVendor/:id',isAdmin,adminController.deleteVendor);
+router.get('/blockVendor/:id',isAdmin,adminController.blockVendor);
+router.get('/unblockVendor/:id',isAdmin,adminController.unblockVendor);
 //POST -- request
 router.post('/orderSearch',isAdmin,adminController.orderSearch);
 router.post('/userSearch',isAdmin,adminController.userSearch);

@@ -1,6 +1,6 @@
 const moment = require("moment");
 const { user, order, vendor } = require("../model");
-const { Op } = require("sequelize");
+const { Op, where } = require("sequelize");
 const multer = require('../middleware/multerConfig').multer;
 const storage = require('../middleware/multerConfig').storage;
 const upload = multer({ storage: storage });
@@ -213,7 +213,7 @@ exports.renderVendorMgmt = async (req,res)=>{
     const vendorData = await vendor.findAll(
         {
             where:{
-                status:'approved'
+                status: ['approved', 'blocked']
             }
         }
     );
@@ -232,4 +232,68 @@ exports.shopnameSearch = async (req,res)=>{
         return res.send('invalid keyword');
     }
     return res.render('vendorMgmt.ejs',{vendorData});
+}
+exports.deleteVendor = async (req,res)=>{
+    const {id} = req.params;
+    const del=await vendor.destroy({
+        where:{
+            vendorId:id
+        }
+    });
+    if(del){
+        const vendorData = await vendor.findAll({
+            where:{
+                status: ['approved', 'blocked']
+            }
+        });
+        return res.render('vendorMgmt.ejs',{message:'Vendor Deleted Successfully along with their products',vendorData});
+    }
+    else{
+        return res.send('vendor doesnt exists');
+    }
+    
+}
+
+exports.blockVendor = async (req,res)=>{
+    const vendorId = req.params.id;
+    const approve = await vendor.update({
+        status:'blocked'
+    },{
+        where:{
+            vendorId
+        }
+    });
+    if(approve){
+        const vendorData = await vendor.findAll({
+            where:{
+                status: ['approved', 'blocked']
+            }
+        });
+        return res.render('vendorMgmt.ejs',{message:'Vendor Blocked Successfully',vendorData});
+    }
+    else{
+        return res.send('vendor doesnt exists');
+    }
+}
+
+exports.unblockVendor = async (req,res)=>{
+    const vendorId = req.params.id;
+    const approve = await vendor.update({
+        status:'approved'
+    },{
+        where:{
+            vendorId
+        }
+    });
+    if(approve){
+        const vendorData = await vendor.findAll({
+            where:{
+                status: ['approved', 'blocked']
+            }
+        });
+        return res.render('vendorMgmt.ejs',{message:'Vendor unblocked Successfully',vendorData});
+    }
+    else{
+        return res.send('vendor doesnt exists');
+    }
 }

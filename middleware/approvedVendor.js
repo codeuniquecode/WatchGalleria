@@ -25,7 +25,7 @@ exports.approvedVendor = async (req, res, next) => {
         }
         
         if(vendorData.status === 'blocked'){
-            return res.send('Your account has been blocked, please contact admin');
+            return res.send('Your account has been blocked! You cannot perform any operations or view the dashboard, please contact admin');
             }
         return res.send('You are not an approved vendor');
     } catch (error) {
