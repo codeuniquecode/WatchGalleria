@@ -1,5 +1,5 @@
 const moment = require("moment");
-const { user, order, vendor } = require("../model");
+const { user, order, vendor, product } = require("../model");
 const { Op, where } = require("sequelize");
 const multer = require('../middleware/multerConfig').multer;
 const storage = require('../middleware/multerConfig').storage;
@@ -358,3 +358,21 @@ exports.editVendor =[upload.single('photo'),async(req,res)=>{
   
 }
 ]
+exports.renderProductMgmt = async (req,res)=>{
+    const productData = await product.findAll();
+    return res.render('productMgmt.ejs',{productData});
+}
+exports.productSearch = async (req,res)=>{
+    const {productname} = req.body;
+    const productData = await product.findAll({
+        where:{
+            productname:{
+                [Op.like]:'%'+productname+'%'
+            }
+        }
+    });
+    if(productData.length==0){
+        return res.send('invalid keyword');
+    }
+    return res.render('productMgmt.ejs',{productData});
+}
