@@ -86,7 +86,7 @@
                 <td><%= vendor.phonenumber %></td>
                 <td><%= vendor.address %></td>
                 <td class="fw-bold"><%=vendor.status%></td>
-                <td><a href="/admin/editUser/<%= vendor.vendorId %>" class="btn btn-primary"> <i class="fa-solid fa-pencil"></i> Edit</a>
+                <td><a href="/admin/editVendor/<%= vendor.vendorId %>" class="btn btn-primary"> <i class="fa-solid fa-pencil"></i> Edit</a>
                     <% if (vendor.status === 'blocked') { %>
                         <a href="/admin/unblockVendor/<%= vendor.vendorId %>" class="btn btn-success"><i class="fa-solid fa-ban"></i> Unblock</a> 
                       <% } else { %>

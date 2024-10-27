@@ -297,3 +297,64 @@ exports.unblockVendor = async (req,res)=>{
         return res.send('vendor doesnt exists');
     }
 }
+exports.renderEditVendor = async (req,res)=>{
+    const {id} = req.params;
+    const vendorData = await vendor.findAll({
+        where:{
+            vendorId:id
+        }
+    });
+    if(vendorData.length==0){
+        return res.send('user doesnt exists');
+    }
+    return res.render('adminEditVendor.ejs',{vendorData:vendorData[0]});
+}
+
+exports.editVendor =[upload.single('photo'),async(req,res)=>{
+    const vendorId = req.params.id;
+    const {shopname,phonenumber,email,address} = req.body;
+    const oldData = await vendor.findOne({
+        where:{
+            vendorId
+        }
+    })
+    var fileUrl;
+    if(req.file){
+        fileUrl = req.file.filename
+        const oldImage =  oldData.profilepic;
+        //purano file delete garne
+        fs.unlink('storage/'+oldImage ,(err)=>{
+            if(err){
+                console.log('error happened');
+            }
+            else{
+                console.log('deleted successfully');
+            }
+        })
+    }
+    else{
+        fileUrl = oldData.profilepic
+    }
+    if(vendorId){
+         const update = await vendor.update({
+            shopname,
+            phonenumber,
+            email,
+            address,
+            profilepic:fileUrl
+        },{
+            where:{
+                vendorId
+            }
+        });
+        if (update) {
+            const vendorData = await vendor.findAll();
+        return res.render('vendorMgmt.ejs',{message:'Vendor Profile Updated Successfully',vendorData});
+        }
+    }
+    else{
+        return res.send('vendor doesnt exists');
+    }
+  
+}
+]

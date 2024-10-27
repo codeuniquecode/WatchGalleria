@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/2c8d038c04.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="index.css">
+    <style>
+        .w {
+            color: var(--primary-color);
+
+        }
+
+        .g {
+            color: var(--secondary-color);
+        }
+
+        .w,
+        .g {
+            font-weight: bold;
+        }
+        .error {
+             color: red;
+            font-weight: bold;
+            }
+            a {
+      text-decoration: none;
+      color: var(--primary-color) !important;
+    }
+
+        @media (min-width: 768px) {
+            input {
+                width: 75%;
+            }
+        }
+        @media (max-width: 468px) {
+            .pic{
+                min-width: 100% !important;
+                margin-left: 1.5rem !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+
+<!-- main -->
+    <main>
+        <div class="container text-center mt-5">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="/admin/vendorMgmt">Go Back</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Edit Profile</li>
+                </ol>
+              </nav>
+            <h4>Edit Vendor Profile</h4>
+            <form enctype="multipart/form-data" id="userForm" method="post" action="/admin/editVendor/<%-vendorData.vendorId%>">
+                <div class="row">
+                    <div class="mb-3 text-center col-sm-12 col-md-6">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control w-75 text-center mx-auto" id="name"
+                            aria-describedby="nameHelp" name="shopname" required value="<%-vendorData.shopname%>">
+                        
+                    </div>
+                    <div class="mb-3 text-center col-md-6 col-sm-12">
+                        <label for="phone" class="form-label">Phone No.</label>
+                        <input type="text" class="form-control w-75 text-center mx-auto" name="phonenumber" value="<%-vendorData.phonenumber%>" id="phone" aria-describedby="phoneHelp" required>
+                        
+                    </div>
+                </div>
+                <!-- row1sakyo -->
+                <div class="row">
+                    <div class="mb-3 text-center col-sm-12 col-md-6">
+                        <label for="exampleInputEmail1" class="form-label">Email </label>
+                        <input type="email" name="email" class="form-control w-75 text-center mx-auto" id="exampleInputEmail1"
+                            aria-describedby="emailHelp" value="<%-vendorData.email%>" required>
+                    </div>
+                    <div class="mb-3 text-center col-md-6 col-sm-12 mx-auto">
+                        <label for="photo" class="form-label">Profile picture</label> <br>
+                        <div class="pic text-center">
+                          <input type="file" name="photo" class="pic" accept=".jpg, .jpeg, .png">
+                        </div>
+                      </div>
+                </div>
+                <!-- row2sakyo -->
+                <div class="row">
+                    <div class="mb-3 text-center col-md-6 col-sm-12">
+                        <label for="address" class="form-label">Address</label>
+                        <input type="text" name="address" class="form-control w-75 text-center mx-auto" value="<%-vendorData.address%>" id="address" required>
+                        <div id="addresserr" class="form-text">Add landmark at last if possible for ease in delivery.</div>
+                    </div>
+                   
+                      
+                    </div>
+                </div>
+                <div class="last text-center mx-auto">
+                <button type="submit" class="btn btn-primary" id="submit">Update Vendor Profile</button>
+                </div>
+            </form>
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
