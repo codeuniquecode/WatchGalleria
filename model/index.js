@@ -8,6 +8,7 @@ const makeCartTable = require('./cartModel');
 const { makeCartItemTable } = require('./cartItemModel');
 const makeOrderTable = require('./orderModel');
 const makeOrderItemTable = require('./orderItemModel');
+const makeNotificationTable = require('./notificationModel');
 
 const {host} = dbConfig;
 
@@ -41,6 +42,7 @@ db.cart = makeCartTable(sequelize,DataTypes);
 db.cartItem = makeCartItemTable(sequelize,DataTypes);
 db.order = makeOrderTable(sequelize,DataTypes);
 db.orderItem = makeOrderItemTable(sequelize,DataTypes);
+db.notification = makeNotificationTable(sequelize,DataTypes);
 // Vendor-Product relationship
 db.vendor.hasMany(db.product, {
     foreignKey: 'vendorId', // Specify the foreign key name
@@ -116,6 +118,24 @@ db.user.hasOne(db.cart, {
   });
   db.order.belongsTo(db.vendor,{
       foreignKey:'vendorId'
+  });
+
+  //vendor-notification relationship
+  db.vendor.hasMany(db.notification,{
+      foreignKey:'vendorId',
+      onDelete:'CASCADE'
+  });
+  db.notification.belongsTo(db.vendor,{
+      foreignKey:'vendorId'
+  });
+
+  //product-notification relationship
+  db.product.hasMany(db.notification,{
+      foreignKey:'productId',
+      onDelete:'CASCADE'
+  });
+  db.notification.belongsTo(db.product,{
+      foreignKey:'productId'
   });
 
 db.sequelize.sync({force:false}).then(()=>{
