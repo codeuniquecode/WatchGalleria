@@ -5,8 +5,34 @@ const multer = require('../middleware/multerConfig').multer;
 const storage = require('../middleware/multerConfig').storage;
 const upload = multer({ storage: storage });
 exports.renderAdminDashboard = async (req, res) => {
-    return res.render('adminDashboard.ejs');
-}
+    try {
+        const userCount = await user.count();
+        const totaluser = userCount - 1;
+        const vendorCount = await vendor.count(
+            {
+                where: {
+                    status: ['approved', 'blocked']
+            }
+        }
+        );
+        const totalvendor = vendorCount;
+        const orderCount = await order.count();
+        const totalorder = orderCount;
+        const productCount = await product.count();
+        const totalproduct = productCount;
+        
+        return res.render('adminDashboard.ejs', {
+            totaluser,
+            totalvendor,
+            totalorder,
+            totalproduct
+        });
+    } catch (error) {
+        console.error("Error fetching counts:", error);
+        return res.status(500).send("An error occurred while fetching data.");
+    }
+};
+
 exports.logout= (req,res)=>{
     res.clearCookie('token');
     return res.redirect('/');
@@ -376,3 +402,80 @@ exports.productSearch = async (req,res)=>{
     }
     return res.render('productMgmt.ejs',{productData});
 }
+exports.deleteProduct = async (req,res)=>{
+    const {id} = req.params;
+    const del=await product.destroy({
+        where:{
+            productId:id
+        }
+    });
+    if(del){
+        const productData = await product.findAll();
+        return res.render('productMgmt.ejs',{message:'Product Deleted Successfully',productData});
+    }
+    else{
+        return res.send('product doesnt exists');
+
+    }
+}
+exports.renderEditProduct = async (req,res)=>{
+    const {id} = req.params;
+    const productData = await product.findAll({
+        where:{
+            productId:id
+        }
+    });
+    if(productData.length==0){
+        return res.send('product doesnt exists');
+    }
+    return res.render('adminEditProduct.ejs',{productData:productData[0]});
+}
+exports.editProduct =[upload.single('product_photo'),async(req,res)=>{
+    const productId = req.params.id;
+    const {productname,price,description,quantity,categories} = req.body;
+    const oldData = await product.findOne({
+        where:{
+            productId
+        }
+    })
+    var fileUrl;
+    if(req.file){
+        fileUrl = req.file.filename
+        const oldImage =  oldData.productpic;
+        //purano file delete garne
+        fs.unlink('storage/'+oldImage ,(err)=>{
+            if(err){
+                console.log('error happened');
+            }
+            else{
+                console.log('deleted successfully');
+            }
+        })
+    }
+    else{
+        fileUrl = oldData.productpic
+    }
+    if(productId){
+         const update = await product.update({
+            productname,
+            price,
+            description,
+            productpic:fileUrl,
+            quantity,
+            category:categories
+        },{
+            where:{
+                productId
+            }
+        });
+        if (update) {
+            const productData = await product.findAll();
+        return res.render('productMgmt.ejs',{message:'Product Updated Successfully',productData});
+        }
+    }
+    else{
+        return res.send('product doesnt exists');
+    }
+  
+}
+]

@@ -21,6 +21,8 @@ router.get('/blockVendor/:id',isAdmin,adminController.blockVendor);
 router.get('/unblockVendor/:id',isAdmin,adminController.unblockVendor);
 router.get('/editVendor/:id',isAdmin,adminController.renderEditVendor);
 router.get('/productMgmt',isAdmin,adminController.renderProductMgmt);
+router.get('/deleteProduct/:id',isAdmin,adminController.deleteProduct);
+router.get('/editProduct/:id',isAdmin,adminController.renderEditProduct);
 //POST -- request
 router.post('/orderSearch',isAdmin,adminController.orderSearch);
 router.post('/userSearch',isAdmin,adminController.userSearch);
@@ -29,4 +31,5 @@ router.post('/editUser/:id',isAdmin,adminController.editUser);
 router.post('/shopnameSearch',isAdmin,adminController.shopnameSearch);
 router.post('/editVendor/:id',isAdmin,adminController.editVendor);
 router.post('/productSearch',isAdmin,adminController.productSearch);
+router.post('/editProduct/:id',isAdmin,adminController.editProduct);
 module.exports = router;
