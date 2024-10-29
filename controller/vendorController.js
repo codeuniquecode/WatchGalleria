@@ -1,5 +1,5 @@
 
-const {user,vendor, sequelize, product, order, Sequelize, orderItem} = require('../model/index');
+const {user,vendor, sequelize, product, order, Sequelize, orderItem, notification} = require('../model/index');
 const multer = require('../middleware/multerConfig').multer;
 const storage = require('../middleware/multerConfig').storage;
 const upload = multer({ storage: storage });
@@ -85,7 +85,12 @@ exports.vendorDashboard = async (req,res)=>{
     if(vendorData.role !== 'vendor'){
         return res.send('Access Denied ! Login as a vendor to view this page');
     }
-    res.render('vendorDashboard',{vendorData,productCount,orderCount,totalSales});
+    const notificationCount = await notification.count({
+        where: {
+            read_status: false
+        }});
+
+    res.render('vendorDashboard',{vendorData,productCount,orderCount,totalSales,notificationCount});
 }
 exports.renderAddProduct = (req,res)=>{
     res.render('addProduct');
@@ -444,3 +449,38 @@ exports.resubmit = [
         }
     }
 ];
+exports.viewNotification = async (req, res) => {
+    const vendorId = req.user;
+    if (!vendorId) {
+        return res.send('Vendor not found.');
+    }
+    const notifications = await notification.findAll({
+        where: {
+            vendorId,
+            read_status: false
+        }
+    });
+    const notificationCount = await notification.count({
+        where: {
+            vendorId,
+            read_status: false
+        }
+    });
+    res.render('notification.ejs', { notifications,notificationCount });
+}
+exports.readTrue = async (req, res) => {
+    const notificationId = req.params.id;
+    const notificationData = await notification.findByPk(notificationId);
+    if (!notificationData) {
+        return res.send('Notification not found.');
+    }
+    const updateNotification = await notification.update({
+        read_status: true
+    }, {
+        where: { notificationId }
+    });
+    if (!updateNotification) {
+        return res.send('Error updating notification.');
+    }
+    res.redirect('/vendor/notification');
+}

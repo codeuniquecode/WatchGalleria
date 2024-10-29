@@ -19,6 +19,8 @@ router.get('/deleteProduct/:id',isAuthenticated, vendorController.deleteProduct)
 router.get('/viewOrder',isAuthenticated,approvedVendor, vendorController.viewOrder);
 router.get('/confirmOrder/:id',isAuthenticated,approvedVendor, vendorController.confirmOrder);
 router.get('/resubmit/:id',isAuthenticated, vendorController.renderResubmit);
+router.get('/notification',isAuthenticated,approvedVendor, vendorController.viewNotification);
+router.get('/readTrue/:id',isAuthenticated, vendorController.readTrue);
 // POST
 router.post('/vendorRegister', vendorController.vendorRegister);
 router.post('/addProduct',isAuthenticated, vendorController.addProduct);

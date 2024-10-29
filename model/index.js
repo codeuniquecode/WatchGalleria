@@ -129,14 +129,14 @@ db.user.hasOne(db.cart, {
       foreignKey:'vendorId'
   });
 
-  //product-notification relationship
-  db.product.hasMany(db.notification,{
-      foreignKey:'productId',
-      onDelete:'CASCADE'
-  });
-  db.notification.belongsTo(db.product,{
-      foreignKey:'productId'
-  });
+  // //product-notification relationship
+  // db.product.hasMany(db.notification,{
+  //     foreignKey:'productId',
+  //     onDelete:'CASCADE'
+  // });
+  // db.notification.belongsTo(db.product,{
+  //     foreignKey:'productId'
+  // });
 
 db.sequelize.sync({force:false}).then(()=>{
     console.log('sync done');

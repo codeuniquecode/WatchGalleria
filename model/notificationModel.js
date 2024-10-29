@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 const { sequelize } = require(".");
 
 const makeNotificationTable = (sequelize,DataTypes)=>{
-    const Notification = sequelize.define('Notification',{
+    const Notification = sequelize.define('notification',{
         NotificationId:{
             type:DataTypes.INTEGER,
             primaryKey:true,
@@ -16,7 +16,14 @@ const makeNotificationTable = (sequelize,DataTypes)=>{
         read_status:{
             type:DataTypes.BOOLEAN,
             defaultValue:false
+        },
+        message:{
+            type:DataTypes.STRING,
+            allowNull:false
         }
+        
+},{
+    tableName:'notifications'
 })
 return Notification;
 }

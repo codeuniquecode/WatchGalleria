@@ -27,16 +27,22 @@
     </style>
 </head>
 <body>
-    <!-- <%- include('adminDashboardSidebar') %> -->
-       <!-- successful message -->
-       <!-- <i class="fa-solid fa-bell"></i> -->
+    
+    <%- include('sidebar') %>
        <main class="container main-body mt-lg-3">
-        <div class="alert alert-info d-flex justify-content-between align-items-center" role="alert">
-            <div>
-                An admin has updated your product <span class="fw-bold">Huawei Watch</span> on <span class="fw-bold">March 8, 2004</span>.
-            </div>
-            <a href="#" class="fw-bold">Mark as read <i class="fa-solid fa-envelope-circle-check"></i></a>
-        </div>
+        <% if (notifications.length === 0) { %>
+            <p>No Notifications</p>
+        <% } else { %>
+            <% notifications.forEach((notify) => { %>
+                <div class="alert alert-info d-flex justify-content-between align-items-center" role="alert">
+                    <div>
+                        An admin has updated your product <span class="fw-bold"><%= notify.productName %></span> on <span class="fw-bold"><%= notify.createdAt %></span>.
+                    </div>
+                    <a href="/vendor/readTrue/<%= notify.NotificationId %>" class="fw-bold">Mark as read <i class="fa-solid fa-envelope-circle-check"></i></a>
+                </div>
+            <% }) %>
+        <% } %>
+        
     </main>
     
     

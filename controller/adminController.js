@@ -1,5 +1,5 @@
 const moment = require("moment");
-const { user, order, vendor, product } = require("../model");
+const { user, order, vendor, product, notification } = require("../model");
 const { Op, where } = require("sequelize");
 const multer = require('../middleware/multerConfig').multer;
 const storage = require('../middleware/multerConfig').storage;
@@ -15,6 +15,8 @@ exports.renderAdminDashboard = async (req, res) => {
             }
         }
         );
+       
+
         const totalvendor = vendorCount;
         const orderCount = await order.count();
         const totalorder = orderCount;
@@ -402,22 +404,50 @@ exports.productSearch = async (req,res)=>{
     }
     return res.render('productMgmt.ejs',{productData});
 }
-exports.deleteProduct = async (req,res)=>{
-    const {id} = req.params;
-    const del=await product.destroy({
-        where:{
-            productId:id
-        }
-    });
-    if(del){
-        const productData = await product.findAll();
-        return res.render('productMgmt.ejs',{message:'Product Deleted Successfully',productData});
-    }
-    else{
-        return res.send('product doesnt exists');
+exports.deleteProduct = async (req, res) => {
+    const { id } = req.params;
 
+    try {
+        // Step 1: Find the product along with the associated vendor
+        const productToDelete = await product.findOne({
+            where: { productId: id },
+            include: [{ model: vendor, attributes: ['vendorId'] }]
+        });
+
+        if (!productToDelete) {
+            return res.send('Product does not exist');
+        }
+
+        // Step 2: Store the vendorId
+        const vendorId = productToDelete.vendor?.vendorId;
+        const productName = productToDelete.productname;
+        // Step 3: Delete the product
+        const del = await product.destroy({
+            where: { productId: id }
+        });
+
+        if (del) {
+            // Use the stored IDs to create the notification
+            const notify = await notification.create({
+                type: 'deleted',
+                vendorId: vendorId,
+                message: `Product with ID ${id} and name ${productName}  has been deleted`
+            }).catch(err => {
+                console.error("Error creating notification:");
+                return res.send("Notification creation error");
+            });
+            // Fetch updated product data for rendering
+            const productData = await product.findAll();
+
+            return res.render('productMgmt.ejs', { message: 'Product Deleted Successfully', productData });
+        }
+    } catch (error) {
+        console.error('Error deleting product:', error);
+        return res.status(500).send('An error occurred while deleting the product');
     }
-}
+};
+
+
 exports.renderEditProduct = async (req,res)=>{
     const {id} = req.params;
     const productData = await product.findAll({
