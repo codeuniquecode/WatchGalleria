@@ -464,10 +464,10 @@ exports.editProduct =[upload.single('product_photo'),async(req,res)=>{
     const productId = req.params.id;
     const {productname,price,description,quantity,categories} = req.body;
     const oldData = await product.findOne({
-        where:{
-            productId
-        }
-    })
+        where: { productId },
+        include: [{ model: vendor, attributes: ['vendorId'] }]
+    });
+    const vendorId = oldData.vendor?.vendorId;
     var fileUrl;
     if(req.file){
         fileUrl = req.file.filename
@@ -499,6 +499,15 @@ exports.editProduct =[upload.single('product_photo'),async(req,res)=>{
             }
         });
         if (update) {
+             // Use the stored IDs to create the notification
+             const notify = await notification.create({
+                type: 'edited',
+                vendorId: vendorId,
+                message: `Product with Id ${productId}  has been edited`
+            }).catch(err => {
+                console.error("Error creating notification:");
+                return res.send("Notification creation error");
+            });
             const productData = await product.findAll();
         return res.render('productMgmt.ejs',{message:'Product Updated Successfully',productData});
         }

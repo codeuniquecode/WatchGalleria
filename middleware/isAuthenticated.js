@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
-const { user, vendor } = require('../model'); // Assuming you're also importing vendor
+const { user, vendor, notification } = require('../model'); // Assuming you're also importing vendor
 
 exports.isAuthenticated = async (req, res, next) => {
     try {
@@ -29,6 +29,15 @@ exports.isAuthenticated = async (req, res, next) => {
                 where: {
                     vendorId: decryptedResult.id
                 }
+                
+            });
+        }
+        if(vendorExist){
+            notifyCount = await notification.count({
+                where: {
+                    vendorId: decryptedResult.id,
+                    read_status: false
+                }
             });
         }
 
@@ -39,7 +48,7 @@ exports.isAuthenticated = async (req, res, next) => {
 
         // Store the user ID (or vendor ID) in the request for future use
         req.user = decryptedResult.id; // If user exists, this will be the user ID
-
+        res.locals.unreadNotificationsCount = notifyCount;
         next();
 
     } catch (err) {

@@ -36,7 +36,7 @@
             <% notifications.forEach((notify) => { %>
                 <div class="alert alert-info d-flex justify-content-between align-items-center" role="alert">
                     <div>
-                        An admin has updated your product <span class="fw-bold"><%= notify.productName %></span> on <span class="fw-bold"><%= notify.createdAt %></span>.
+                        An admin has <span class="fw-bold"><%=notify.type%></span> your product <span class="fw-bold"><%= notify.productName %></span> on <span class="fw-bold"><%= notify.createdAt %></span>.
                     </div>
                     <a href="/vendor/readTrue/<%= notify.NotificationId %>" class="fw-bold">Mark as read <i class="fa-solid fa-envelope-circle-check"></i></a>
                 </div>
