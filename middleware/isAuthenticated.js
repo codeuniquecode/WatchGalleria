@@ -39,6 +39,7 @@ exports.isAuthenticated = async (req, res, next) => {
                     read_status: false
                 }
             });
+            res.locals.unreadNotificationsCount = notifyCount;
         }
 
         // Handle case where neither user nor vendor exists
@@ -48,7 +49,7 @@ exports.isAuthenticated = async (req, res, next) => {
 
         // Store the user ID (or vendor ID) in the request for future use
         req.user = decryptedResult.id; // If user exists, this will be the user ID
-        res.locals.unreadNotificationsCount = notifyCount;
+       
         next();
 
     } catch (err) {

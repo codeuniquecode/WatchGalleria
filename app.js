@@ -79,7 +79,10 @@ const userRoutes = require('./routes/userRoutes');
 const vendorRoutes = require('./routes/vendorRoutes');
 const loginRoutes = require('./routes/loginRoutes');
 const adminRoutes= require('./routes/adminRoutes');
+const forgotPassRoutes = require('./routes/forgotPassRoutes');
 // Use userRoutes on the root path
+
+app.use('/',forgotPassRoutes);
 app.use('/', userRoutes);
 
 // Use vendorRoutes on a different path
