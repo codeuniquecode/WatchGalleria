@@ -39,6 +39,14 @@ const makeUserTable = (sequelize, DataTypes)=>{
             type: DataTypes.STRING,
             allowNull:false,
             defaultValue : 'user'
+        },
+        otp:{
+            type:DataTypes.STRING,
+            allowNull:true
+        },
+        otpGeneratedTime:{
+            type:DataTypes.STRING,
+            allowNull:true
         }
     })
     return User;

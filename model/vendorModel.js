@@ -41,6 +41,14 @@ const makeVendorTable = (sequelize, DataTypes)=>{
         photo:{
             type :DataTypes.STRING,
             allowNull:false
+        },
+        otp:{
+            type:DataTypes.STRING,
+            allowNull:true
+        },
+        otpGeneratedTime:{
+            type:DataTypes.STRING,
+            allowNull:true
         }
     })
     return Vendor;

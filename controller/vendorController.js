@@ -25,6 +25,14 @@ exports.vendorRegister = [
     async (req, res) => {
         try {
             const { shopname, phonenumber, email, password, address } = req.body;
+            const vendorExist = await vendor.findOne({
+                where: {
+                    email
+                }
+            })
+            if (vendorExist) {
+                return res.send('Vendor with this email already exists');
+            }
             await vendor.create({
                 shopname: shopname,
                 email: email,

@@ -28,6 +28,14 @@ exports.register = [
     upload.single('image'), // Define as an array
     async (req, res) => {
         const { fullname, phonenumber, email, password, address } = req.body;
+        const userExist = await user.findOne({
+            where: {
+                email
+            }
+        })
+        if (userExist) {
+            return res.send('User with this email already exists');
+        }
         await user.create({
             username: fullname,
             phonenumber: phonenumber,
