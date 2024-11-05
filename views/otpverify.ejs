@@ -32,7 +32,8 @@
         <form action="/otpVerify" method="post" id="form">
             <div class="form-group mb-3">
                 <input type="text" name="otp" id="otp" class="form-control text-center mx-auto" required>
-             
+                <input type="email" name="email" value="<%-email%>" hidden>
+                <input type="text" name="userType" id="" value="<%-userType%>" hidden>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>

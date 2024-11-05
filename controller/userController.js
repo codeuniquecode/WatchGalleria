@@ -174,6 +174,11 @@ exports.changePassword = async(req,res)=>{
 exports.renderMen = async (req, res) => {
     try {
         const data = await product.findAll({
+            where: {
+                quantity: {
+                    [Op.gt]: 0
+                }
+            },
             include: {
                 model: category,
                 where: {
@@ -195,6 +200,11 @@ exports.renderMen = async (req, res) => {
 exports.renderWomen = async (req, res) => {
     try {
         const data = await product.findAll({
+            where: {
+                quantity: {
+                    [Op.gt]: 0
+                }
+            },
             include: {
                 model: category,
                 where: {
@@ -216,6 +226,11 @@ exports.renderWomen = async (req, res) => {
 exports.renderSmart = async (req, res) => {
     try {
         const data = await product.findAll({
+            where: {
+                quantity: {
+                    [Op.gt]: 0
+                }
+            },
             include: {
                 model: category,
                 where: {
@@ -237,6 +252,11 @@ exports.renderSmart = async (req, res) => {
 exports.renderLuxury = async (req, res) => {
     try {
         const data = await product.findAll({
+            where: {
+                quantity: {
+                    [Op.gt]: 0
+                }
+            },
             include: {
                 model: category,
                 where: {
