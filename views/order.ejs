@@ -86,14 +86,15 @@
                             <td class="counter text-center">
                                 <%= item.quantity %>
                             </td>
-                            <td id="total-<%= item.productId %>">Rs. <%= itemTotal %></td>
+                            
+                            <td id="total-<%= item.productId %>">Rs. <%= itemTotal%></td>
                         </tr>
                     <% }); %>
     
                     <!-- Row to display total amount -->
                     <tr class="fw-bold">
                         <td colspan="4" class="text-end">Total Amount:</td>
-                        <td>Rs. <%= order.Totalamount %></td>
+                        <td>Rs. <%= totalAmount %></td>
                     </tr>
                 <% } %>
             </tbody>

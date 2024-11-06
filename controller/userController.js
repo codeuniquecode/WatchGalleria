@@ -420,11 +420,10 @@ exports.removeProduct = async (req, res) => {
     }
 }
 exports.placeOrder = async (req, res) => {
-    const userId = req.user; // Assuming `req.user` contains the logged-in user ID
-    const productIds = req.body.productIds;  // Array of product IDs
-    const quantities = req.body.quantities;  // Array of quantities
-    const prices = req.body.prices;          // Array of prices
-    const totals = req.body.totals;          // Array of totals
+    const userId = req.user;
+    const productIds = req.body.productIds;
+    const quantities = req.body.quantities;
+    const prices = req.body.prices;
 
     if (!userId) {
         return res.send('Please login to place an order');
@@ -447,22 +446,26 @@ exports.placeOrder = async (req, res) => {
             return res.send('No items in your cart');
         }
 
-        // Calculate total order amount
         let totalAmount = 0;
-        cartItems.forEach(item => {
-            totalAmount += item.quantity * item.product.price;
-        });
-        console.log('Total amount:', totalAmount);
-        
-        
-        // Create a new order
+        for (let i = 0; i < cartItems.length; i++) {
+            const item = cartItems[i];
+            const requestedQuantity = quantities[i];
+            const productPrice = prices[i];
+
+            totalAmount += requestedQuantity * productPrice;
+
+            // Correct quantity check with requested quantity
+            if (item.quantity > item.product.quantity) {
+                return res.send(`Quantity not available for ${item.product.productname}. Available: ${item.product.quantity}`);
+            }
+        }
+
         const newOrder = await order.create({
             orderDate: new Date(),
             Totalamount: totalAmount,
             userId,
         });
 
-        // Create order items
         for (let i = 0; i < cartItems.length; i++) {
             await orderItem.create({
                 orderId: newOrder.orderId,
@@ -472,20 +475,39 @@ exports.placeOrder = async (req, res) => {
             });
         }
 
-        // Clear the cart items after order is placed
-        await cartItem.destroy({ where: { cartId: userCart.cartId } });
+        for (let i = 0; i < cartItems.length; i++) {
+            const updatedQuantity = cartItems[i].product.quantity - quantities[i];
+            const [updatedRows] = await product.update({
+                quantity: updatedQuantity
+            }, {
+                where: {
+                    productId: productIds[i]
+                }
+            });
 
-        // Optionally, clear the cart itself if no items are left
+            if (updatedRows === 0) {
+                return res.send(`Failed to update quantity for product ${cartItems[i].product.productname}`);
+            }
+        }
+// After creating the new order, modify the cartItems data to reflect the requested quantities
+const orderItemsWithQuantities = cartItems.map((item, index) => {
+    item.quantity = quantities[index]; // Update quantity with requested value
+    return item;
+});
+        await cartItem.destroy({ where: { cartId: userCart.cartId } });
         await cart.destroy({ where: { userId } });
 
-        // Redirect to the order confirmation page or render the order summary
-        res.render('order.ejs', { order: newOrder, orderItems: cartItems });
+
+// Then pass the modified orderItemsWithQuantities to the EJS template
+return res.render('order.ejs', { order: newOrder, orderItems: orderItemsWithQuantities, totalAmount });
 
     } catch (error) {
         console.error(error);
-        res.status(500).send('Error placing the order');
+        return res.status(500).send('Error placing the order');
     }
 };
+
+
 const { Sequelize, Op } = require('sequelize'); // Ensure you import Sequelize
 
 exports.renderOrder = async (req, res) => {
