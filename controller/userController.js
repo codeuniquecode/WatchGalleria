@@ -521,11 +521,15 @@ exports.renderOrder = async (req, res) => {
         // Find all orders for the user
         const userOrders = await order.findAll({
             where: { userId },
-            include: {
+            include: [{
                 model: orderItem,
-                include: product // Assuming orderItem has a product relation
-            }
+                include: [{
+                    model: product,
+                    required: false // Ensures that orders are fetched even if no product is linked
+                }]
+            }]
         });
+        
 
         // Calculate the total amount for each order (similar to what you did previously)
         // userOrders.forEach(order => {

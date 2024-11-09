@@ -87,9 +87,9 @@
     color: var(--primary-color);
 }
 .custom-logo>img{
-    height: 70px;
-    width: 65px;
-    aspect-ratio: 3/2;
+    height: 65px;
+    width: 60px;
+    /* aspect-ratio: 3/2; */
 
 }
 .custom-t{

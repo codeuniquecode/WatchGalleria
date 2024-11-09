@@ -75,36 +75,34 @@
                     </tr>
                 <% } else { %>
                     <% userOrders.forEach(order => { %>
-                        <!-- Loop through each order and then order items inside -->
-                        <% order.orderItems.forEach(item => {
-                            const itemTotal = item.product.price * item.quantity;
-                        %>
+                        <% if (order.orderItems && order.orderItems.length > 0) { %>
+                            <% order.orderItems.forEach(item => { %>
+                                <% if (item.product) { // Add a check here %>
+                                    <tr>
+                                        <td><%= order.orderId %></td>
+                                        <td>
+                                            <img src="http://localhost:3000/<%= item.product.productpicture %>" 
+                                                alt="<%= item.product.productname %>" class="img-fluid" style="max-width: 100px;">
+                                        </td>
+                                        <td><%= item.product.productname %></td>
+                                        <td>Rs. <%= item.product.price %></td>
+                                        <td><%= item.quantity %></td>
+                                        <td>Rs. <%= item.product.price * item.quantity %></td>
+                                        <td><%= order.status %></td>
+                                    </tr>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="7" class="text-danger">Product information missing</td>
+                                    </tr>
+                                <% } %>
+                            <% }); %>
+                        <% } else { %>
                             <tr>
-                                <td>
-                                    <%= order.orderId %>
-                                </td>
-                                <td>
-                                    <img src="http://localhost:3000/<%= item.product.productpicture %>" 
-                                        alt="<%= item.product.productname %>" class="img-fluid" style="max-width: 100px;">
-                                </td>
-                                <td><%= item.product.productname %></td>
-                                <td id="price-<%= item.productId %>">Rs. <%= item.product.price %></td>
-                                <td class="counter text-center">
-                                    <%= item.quantity %>
-                                </td>
-                                <td id="total-<%= item.productId %>">Rs. <%= itemTotal %></td>
-                                <td>
-                                    <% if (order.status === 'Delivered') { %>
-                                        <span class="fw-bold"><%= order.status %></span>
-                                    <% } else { %>
-                                        <span class="fw-bold"><%= order.status %></span>
-                                    <% } %>
+                                <td colspan="7">No items found for this order</td>
                             </tr>
-                        <% }); %>
-    
-                        <!-- Only display the total amount once per order, after all items -->
-                        
+                        <% } %>
                     <% }); %>
+                    
                 <% } %>
                 <p class="fw-bold text-center">
                     <td colspan="4" class="text-end fw-bold">Total Amount:</td>
