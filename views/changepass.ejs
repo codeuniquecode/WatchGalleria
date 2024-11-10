@@ -22,7 +22,24 @@
             <button type="submit" class="btn btn-primary">Update Password</button>
         </form>
     </div>
-
+    <script>
+        const old_password = document.getElementById('exampleInputPassword1');
+        const new_password = document.getElementById('exampleInputPassword2');
+        old_password.addEventListener('input', function(){
+            if(old_password.value.length < 8){
+                old_password.setCustomValidity('Password must be at least 8 characters long');
+            }else{
+                old_password.setCustomValidity('');
+            }
+        });
+        new_password.addEventListener('input', function(){
+            if(new_password.value.length < 8){
+                new_password.setCustomValidity('Password must be at least 8 characters long');
+            }else{
+                new_password.setCustomValidity('');
+            }
+        });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"></script>

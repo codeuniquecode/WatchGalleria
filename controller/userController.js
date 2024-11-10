@@ -1,5 +1,5 @@
 
-const {user, sequelize, category, product, cart, cartItem, order, orderItem} = require('../model/index');
+const {user, sequelize, category, product, cart, cartItem, order, orderItem, vendor} = require('../model/index');
 const multer = require('../middleware/multerConfig').multer;
 const jwt = require('jsonwebtoken');
 const storage = require('../middleware/multerConfig').storage;
@@ -57,10 +57,8 @@ exports.adminDashboard = async (req,res)=>{
         }
     })
     if(userData.role !== 'admin'){
-        return res.send('Access Denied ! You are not authorized to view this page');
+        return res.render('showMessage.ejs', { message: 'Access Denied ! You are not authorized to view this page' });
     }
-
-    res.send('admin dashboard here');
 }
 exports.logout= (req,res)=>{
     res.clearCookie('token');
@@ -167,7 +165,7 @@ exports.changePassword = async(req,res)=>{
         }
     }
     else{
-        return res.send('old password doesnot match,please try again');
+        return res.render('showMessage.ejs', { message: 'Old Password doesnot match, Please try again!!!' });
     }
 }
 //see products
@@ -293,7 +291,10 @@ exports.addToCart = async (req, res) => {
     const quantity = 1; // Default quantity to add to the cart
 
     if (!userId) {
-        return res.send('Please login to add items to your cart');
+        return res.render('showMessage.ejs', { message: 'Please Login to add item to cart' });
+    }
+    if(res.locals.role = 'vendor'){
+        return res.render('showMessage.ejs', { message: 'You are not authorized to add items to cart' });
     }
 
     try {
@@ -355,13 +356,13 @@ exports.renderCart = async (req, res) => {
     const userId = req.user; // Assuming `req.user` contains the logged-in user ID
 
     if (!userId) {
-        return res.send('Please login to view your cart');
+        return res.render('showMessage.ejs', { message: 'Please Login to view your cart' });
     }
 
     try {
         const userCart = await cart.findOne({ where: { userId } });
         if (!userCart) {
-            return res.send('No items in your cart');
+            return res.render('showMessage.ejs', { message: 'No items in your cart!!!' });
         }
 
         const cartItems = await cartItem.findAll({
@@ -372,7 +373,7 @@ exports.renderCart = async (req, res) => {
         });
 
         if (!cartItems || cartItems.length === 0) {
-            return res.send('No items in your cart');
+            return res.render('showMessage.ejs', { message: 'No items in your cart!!!' });
         }
 
         res.render('cart.ejs', { cartItems });
@@ -426,7 +427,7 @@ exports.placeOrder = async (req, res) => {
     const prices = req.body.prices;
 
     if (!userId) {
-        return res.send('Please login to place an order');
+        return res.render('showMessage.ejs', { message: 'Please Login to place order' });
     }
 
     try {
@@ -514,7 +515,7 @@ exports.renderOrder = async (req, res) => {
     const userId = req.user; // Assuming `req.user` contains the logged-in user ID
 
     if (!userId) {
-        return res.send('Please login to view your orders');
+        return res.render('showMessage.ejs', { message: 'Please Login to view orders' });
     }
 
     try {
@@ -569,7 +570,7 @@ exports.searchProduct = async (req,res)=>{
         }
     });
     if(!data || data.length === 0){
-        return res.send('No products found');
+      return res.render('showMessage.ejs', { message: 'We couldnot find any matches. Try adjusting your search.' });
     }
     res.render('product.ejs',{data});
 }

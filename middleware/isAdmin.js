@@ -26,10 +26,9 @@ exports.isAdmin = async (req, res, next) => {
         if (!userExist) {
             return res.status(404).send('User does not exist');
         }
-
         // Check if user is an admin
         if (userExist.role !== 'admin') {
-            return res.status(403).send('You are not authorized to view this page');
+            return res.render('showMessage.ejs', { message: 'You are not authorized to view this page!!!' });
         }
 
         // Store the user ID in the request for future use

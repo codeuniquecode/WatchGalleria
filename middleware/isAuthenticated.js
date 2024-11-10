@@ -40,6 +40,7 @@ exports.isAuthenticated = async (req, res, next) => {
                 }
             });
             res.locals.unreadNotificationsCount = notifyCount;
+            res.locals.role = 'vendor';
         }
 
         // Handle case where neither user nor vendor exists

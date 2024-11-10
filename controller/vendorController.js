@@ -148,7 +148,7 @@ exports.editProfile = async(req,res)=>{
 }
 exports.logout = (req,res)=>{
     res.clearCookie('token');
-    res.redirect('/');
+    res.redirect('/login');
 }
 exports.renderChangePassword = (req,res)=>{
     res.render('vendorChangepass.ejs');

@@ -73,18 +73,21 @@ app.use(async (req, res, next) => {
     
 //     next();
 // });
-
+app.get('/test', (req, res) => {
+    res.render('showMessage.ejs');
+}
+);
 // routing
 const userRoutes = require('./routes/userRoutes');
 const vendorRoutes = require('./routes/vendorRoutes');
 const loginRoutes = require('./routes/loginRoutes');
 const adminRoutes= require('./routes/adminRoutes');
 const forgotPassRoutes = require('./routes/forgotPassRoutes');
+const { restrictVendor } = require('./middleware/restrictVendor');
 // Use userRoutes on the root path
 
 app.use('/',forgotPassRoutes);
 app.use('/', userRoutes);
-
 // Use vendorRoutes on a different path
 app.use('/vendor', vendorRoutes);
 app.use('/', loginRoutes);
