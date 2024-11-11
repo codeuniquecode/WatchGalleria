@@ -148,6 +148,7 @@ exports.editProfile = async(req,res)=>{
 }
 exports.logout = (req,res)=>{
     res.clearCookie('token');
+    res.locals.role = null;
     res.redirect('/login');
 }
 exports.renderChangePassword = (req,res)=>{

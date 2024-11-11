@@ -62,10 +62,14 @@ exports.adminDashboard = async (req,res)=>{
 }
 exports.logout= (req,res)=>{
     res.clearCookie('token');
+    res.locals.role = null;
     res.redirect('/');
 }
 exports.editProfile= async(req,res)=>{
     const userId = req.user;
+    if(res.locals.role === 'vendor'){
+        return res.render('showMessage.ejs', { message: 'Vendors are requested to edit their profile via vendor dashboard only' });
+    }
     const userData = await user.findOne({
         where:{
             userId
@@ -138,6 +142,9 @@ exports.updateProfile =async(req,res)=>{
   
 }
 exports.renderChangePassword = (req,res)=>{
+    if(res.locals.role === 'vendor'){
+        return res.render('showMessage.ejs', { message: 'Vendors are requested to change their password via vendor dashboard' });
+    }
     res.render('changepass.ejs');
 }
 exports.changePassword = async(req,res)=>{
@@ -513,7 +520,9 @@ const { Sequelize, Op } = require('sequelize'); // Ensure you import Sequelize
 
 exports.renderOrder = async (req, res) => {
     const userId = req.user; // Assuming `req.user` contains the logged-in user ID
-
+    if(res.locals.role === 'vendor'){
+        return res.render('showMessage.ejs', { message: 'See order page from vendor dashboard' });
+    }
     if (!userId) {
         return res.render('showMessage.ejs', { message: 'Please Login to view orders' });
     }
