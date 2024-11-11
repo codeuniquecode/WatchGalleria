@@ -1,111 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order | WatchGalleria</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/2c8d038c04.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="/css/index.css">
+    <link rel="icon" href="/images/logo.png" type="website icon">
+    <link rel="stylesheet" href="css/index.css">
     <style>
-        .table img{
-            width: 100px;
-            max-height: 100px !important;
+        .table img {
+            width: 80px;
+            max-height: 80px;
         }
-        td{
+
+        td {
             vertical-align: middle;
         }
 
-        #quantity{
-            border: none;
-            width: 1.8rem;
-            text-align: center !important;
-        }
-        .counter{
-            flex-wrap: nowrap !important;
-        }
-        .counter button{
-            background-color: white;
-            border: none;
-        }
-        .counter button:hover{
-            background-color: white;
-            color: black;
-        }
-        .quant{
-            min-width: 2rem !important;
-            background-color: white !important;
-        }
-
-        .change{
-            background-color: white;
-            border: none;
-        }
-        @media screen and (max-width: 468px){
-            .table img{
+        @media screen and (max-width: 768px) {
+            .table img {
                 width: 50px;
-                max-height: 50px !important;
-                min-height: 40px !important;
+                max-height: 50px;
             }
         }
     </style>
 </head>
-<body>
-    
-    <!-- Navbar -->
-    <%- include('navbar2.ejs') %>
 
-    <main class="mt-lg-5 mt-md-3 mt-sm-1">
-        <table class="table container text-center">
-            <thead>
-                <tr>
-                    <th scope="col"></th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% if (orderItems.length === 0) { %>
-                    <tr>
-                        <td colspan="5">You don't have any orders</td>
-                    </tr>
-                <% } else { %>
-                    <% orderItems.forEach(item => { 
-                        const itemTotal = item.product.price * item.quantity;
-                    %>
-                        <tr>
-                            <td>
-                                <img src="http://localhost:3000/<%= item.product.productpicture %>" 
-                                    alt="<%= item.product.productname %>" class="img-fluid" style="max-width: 100px;">
-                            </td>
-                            <td><%= item.product.productname %></td>
-                            <td id="price-<%= item.productId %>">Rs. <%= item.product.price %></td>
-                            <td class="counter text-center">
-                                <%= item.quantity %>
-                            </td>
-                            
-                            <td id="total-<%= item.productId %>">Rs. <%= itemTotal%></td>
-                        </tr>
-                    <% }); %>
-    
-                    <!-- Row to display total amount -->
-                    <tr class="fw-bold">
-                        <td colspan="4" class="text-end">Total Amount:</td>
-                        <td>Rs. <%= totalAmount %></td>
-                    </tr>
-                <% } %>
-            </tbody>
-        </table>
-    
-        <div class="container text-center">
-            <button class="btn btn-primary"><i class="fa-regular fa-credit-card"></i> Checkout</button>
+<body>
+    <%-include('navbar2.ejs')%>
+    <main class="container mt-5">
+        <div class="row justify-content-center">
+            <!-- Billing Info and Order Summary in a single row -->
+            <div class="col-lg-5 col-md-6 col-sm-12">
+                <!-- Billing Info Section -->
+                <div class="card mb-4">
+                    <div class="card-header text-center fw-bold">Billing Info</div>
+                    <div class="card-body">
+                        <form method="post" action="/checkout">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Name</label>
+                                <input type="text" class="form-control text-center" id="email" value="<%-userData.username%>" name="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Address</label>
+                                <input type="text" class="form-control text-center" id="address" value="<%-userData.address%>" name="address" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="number" class="form-control text-center" id="phone" value="<%-userData.phonenumber%>" name="phonenumber" required pattern="[0-9]{10}">
+                                <span class="error"></span>
+                            </div>
+                              <!-- Checkout Button -->
+                <div class="text-center">
+                    <button class="btn btn-primary" type="submit"><i class="fa-regular fa-credit-card"></i> Checkout</button>
+                </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Summary Section -->
+            <div class="col-lg-7 col-md-6 col-sm-12">
+                <div class="card mb-4">
+                    <div class="card-header text-center fw-bold">Order Summary</div>
+                    <div class="card-body">
+                        <table class="table table-bordered text-center">
+                            <thead class="">
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if (orderItems.length === 0) { %>
+                                    <tr>
+                                        <td colspan="5">You don't have any orders</td>
+                                    </tr>
+                                <% } else { %>
+                                    <% orderItems.forEach(item => { 
+                                        const itemTotal = item.product.price * item.quantity;
+                                    %>
+                                        <tr>
+                                            <td>
+                                                <img src="http://localhost:3000/<%= item.product.productpicture %>" 
+                                                    alt="<%= item.product.productname %>" class="img-fluid" style="max-width: 100px;">
+                                            </td>
+                                            <td><%= item.product.productname %></td>
+                                            <td id="price-<%= item.productId %>">Rs. <%= item.product.price %></td>
+                                            <td class="counter text-center">
+                                                <%= item.quantity %>
+                                            </td>
+                                            
+                                            <td id="total-<%= item.productId %>">Rs. <%= itemTotal%></td>
+                                        </tr>
+                                    <% }); %>
+                    
+                                    <!-- Row to display total amount -->
+                                    <tr class="fw-bold">
+                                        <td colspan="4" class="text-end">Total Amount:</td>
+                                        <td>Rs. <%= totalAmount %></td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+              
+            </div>
         </div>
     </main>
+<script>
+    const number = document.getElementById('phone');
+    number.addEventListener('input', function () {
+        if (number.value.length != 10) {
+            number.setCustomValidity('Phone number must be 10 digits long');
+        } else {
+            number.setCustomValidity('');
+        }
+    });
+</script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-    crossorigin="anonymous"></script>
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
 </body>
+
 </html>

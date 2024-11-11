@@ -49,14 +49,13 @@
         color: red !important;
         padding: 0.5rem;
     }
-    @media screen and (max-width: 468px){
-        .table img{
-            width: 50px;
-            max-height: 50px !important;
-            min-height: 40px !important;
-        }
-        
+    
+    @media screen and (max-width: 768px) {
+    .table img {
+        width: 50px;
+        max-height: 50px;
     }
+}
     
    
 </style>
@@ -100,9 +99,13 @@
                   </td>
                   <td id="total-<%= item.productId %>" class="fw-bold"><%= item.product.price * item.quantity %></td>
                   <td>
-                      <a href="/removeProduct/<%= item.productId %>" class="deletebtn"><i class="fa-solid fa-trash"></i></a>
-                   
-                  </td>
+                    <a href="/removeProduct/<%= item.productId %>" 
+                       class="deletebtn" 
+                       onclick="return confirm('Are you sure you want to remove this item from your cart?');">
+                        <i class="fa-solid fa-trash"></i>
+                    </a>
+                </td>
+                
                   
                   <!-- Hidden fields for each product inside the loop -->
                   <input type="hidden" name="productIds[]" value="<%= item.productId %>">

@@ -300,7 +300,7 @@ exports.addToCart = async (req, res) => {
     if (!userId) {
         return res.render('showMessage.ejs', { message: 'Please Login to add item to cart' });
     }
-    if(res.locals.role = 'vendor'){
+    if(res.locals.role === 'vendor'){
         return res.render('showMessage.ejs', { message: 'You are not authorized to add items to cart' });
     }
 
@@ -436,6 +436,11 @@ exports.placeOrder = async (req, res) => {
     if (!userId) {
         return res.render('showMessage.ejs', { message: 'Please Login to place order' });
     }
+    const userData = await user.findOne({
+        where:{
+            userId
+        }
+    })
 
     try {
         const userCart = await cart.findOne({ where: { userId } });
@@ -507,7 +512,7 @@ const orderItemsWithQuantities = cartItems.map((item, index) => {
 
 
 // Then pass the modified orderItemsWithQuantities to the EJS template
-return res.render('order.ejs', { order: newOrder, orderItems: orderItemsWithQuantities, totalAmount });
+return res.render('order.ejs', { order: newOrder, orderItems: orderItemsWithQuantities, totalAmount,userData });
 
     } catch (error) {
         console.error(error);
