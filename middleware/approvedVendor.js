@@ -13,7 +13,7 @@ exports.approvedVendor = async (req, res, next) => {
             return next();
         }
         if(vendorData.status === 'pending'){
-            return res.send('Your account is pending, please wait for approval');
+            return res.render('showMessage.ejs', { message: 'Your account is pending, please wait for approval' });
         }
         if (vendorData.status === 'rejected') {
             const vendorId = req.user; // Assuming req.user contains the vendor's ID
@@ -25,7 +25,7 @@ exports.approvedVendor = async (req, res, next) => {
         }
         
         if(vendorData.status === 'blocked'){
-            return res.send('Your account has been blocked! You cannot perform any operations or view the dashboard, please contact admin');
+            return res.render('showMessage.ejs', { message: 'Your account has been blocked! You cannot perform any operations or view the dashboard, please contact admin' });
             }
         return res.send('You are not an approved vendor');
     } catch (error) {

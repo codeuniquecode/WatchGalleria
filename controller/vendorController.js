@@ -31,7 +31,7 @@ exports.vendorRegister = [
                 }
             })
             if (vendorExist) {
-                return res.send('Vendor with this email already exists');
+                return res.render('showMessage.ejs', { message: 'Vendor with this email already exists' });
             }
             await vendor.create({
                 shopname: shopname,
@@ -354,20 +354,30 @@ exports.viewOrder = async (req, res) => {
         res.status(500).send('Error fetching vendor data.');
     }
 };
-exports.confirmOrder = async (req, res) => {    
+exports.confirmOrder = async (req, res) => {
     const orderItemId = req.params.id;
+
     try {
-        // Find the orderItem and include the product and order
+        // Find the orderItem and include the product and its associated vendor, along with the order details
         const orderItemData = await orderItem.findOne({
             where: { orderItemId },
-            include: [{
-                model: product,
-                include: [{ model: vendor }]
-            }, { model: order }]
+            include: [
+                {
+                    model: product,
+                    include: [{ model: vendor }]
+                },
+                { model: order }
+            ]
         });
 
+        // Check if the orderItemData was found
         if (!orderItemData) {
             return res.send('Order item not found.');
+        }
+
+        // Check if the product has an associated vendor
+        if (!orderItemData.product || !orderItemData.product.vendor) {
+            return res.send('Vendor information not found for the product.');
         }
 
         // Check if the vendorId from the product matches the authenticated vendor
@@ -375,24 +385,29 @@ exports.confirmOrder = async (req, res) => {
             return res.send('Access denied. Order does not belong to this vendor.');
         }
 
-        // Update the order status to 'confirmed'
-        const updateOrder = await order.update({
-            status: 'confirmed',
-            vendorId: req.user // Assign the vendorId to the order
-        }, {
-            where: { orderId: orderItemData.order.orderId }
-        });
+        // Update the order status to 'confirmed' and assign the vendorId to the order
+        const updateOrder = await order.update(
+            {
+                status: 'confirmed',
+                vendorId: orderItemData.product.vendor.vendorId // Assign the correct vendorId
+            },
+            {
+                where: { orderId: orderItemData.order.orderId }
+            }
+        );
 
         if (updateOrder[0] === 0) {
             return res.send('Error updating order status.');
         }
 
-        res.redirect('/vendor/viewOrder?status=pending');  // Redirect to view pending orders
+        // Redirect to view pending orders
+        res.redirect('/vendor/viewOrder?status=pending');
     } catch (error) {
         console.error(error);
         res.status(500).send('Error confirming order.');
     }
-}
+};
+
 exports.renderResubmit = async (req, res) => {
     const vendorId = req.params.id;
     const vendorData = await vendor.findByPk(vendorId);

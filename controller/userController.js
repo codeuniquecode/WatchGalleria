@@ -34,7 +34,7 @@ exports.register = [
             }
         })
         if (userExist) {
-            return res.send('User with this email already exists');
+            return res.render('showMessage.ejs', { message: 'User with this email already exists.' });
         }
         await user.create({
             username: fullname,

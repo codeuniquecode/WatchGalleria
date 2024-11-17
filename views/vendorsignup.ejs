@@ -54,18 +54,18 @@
         <div class="container text-center mt-3">
             <h2>Expand your business with <span class="w">Watch</span><span class="g">Galleria</span></h2>
             <h4>Please Signup</h4>
-            <form enctype="multipart/form-data" method="post" id="vendorForm" action="/vendor/vendorRegister" onsubmit="vendorValidate(e)">
+            <form enctype="multipart/form-data" method="post" id="vendorForm" action="/vendor/vendorRegister">
                 <div class="row">
                     <div class="mb-3 text-center col-sm-12 col-md-6">
                         <label for="name" class="form-label">Shop Name</label>
-                        <input type="text" name="shopname" class="form-control w-75 text-center mx-auto" id="name"
+                        <input type="text" name="shopname" class="form-control w-75 text-center mx-auto" id="vname"
                             aria-describedby="nameHelp">
                             <div id="nameHelp" class="form-text">Please enter fullname of your shop.</div>
                         
                     </div>
                     <div class="mb-3 text-center col-md-6 col-sm-12">
                         <label for="phone" class="form-label">Phone No.</label>
-                        <input type="text" name="phonenumber" class="form-control w-75 text-center mx-auto" id="phone" aria-describedby="phoneHelp">
+                        <input type="text" name="phonenumber" class="form-control w-75 text-center mx-auto" id="vphone" aria-describedby="phoneHelp">
                         <div id="phoneHelp" class="form-text">Enter valid number as payment will be received in this wallet number.</div>
                     </div>
                 </div>
@@ -73,13 +73,13 @@
                 <div class="row">
                     <div class="mb-3 text-center col-sm-12 col-md-6">
                         <label for="exampleInputEmail1" class="form-label">Email address</label>
-                        <input type="email" name="email" class="form-control w-75 text-center mx-auto" id="exampleInputEmail1"
+                        <input type="email" name="email" class="form-control w-75 text-center mx-auto" id="vemail"
                             aria-describedby="emailHelp">
                         <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                     </div>
                     <div class="mb-3 text-center col-md-6 col-sm-12">
                         <label for="exampleInputPassword1" class="form-label">Password</label>
-                        <input type="password" name="password" class="form-control w-75 text-center mx-auto" id="exampleInputPassword1">
+                        <input type="password" name="password" class="form-control w-75 text-center mx-auto" id="vpassword">
                         <div id="passwordHelpBox" class="form-text"> Your password must be minimum 8 characters long, contain
                             letters and numbers only.</div>
                     </div>
@@ -88,13 +88,13 @@
                 <div class="row">
                     <div class="mb-3 text-center col-md-6 col-sm-12">
                         <label for="address" class="form-label">Address</label>
-                        <input type="text" name="address" class="form-control w-75 text-center mx-auto" id="address">
+                        <input type="text" name="address" class="form-control w-75 text-center mx-auto" id="vaddress">
                         <div id="addresserr" class="form-text"> Please Enter Full address of the shop</div>
                     </div>
                     <div class="mb-3 text-center col-md-6 col-sm-12 mx-auto">
                         <label for="photo" class="form-label">Upload profile picture</label> <br>
                         <div class="pic text-center">
-                          <input type="file" name="photo" class="d-block mx-auto" accept=".jpg, .jpeg, .png">
+                          <input type="file" name="photo" class="d-block mx-auto" accept=".jpg, .jpeg, .png" required>
                         </div>
                       </div>
                       
@@ -129,13 +129,112 @@
                     Already have an account? <a href="/login">Login Here</a> <br>
 
                 </div>
-                <button type="submit" class="btn btn-primary w-25" id="submit" onclick="vendorValidate()">Submit</button>
+                <button type="submit" class="btn btn-primary w-25" id="submit">Submit</button>
                 <button type="reset" class="btn btn-primary w-25">Reset</button>
                 </div>
             </form>
         </div>
     </main>
-    <script src="/scripts/validate.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById("vendorForm").addEventListener("submit", vendorValidate);
+});
+function vendorValidate(e) {
+    let email = document.getElementById("vemail").value;
+    let password = document.getElementById("vpassword").value;
+    let emailerr = document.getElementById("emailHelp");
+    let passworderr = document.getElementById("passwordHelpBox");
+    let name = document.getElementById("vname").value;
+    let namerr = document.getElementById("nameHelp");
+    let phone = document.getElementById('vphone').value;
+    let phonerr = document.getElementById('phoneHelp');
+    let address = document.getElementById('vaddress').value;
+    let addresserr = document.getElementById('addresserr');
+
+    let valid = true;
+
+    // Email validation
+    if (email.length < 1) {
+        emailerr.innerText = "*Please enter email*";
+        emailerr.classList.add('error');
+        valid = false;
+    } else {
+        emailerr.innerText = "";
+        emailerr.classList.remove("error");
+    }
+
+    // Password validation
+    if (password.length < 1) {
+        passworderr.innerText = "*Please enter password*";
+        passworderr.classList.add('error');
+        valid = false;
+    } else if (password.length < 8) {
+        passworderr.innerText = "*Password must be 8 characters long*";
+        passworderr.classList.add('error');
+        valid = false;
+    } else {
+        passworderr.innerText = "";
+        passworderr.classList.remove('error');
+    }
+
+    // Name validation
+    if (name.length < 1) {
+        namerr.innerText = "*Please enter name*";
+        namerr.classList.add('error');
+        valid = false;
+    } else if (name.length < 5) {
+        namerr.innerText = "*Please enter a valid name*";
+        namerr.classList.add('error');
+        valid = false;
+    } else {
+        namerr.innerText = "";
+        namerr.classList.remove("error");
+    }
+
+    // Phone validation
+    if (phone.length < 1) {
+        phonerr.innerText = "*Please enter Phone Number*";
+        phonerr.classList.add('error');
+        valid = false;
+    } else if (phone.length !== 10) {
+        phonerr.innerText = "*Please enter a valid Phone Number*";
+        phonerr.classList.add('error');
+        valid = false;
+    } else if (isNaN(phone)) {
+        phonerr.innerText = "*Characters not allowed*";
+        phonerr.classList.add('error');
+        valid = false;
+    } else {
+        phonerr.innerText = "";
+        phonerr.classList.remove("error");
+    }
+
+    // Address validation
+    if (address.length < 1) {
+        addresserr.innerText = "*Please enter address*";
+        addresserr.classList.add('error');
+        valid = false;
+    } else if (address.length < 5) {
+        addresserr.innerText = "*Please enter a valid address*";
+        addresserr.classList.add('error');
+        valid = false;
+    } else {
+        addresserr.innerText = "";
+        addresserr.classList.remove("error");
+    }
+
+  
+
+    // Prevent form submission if any validation fails
+    if (!valid) {
+        e.preventDefault(); // Prevents form submission
+    } else {
+        console.log("Form is valid and ready for submission.");
+        document.getElementById('vendorForm').submit(); // Submit form programmatically
+    }
+}
+
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
