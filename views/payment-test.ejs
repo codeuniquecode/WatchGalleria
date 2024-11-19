@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+</head>
+<body>
+    <form action="https://uat.esewa.com.np/epay/main" method="POST">
+        <input type="hidden" name="amt" value="5000">
+        <input type="hidden" name="pdc" value="100">
+        <input type="hidden" name="psc" value="0">
+        <input type="hidden" name="txAmt" value="0">
+        <input type="hidden" name="tAmt" value="5100">
+        <input type="hidden" name="pid" value="TEST123">
+        <input type="hidden" name="scd" value="EPAYTEST">
+        <input type="hidden" name="su" value="http://localhost:3000/payment-success">
+        <input type="hidden" name="fu" value="http://localhost:3000/payment-failure">
+        <button type="submit">Pay with eSewa</button>
+    </form>
+    <button id="khalti-payment">Pay with Khalti</button>
+
+<script src="https://khalti.com/static/khalti-checkout.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+  crossorigin="anonymous"></script>
+</body>
+</html>

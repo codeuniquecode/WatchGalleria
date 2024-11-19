@@ -316,11 +316,16 @@ exports.viewOrder = async (req, res) => {
                     include: [{
                         model: order,
                         required: true,  // Ensure orders exist
-                        where: { status: 'pending' }
+                        where: { status: 'pending' },
+                        include: [{ 
+                            model: user,  // Include user data
+                            attributes: ['username', 'address', 'phonenumber'], // Select only needed fields
+                        }]
                     }]
                 }]
             }
         });
+        
         
 
         if (!vendorData) {
@@ -336,7 +341,8 @@ exports.viewOrder = async (req, res) => {
             product.orderItems.forEach(orderItem => {
                 acc.push({
                     product,
-                    orderItem
+                    orderItem,
+                    user: orderItem.order.user
                 });
             });
             return acc;
@@ -346,9 +352,8 @@ exports.viewOrder = async (req, res) => {
         if (orderData.length === 0) {
             return res.send('No pending orders found.');
         }
-
         // Render the orders with the pending status
-        res.render('viewOrder', { orderData });
+        res.render('viewOrder', { orderData});
     } catch (error) {
         console.error(error);
         res.status(500).send('Error fetching vendor data.');

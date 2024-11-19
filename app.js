@@ -73,8 +73,8 @@ app.use(async (req, res, next) => {
     
 //     next();
 // });
-app.get('/test', (req, res) => {
-    res.render('showMessage.ejs');
+app.get('/ptest', (req, res) => {
+    res.render('payment-test.ejs');
 }
 );
 // routing

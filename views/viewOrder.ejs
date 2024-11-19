@@ -37,6 +37,7 @@
                 <th scope="col">Product Name</th>
                 <th scope="col">Price</th>
                 <th scope="col">Quantity</th>
+                <th scope="col">UserData</th>
                 <th scope="col">Actions</th>
               </tr>
             </thead>
@@ -49,6 +50,15 @@
                     <td><%= item.product.productname %></td>
                     <td><%= item.product.price %></td>
                     <td><%= item.orderItem.quantity %></td>
+                    <td>
+                      <% if (item.user) { %>
+                        <p><%= item.user.username %></p>
+                        <p><%= item.user.address %></p>
+                        <p><%= item.user.phonenumber %></p>
+                      <% } else { %>
+                        <p>User data not available</p>
+                      <% } %>
+                    </td>
                     <td>
                       <button type="button" class="btn btn-success">
                         <a href="/vendor/confirmOrder/<%= item.product.productId %>" class="btn-small text-light">
