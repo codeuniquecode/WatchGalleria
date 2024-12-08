@@ -32,10 +32,16 @@ router.get('/removeProduct/:id',isAuthenticated, userController.removeProduct);
 //GET -- order
 router.get('/userOrder',isAuthenticated, userController.renderOrder);
 
+//GET -- payment test
+router.get('/payment-success', userController.paymentSuccess);
+router.get('/payment-failure', userController.paymentfailure);
+
+
 // POST
 router.post('/register',userController.register);// Route with file upload middleware
 router.post('/updateProfile', isAuthenticated, upload.single('photo'), userController.updateProfile);
 router.post('/changePassword', isAuthenticated, userController.changePassword);
 router.post('/searchProduct',userController.searchProduct);
 router.post('/placeOrder',isAuthenticated, userController.placeOrder);
+// router.post('/updateinfo',isAuthenticated, userController.updateinfo);
 module.exports = router;

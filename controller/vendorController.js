@@ -393,7 +393,7 @@ exports.confirmOrder = async (req, res) => {
         // Update the order status to 'confirmed' and assign the vendorId to the order
         const updateOrder = await order.update(
             {
-                status: 'confirmed',
+                status: 'delivered',
                 vendorId: orderItemData.product.vendor.vendorId // Assign the correct vendorId
             },
             {

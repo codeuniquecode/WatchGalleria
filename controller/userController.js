@@ -449,10 +449,8 @@ exports.placeOrder = async (req, res) => {
         }
 
         const cartItems = await cartItem.findAll({
-            where: {
-                cartId: userCart.cartId
-            },
-            include: product
+            where: { cartId: userCart.cartId },
+            include: product,
         });
 
         if (!cartItems || cartItems.length === 0) {
@@ -460,63 +458,29 @@ exports.placeOrder = async (req, res) => {
         }
 
         let totalAmount = 0;
-        for (let i = 0; i < cartItems.length; i++) {
-            const item = cartItems[i];
-            const requestedQuantity = quantities[i];
-            const productPrice = prices[i];
-
+        cartItems.forEach((item, index) => {
+            const productPrice = prices[index];
+            const requestedQuantity = quantities[index];
             totalAmount += requestedQuantity * productPrice;
-
-            // Correct quantity check with requested quantity
-            if (item.quantity > item.product.quantity) {
-                return res.send(`Quantity not available for ${item.product.productname}. Available: ${item.product.quantity}`);
-            }
-        }
-
-        const newOrder = await order.create({
-            orderDate: new Date(),
-            Totalamount: totalAmount,
-            userId,
         });
 
-        for (let i = 0; i < cartItems.length; i++) {
-            await orderItem.create({
-                orderId: newOrder.orderId,
-                productId: productIds[i],
-                quantity: quantities[i],
-                price: prices[i],
-            });
-        }
+        // Create a temporary order data object
+        const orderData = {
+            orderDate: new Date(),
+            totalAmount,
+            userId,
+            items: cartItems.map((item, index) => ({
+                productId: productIds[index],
+                quantity: quantities[index],
+                price: prices[index],
+            })),
+        };
 
-        for (let i = 0; i < cartItems.length; i++) {
-            const updatedQuantity = cartItems[i].product.quantity - quantities[i];
-            const [updatedRows] = await product.update({
-                quantity: updatedQuantity
-            }, {
-                where: {
-                    productId: productIds[i]
-                }
-            });
-
-            if (updatedRows === 0) {
-                return res.send(`Failed to update quantity for product ${cartItems[i].product.productname}`);
-            }
-        }
-// After creating the new order, modify the cartItems data to reflect the requested quantities
-const orderItemsWithQuantities = cartItems.map((item, index) => {
-    item.quantity = quantities[index]; // Update quantity with requested value
-    return item;
-});
-        await cartItem.destroy({ where: { cartId: userCart.cartId } });
-        await cart.destroy({ where: { userId } });
-
-
-// Then pass the modified orderItemsWithQuantities to the EJS template
-return res.render('order.ejs', { order: newOrder, orderItems: orderItemsWithQuantities, totalAmount,userData });
-
+        // Render `order.ejs` with the temporary order details
+        return res.render('order.ejs', { orderData, cartItems, totalAmount,userData });
     } catch (error) {
         console.error(error);
-        return res.status(500).send('Error placing the order');
+        return res.status(500).send('Error preparing the order');
     }
 };
 
@@ -588,3 +552,152 @@ exports.searchProduct = async (req,res)=>{
     }
     res.render('product.ejs',{data});
 }
+
+const axios = require('axios'); // HTTP client to make requests to eSewa
+
+// exports.paymentSuccess = async (req, res) => {
+    
+//     const { pid, amt, txAmt, pdc, psc, txid } = req.body; // eSewa parameters from the success callback
+
+//     // Validate the payment amount
+//     if (amt !== txAmt) {
+//         return res.status(400).send('Payment amount mismatch');
+//     }
+
+//     try {
+//         // Send a verification request to eSewa API
+//         const verificationData = {
+//             pid: pid,          // Product ID
+//             amt: amt,          // Total Amount
+//             txid: txid,        // Transaction ID
+//             pdc: pdc,          // Product Code
+//             psc: psc           // Product Subcode
+//         };
+
+//         const response = await axios.post('https://uat.esewa.com.np/epay/transaction/details', verificationData);
+
+//         // Check the response from eSewa
+//         if (response.data.status !== 'success') {
+//             return res.status(400).send('Invalid payment or payment verification failed');
+//         }
+
+//         // Now process the order data if payment is valid
+//         const orderData = JSON.parse(req.body.orderData); // Assuming orderData was passed from frontend
+//         const { userId, totalAmount, items } = orderData;
+
+//         try {
+//             // Create the order in the database
+//             const newOrder = await order.create({
+//                 orderDate: new Date(),
+//                 Totalamount: totalAmount,
+//                 userId,
+//             });
+
+//             // Create the order items
+//             for (const item of items) {
+//                 await orderItem.create({
+//                     orderId: newOrder.orderId,
+//                     productId: item.productId,
+//                     quantity: item.quantity,
+//                     price: item.price,
+//                 });
+
+//                 // Update the product quantities
+//                 const [updatedRows] = await product.update(
+//                     { quantity: Sequelize.literal(`quantity - ${item.quantity}`) },
+//                     { where: { productId: item.productId } }
+//                 );
+//                 if (updatedRows === 0) {
+//                     return res.send(`Failed to update quantity for product ${item.productId}`);
+//                 }
+//             }
+
+//             // Clear the cart
+//             const userCart = await cart.findOne({ where: { userId } });
+//             await cartItem.destroy({ where: { cartId: userCart.cartId } });
+//             await cart.destroy({ where: { userId } });
+
+//             // Render success message page
+//             return res.render('showMessage.ejs', { message: 'Payment was successful, your product will be delivered soon.' });
+//         } catch (error) {
+//             console.error(error);
+//             return res.status(500).send('Error finalizing the order');
+//         }
+
+//     } catch (error) {
+//         console.error('Payment verification failed', error);
+//         return res.status(500).send('Error verifying payment');
+//     }
+// };
+
+
+exports.paymentSuccess = async (req, res) => {
+    // Capture the request body and log it for debugging
+    
+    return res.render('showMessage.ejs', { message: 'Payment was successful' });
+    console.log('Payment Verification Callback:', req.body);
+    const { txnid, amt, scd, pid } = req.body;
+
+    // Check if the required fields are present
+    if (!txnid || !amt || !scd || !pid) {
+        console.error('Missing required fields in the callback:', req.body);
+        return res.status(400).send('Missing fields');
+    }
+
+    try {
+        // Prepare the payload for verification
+        const payload = {
+            amt,        // Total amount of transaction
+            scd,        // Merchant code
+            pid: txnid, // Transaction ID
+        };
+
+        // Log the payload before making the request
+        console.log('Verification Payload:', payload);
+
+        // Make an API call to verify the payment
+        const response = await axios.post('https://uat.esewa.com.np/epay/verify', payload);
+
+        // Log the response from eSewa
+        console.log('eSewa Verification Response:', response.data);
+
+        // Check the response for payment verification status
+        if (response.data.status === 'Success') {
+            // Handle successful payment
+            return res.render('payment-success.ejs', { message: 'Payment was successful.' });
+        } else {
+            // Handle failure
+            console.error('Payment Verification Failed:', response.data);
+            return res.render('payment-failure.ejs', { message: 'Payment verification failed.' });
+        }
+    } catch (error) {
+        // Log the error if the request fails
+        console.error('Error in payment verification:', error);
+        return res.status(500).send('Error verifying payment');
+    }
+};
+
+exports.paymentfailure = async (req,res)=>{
+    return res.render('showMessage.ejs', { message: 'Payment was unsuccessful, please try again.' });
+}
+// exports.updateinfo = async (req,res)=>{
+//     const {name,address,phonenumber}= req.body;
+//     const userId = req.user;
+//     if(userId){
+//         const update = await user.update({
+//             username:name,
+//             address:address,
+//             phonenumber:phonenumber
+//         },{
+//             where:{
+//                 userId
+//             }
+//         });
+//         if(update){
+//             return res.redirect('/placeOrder');
+//         }
+//     }
+//     else{
+//         return res.send('user doesnt exists');
+//     }
+// }
