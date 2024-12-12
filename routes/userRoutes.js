@@ -33,8 +33,8 @@ router.get('/removeProduct/:id',isAuthenticated, userController.removeProduct);
 router.get('/userOrder',isAuthenticated, userController.renderOrder);
 
 //GET -- payment test
-router.get('/payment-success', userController.paymentSuccess);
-router.get('/payment-failure', userController.paymentfailure);
+router.get('/payment-success',isAuthenticated, userController.paymentSuccess);
+router.get('/payment-failure',isAuthenticated, userController.paymentfailure);
 
 
 // POST

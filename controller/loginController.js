@@ -45,7 +45,8 @@ exports.loginValidation = async (req, res) => {
                     return res.redirect('/');
                 }
             } else {
-                return res.send('Invalid password, try again');
+                
+    return res.render('showMessage.ejs', { message: 'Invalid Password, please try again.' });
             }
         }
 
@@ -67,12 +68,14 @@ exports.loginValidation = async (req, res) => {
                 res.cookie('token',token);
              return res.redirect('/vendor/vendordashboard');
             } else {
-                return res.send('Invalid password');
+               
+    return res.render('showMessage.ejs', { message: 'Invalid Password, please try again.' });
             }
         }
 
         // If neither user nor vendor is found
-        return res.send('Email not found, please register.');
+        
+    return res.render('showMessage.ejs', { message: 'Email not found' });
 
     } catch (e) {
         console.error('Error in finding email:', e);

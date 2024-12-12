@@ -76,6 +76,7 @@ app.use(async (req, res, next) => {
 app.get('/ptest', (req, res) => {
     res.render('payment-test.ejs');
 }
+
 );
 // routing
 const userRoutes = require('./routes/userRoutes');
@@ -84,6 +85,7 @@ const loginRoutes = require('./routes/loginRoutes');
 const adminRoutes= require('./routes/adminRoutes');
 const forgotPassRoutes = require('./routes/forgotPassRoutes');
 const { restrictVendor } = require('./middleware/restrictVendor');
+const { isAuthenticated } = require('./middleware/isAuthenticated');
 // Use userRoutes on the root path
 
 app.use('/',forgotPassRoutes);

@@ -333,7 +333,9 @@ exports.viewOrder = async (req, res) => {
         }
 
         if (vendorData.products.length === 0) {
-            return res.send('No products found for this vendor.');
+            
+
+    return res.render('showMessage.ejs', { message: 'No order found.' });
         }
 
         // Prepare orderData (products with their pending orders)
@@ -361,7 +363,7 @@ exports.viewOrder = async (req, res) => {
 };
 exports.confirmOrder = async (req, res) => {
     const orderItemId = req.params.id;
-
+    console.log(orderItemId);
     try {
         // Find the orderItem and include the product and its associated vendor, along with the order details
         const orderItemData = await orderItem.findOne({
@@ -369,11 +371,21 @@ exports.confirmOrder = async (req, res) => {
             include: [
                 {
                     model: product,
-                    include: [{ model: vendor }]
+                    required: true, // Ensures product must exist
+                    include: [
+                        {
+                            model: vendor,
+                            required: true // Ensures vendor must exist
+                        }
+                    ]
                 },
-                { model: order }
+                {
+                    model: order,
+                    required: true // Ensures order must exist
+                }
             ]
         });
+        
 
         // Check if the orderItemData was found
         if (!orderItemData) {

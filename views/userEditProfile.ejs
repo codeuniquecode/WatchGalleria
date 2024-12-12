@@ -63,7 +63,7 @@
                     </div>
                     <div class="mb-3 text-center col-md-6 col-sm-12">
                         <label for="phone" class="form-label">Phone No.</label>
-                        <input type="text" class="form-control w-75 text-center mx-auto" name="phone" value="<%-userData.phonenumber%>" id="phone" aria-describedby="phoneHelp" required>
+                        <input type="number"  pattern="\d{10}" minlength="10" maxlength="10" class="form-control w-75 text-center mx-auto" name="phone" value="<%-userData.phonenumber%>" id="phone" aria-describedby="phoneHelp" required>
                         
                     </div>
                 </div>

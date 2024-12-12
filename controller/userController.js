@@ -463,7 +463,7 @@ exports.renderOrder = async (req, res) => {
 
         // Check if orders exist
         if (!userOrders || userOrders.length === 0) {
-            return res.send('No orders found');
+            return res.render('showMessage.ejs', { message: 'No order found' });
         }
 
         // Aggregate the sum of all total amounts for this user's orders
@@ -551,10 +551,96 @@ exports.placeOrder = async (req, res) => {
         return res.status(500).send('Error preparing the order');
     }
 };
-exports.paymentSuccess = async (req, res) => {
-    return res.render('showMessage.ejs', { message: 'Payment was successful, your product will be delivered soon.' });
+// exports.paymentSuccess = async (req, res) => {
     
+//     return res.render('showMessage.ejs', { message: 'Payment was successful, your product will be delivered soon.' });
+    
+// };
+
+exports.paymentSuccess = async (req, res) => {
+    const userId = req.user;
+    console.log(userId);
+
+    if (!userId) {
+        return res.render('showMessage.ejs', { message: 'Please Login to place an order' });
+    }
+
+    const transaction = await sequelize.transaction();
+
+    try {
+        // Step 1: Fetch user cart and items
+        const userCart = await cart.findOne({ where: { userId }, transaction });
+        if (!userCart) {
+            await transaction.rollback();
+            return res.render('showMessage.ejs', { message: 'No items in your cart' });
+        }
+
+        const cartItems = await cartItem.findAll({
+            where: { cartId: userCart.cartId },
+            include: product,
+            transaction
+        });
+
+        if (!cartItems || cartItems.length === 0) {
+            await transaction.rollback();
+            return res.render('showMessage.ejs', { message: 'No items in your cart' });
+        }
+
+        // Step 2: Calculate total amount and check inventory
+        let totalAmount = 0;
+        for (const item of cartItems) {
+            if (item.quantity > item.product.quantity) {
+                await transaction.rollback();
+                return res.render('showMessage.ejs', { message: `Quantity not available for ${item.product.productname}.` });
+            }
+            totalAmount += item.quantity * item.product.price;
+        }
+
+        // Step 3: Create the order
+        const newOrder = await order.create({
+            orderDate: new Date(),
+            Totalamount: totalAmount,
+            userId,
+        }, { transaction });
+
+        // Step 5: Handle background tasks
+        // Create order items and update inventory in parallel
+        const orderItemsPromises = cartItems.map((item) =>
+            orderItem.create({
+                orderId: newOrder.orderId,
+                productId: item.productId,
+                quantity: item.quantity,
+                price: item.product.price,
+            }, { transaction })
+        );
+
+        const updateInventoryPromises = cartItems.map((item) =>
+            product.update(
+                { quantity: item.product.quantity - item.quantity },
+                { where: { productId: item.productId }, transaction }
+            )
+        );
+
+        await Promise.all([...orderItemsPromises, ...updateInventoryPromises]);
+
+        // Clear the cart
+        await cartItem.destroy({ where: { cartId: userCart.cartId }, transaction });
+        await cart.destroy({ where: { userId }, transaction });
+
+        await transaction.commit();
+
+        console.log('Order processing completed in the background.');
+        // Step 4: Render the response immediately
+        return res.render('showMessage.ejs', { message: 'Payment was successful, your product will be delivered soon.' });
+
+    } catch (error) {
+        await transaction.rollback();
+        console.error('Error processing the order:', error);
+        return res.status(500).send('Error processing the order');
+    }
 };
+
+
 
 exports.paymentfailure = async (req,res)=>{
     const userId = req.user;
