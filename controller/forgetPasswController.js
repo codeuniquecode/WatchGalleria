@@ -41,7 +41,8 @@ exports.handleMail = async (req, res) => {
         return res.render('otpverify.ejs',{email:vendorData.email,userType:'vendor'});
         }
         if(!userData && !vendorData){
-            return res.send('No user found with this email');
+            
+    return res.render('showMessage.ejs', { message: 'No user found with this email.' });
         }
         return res.render('otpverify.ejs');
     } catch (error) {
@@ -86,12 +87,14 @@ exports.otpVerify= async (req,res)=>{
                const currentTime = Date.now();
                const difference = currentTime - otpGeneratedTime;
                if(difference>120000){
-                 return res.send('OTP has been expired');
+                 
+    return res.render('showMessage.ejs', { message: 'OTP has been expired.' });
                }
                return res.render('resetpass.ejs',{email,userType});
         }
      }
-    return res.send('Invalid OTP');
+    
+     return res.render('showMessage.ejs', { message: 'Invalid OTP, please try again.' });
 }
 exports.resetPassword = async (req,res)=>{
     const email = req.body.email;

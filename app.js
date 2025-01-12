@@ -7,6 +7,8 @@ const multer = require('./middleware/multerConfig').multer;
 const bcrypt = require('bcrypt');
 const storage = require('./middleware/multerConfig').storage;
 const upload = multer({storage: storage});
+const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
 // const dbConfig = require('./config/dbConfig');
 // const {user} = dbConfig;
 
@@ -68,16 +70,27 @@ app.use(async (req, res, next) => {
     next();
 });
 
-// app.use((req, res, next) => {
-//     res.locals.currentUser = req.cookies.token;
-    
-//     next();
-// });
+
 app.get('/ptest', (req, res) => {
     res.render('payment-test.ejs');
 }
 
 );
+
+const limiter = rateLimit({
+    windowMs: 2 * 60 * 1000,
+    max: 5,
+    message: 'Too many attempts, please try again after 2 minutes'
+  });
+app.use('/otpVerify',limiter);
+
+// Configure helmet
+app.use(
+    helmet({
+        contentSecurityPolicy: false, // Disable CSP if necessary
+    })
+);
+
 // routing
 const userRoutes = require('./routes/userRoutes');
 const vendorRoutes = require('./routes/vendorRoutes');
@@ -94,6 +107,7 @@ app.use('/', userRoutes);
 app.use('/vendor', vendorRoutes);
 app.use('/', loginRoutes);
 app.use('/admin',adminRoutes);
+
 app.listen(port,()=>{
     console.log(`the server is running on port ${port}`);
 })
