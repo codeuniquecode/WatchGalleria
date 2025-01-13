@@ -14,7 +14,7 @@ const {host} = dbConfig;
 
     const sequelize = new Sequelize('watchgalleria','root','',{
     host: host,
-    port:3306,
+    port:29239,//3306 for local
     dialect :'mysql',
     pool:{
         max:10,
