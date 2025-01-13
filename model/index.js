@@ -12,7 +12,7 @@ const makeNotificationTable = require('./notificationModel');
 
 const {host} = dbConfig;
 
-    const sequelize = new Sequelize('watchgalleria','root','',{
+    const sequelize = new Sequelize('watchgalleria','root','btQBUtaDKrZYuaTUquXSPtqTzNPjWEOS',{
     host: host,
     port:29239,//3306 for local
     dialect :'mysql',
