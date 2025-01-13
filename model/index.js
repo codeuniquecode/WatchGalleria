@@ -12,8 +12,8 @@ const makeNotificationTable = require('./notificationModel');
 
 const {host} = dbConfig;
 
-    const sequelize = new Sequelize('watchgalleria','root','btQBUtaDKrZYuaTUquXSPtqTzNPjWEOS',{
-    host: host,
+    const sequelize = new Sequelize('railway','root','btQBUtaDKrZYuaTUquXSPtqTzNPjWEOS',{
+    host: viaduct.proxy.rlwy.net,
     port:29239,//3306 for local
     dialect :'mysql',
     pool:{
