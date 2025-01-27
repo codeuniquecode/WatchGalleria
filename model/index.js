@@ -10,20 +10,22 @@ const makeOrderTable = require('./orderModel');
 const makeOrderItemTable = require('./orderItemModel');
 const makeNotificationTable = require('./notificationModel');
 
-const {host} = dbConfig;
+const { dbase, host, user, password } = dbConfig;
+console.log({ dbase, host, user, password }); // Log to verify values
 
-    const sequelize = new Sequelize('railway','root','btQBUtaDKrZYuaTUquXSPtqTzNPjWEOS',{
-    host: host,
-    port:29239,//3306 for local
-    dialect :'mysql',
-    pool:{
-        max:10,
-        min:0,
-        acquire:30000,
-        idle:10000
-    
-    }
-});
+require('dotenv').config();
+    // const sequelize = new Sequelize('railway','root','btQBUtaDKrZYuaTUquXSPtqTzNPjWEOS',{
+      const sequelize = new Sequelize(dbase, user, password, {
+        host: host,
+        port: 3306, // 3306 for local
+        dialect: 'mysql',
+        pool: {
+            max: 10,
+            min: 0,
+            acquire: 30000,
+            idle: 10000
+        }
+    });
 sequelize.authenticate().then(()=>{
     console.log('milyo');
 })
