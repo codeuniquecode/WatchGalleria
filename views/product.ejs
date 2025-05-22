@@ -57,7 +57,7 @@
             <% data.forEach(function(product) { %> <!-- Loop through each product -->
                 <div class="card col-lg-3 col-md-4 col-sm-6 mb-3">
                     <a href="/seeProduct/<%=product.productId %>">
-                        <img src="https://watchgalleria.onrender.com/<%=product.productpicture %>" class="card-img-top" alt="<%= product.productname %>">
+                        <img src="/storage/<%= data.productpicture %>/<%=product.productpicture %>" class="card-img-top" alt="<%= product.productname %>">
                     </a>
                     <div class="card-body text-center">
                         <h5 class="card-title productname">
