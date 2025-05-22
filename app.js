@@ -20,6 +20,7 @@ app.set('view engine', 'ejs');
 
 app.use(express.static('public'));
 app.use(express.static('storage'));
+app.use('/storage', express.static('storage'));
 
 app.use(express.urlencoded({extended:true})); 
 app.use(cookieParser());
