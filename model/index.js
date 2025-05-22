@@ -17,7 +17,7 @@ require('dotenv').config();
     // const sequelize = new Sequelize('railway','root','btQBUtaDKrZYuaTUquXSPtqTzNPjWEOS',{
       const sequelize = new Sequelize(dbase, user, password, {
         host: host,
-        port: 29525, // 3306 for local
+        port: 54014, // 3306 for local
         dialect: 'mysql',
         pool: {
             max: 10,
